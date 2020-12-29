@@ -11,7 +11,7 @@ namespace BackendModel
     {
         public static Task<UserSession> FromToken(this DbSet<UserSession> userSessions, string session)
         {
-            return userSessions.FirstAsync(s => s.Id.ToString() == session);
+            return userSessions.FirstOrDefaultAsync(s => s.Id.ToString() == session);
         }
     }
 

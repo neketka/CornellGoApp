@@ -30,7 +30,7 @@ namespace Backend.Controllers
         [HttpPost]
         public async Task<PostAuthResponse> Login(PostAuthRequest request)
         {
-            User user = (await _context.Authenticators.FirstAsync(u => u.Username == request.Username && u.Password == request.Password))?.User;
+            User user = (await _context.Authenticators.FirstOrDefaultAsync(u => u.Username == request.Username && u.Password == request.Password))?.User;
 
             if (user == null) // No such user exists
                 return new("");
