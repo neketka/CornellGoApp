@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Shell xmlns="http://xamarin.com/schemas/2014/forms" 
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-       xmlns:local="clr-namespace:MobileApp.Views"
+       xmlns:views="clr-namespace:MobileApp.Views"
        Title="MobileApp"
        x:Class="MobileApp.AppShell"
-       Shell.NavBarIsVisible="False">
+       xmlns:fa="clr-namespace:MobileApp.Constants"
+       xmlns:ext="clr-namespace:MobileApp.Extensions"
+       Shell.TabBarIsVisible="False"
+       FlyoutBackgroundColor="{StaticResource Secondary}">
 
     <!--
         The overall app visual hierarchy is defined here, along with navigation.
@@ -12,36 +15,87 @@
         https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/shell/
     -->
 
+    <Shell.ItemTemplate>
+        <DataTemplate>
+            <Grid Style="{StaticResource FlyoutItemStyle}" Padding="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.2*" />
+                    <ColumnDefinition Width="0.8*" />
+                </Grid.ColumnDefinitions>
+                <Image Source="{Binding FlyoutIcon}" Margin="5" HeightRequest="28" />
+                <Label Grid.Column="1" Text="{Binding Title}" VerticalTextAlignment="Center" TextColor="{StaticResource SecondaryText}" FontAttributes="Bold" FontSize="13" />
+            </Grid>
+        </DataTemplate>
+    </Shell.ItemTemplate>
+    
+    <Shell.MenuItemTemplate>
+        <DataTemplate>
+            <Grid Style="{StaticResource FlyoutItemStyle}" Padding="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.2*" />
+                    <ColumnDefinition Width="0.8*" />
+                </Grid.ColumnDefinitions>
+                <Image Source="{Binding FlyoutIcon}" Margin="5" HeightRequest="28" />
+                <Label Grid.Column="1" Text="{Binding Title}" VerticalTextAlignment="Center" TextColor="{StaticResource SecondaryText}" FontAttributes="Bold" FontSize="13" />
+            </Grid>
+        </DataTemplate>
+    </Shell.MenuItemTemplate>
+
     <Shell.Resources>
         <ResourceDictionary>
             <Style x:Key="BaseStyle" TargetType="Element">
-                <Setter Property="Shell.BackgroundColor" Value="{StaticResource Primary}" />
-                <Setter Property="Shell.ForegroundColor" Value="White" />
-                <Setter Property="Shell.TitleColor" Value="White" />
-                <Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" />
-                <Setter Property="Shell.UnselectedColor" Value="#95FFFFFF" />
-                <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource Primary}" />
-                <Setter Property="Shell.TabBarForegroundColor" Value="White"/>
-                <Setter Property="Shell.TabBarUnselectedColor" Value="#95FFFFFF"/>
-                <Setter Property="Shell.TabBarTitleColor" Value="White"/>
+                <Setter Property="Shell.BackgroundColor" Value="{StaticResource Secondary}" />
+                <Setter Property="Shell.ForegroundColor" Value="{StaticResource Primary}" />
+                <Setter Property="Shell.TitleColor" Value="{StaticResource SecondaryText}" />
+                <Setter Property="Shell.DisabledColor" Value="{StaticResource PrimaryAccent}" />
+                <Setter Property="Shell.UnselectedColor" Value="{StaticResource Secondary}" />
             </Style>
             <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}" />
             <Style TargetType="FlyoutItem" BasedOn="{StaticResource BaseStyle}" />
         </ResourceDictionary>
     </Shell.Resources>
 
-    <TabBar>
-        <ShellContent Title="About" Icon="icon_about.png" Route="AboutPage" ContentTemplate="{DataTemplate local:AboutPage}" />
-        <ShellContent Title="Browse" Icon="icon_feed.png" ContentTemplate="{DataTemplate local:ItemsPage}" />
-    </TabBar>
+    <Shell.FlyoutHeader>
+        <StackLayout Padding="10, 10, 0, 10" Orientation="Horizontal" BackgroundColor="{StaticResource Secondary}">
+            <Image Source="{ext:ImageResource MobileApp.Assets.Images.logo.png}" WidthRequest="48" HeightRequest="48"/>
+            <Label Text="CornellGO!" TextColor="{StaticResource SecondaryText}" FontSize="20" VerticalOptions="Center"></Label>
+        </StackLayout>
+    </Shell.FlyoutHeader>
 
-    <!--
-        If you would like to navigate to this content you can do so by calling
-        await Shell.Current.GoToAsync("//LoginPage");
-    -->
-    <TabBar>
-        <ShellContent Route="LoginPage" ContentTemplate="{DataTemplate local:LoginPage}" />
-    </TabBar>
+    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
+        <ShellContent Title="Play" ContentTemplate="{DataTemplate views:GamePage}" Route="play">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="FA" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FAFont.Play}" />
+            </ShellContent.Icon>
+        </ShellContent>
+        <ShellContent Title="Leaderboard" ContentTemplate="{DataTemplate views:LeaderPage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="FA" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FAFont.Trophy}" />
+            </ShellContent.Icon>
+        </ShellContent>
+        <ShellContent Title="My History" ContentTemplate="{DataTemplate views:HistoryPage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="FA" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FAFont.History}" />
+            </ShellContent.Icon>
+        </ShellContent>
+    </FlyoutItem>
 
-
+    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
+        <ShellContent Title="Suggest a Location" ContentTemplate="{DataTemplate views:SuggestPage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="FA" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FAFont.LightbulbO}" />
+            </ShellContent.Icon>
+        </ShellContent>
+        <ShellContent Title="Submit Feedback" ContentTemplate="{DataTemplate views:FeedbackPage}" >
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="FA" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FAFont.Comment}" />
+            </ShellContent.Icon>
+        </ShellContent>
+    </FlyoutItem>
+    
+    <MenuItem Text="Logout">
+        <MenuItem.IconImageSource>
+            <FontImageSource FontFamily="FA" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FAFont.SignOut}" />
+        </MenuItem.IconImageSource>
+    </MenuItem>
 </Shell>

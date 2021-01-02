@@ -1,5 +1,4 @@
-﻿using MobileApp.Models;
-using MobileApp.Services;
+﻿using MobileApp.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,9 +8,7 @@ using Xamarin.Forms;
 namespace MobileApp.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
-    {
-        public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
-
+    { 
         bool isBusy = false;
         public bool IsBusy
         {
