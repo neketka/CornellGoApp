@@ -5,24 +5,29 @@
              xmlns:ex="clr-namespace:MobileApp.Extensions"
              xmlns:vm="clr-namespace:MobileApp.ViewModels"
              xmlns:fa="clr-namespace:MobileApp.Constants"
-             Title="Play">
+             Title="Play"
+             SizeChanged="ContentPage_SizeChanged">
     <ContentPage.BindingContext>
         <vm:GameViewModel/>
     </ContentPage.BindingContext>
     <ContentPage.Content>
         <RelativeLayout>
-            <Image Aspect="AspectFill" Source="{ex:ImageResource MobileApp.Assets.Images.grid.png}"
-                   RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToView, ElementName=BottomSheet, Property=Y, Factor=1, Constant=5}"
-                   RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"/>
-            <!-- 70 -->
+            <Image Source="{ex:ImageResource MobileApp.Assets.Images.grid.png}" x:Name="PlaceImage"
+                   RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.5}"
+                   RelativeLayout.YConstraint="{ConstraintExpression Type=Constant, Constant=0}"
+                   RelativeLayout.WidthConstraint="{ConstraintExpression Type=Constant, Constant=1}"
+                   SizeChanged="PlaceImage_SizeChanged"/>
+
             <Frame x:Name="BottomSheet" BackgroundColor="{StaticResource Secondary}" Padding="24, 8, 24, 0" CornerRadius="10" HasShadow="true"
-                RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=-180}"
-                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
-                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}">
+                   RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
+                   RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}">
+                <Frame.GestureRecognizers>
+                    <PanGestureRecognizer PanUpdated="PanGestureRecognizer_PanUpdated"/>
+                </Frame.GestureRecognizers>
                 <StackLayout>
                     <BoxView HeightRequest="5" CornerRadius="2" WidthRequest="48" BackgroundColor="Gray" HorizontalOptions="Center"/>
 
-                    <StackLayout Orientation="Horizontal" Margin="0, 0, 0, -4">
+                    <StackLayout Orientation="Horizontal" Margin="0, -4, 0, -4">
                         <Label HorizontalOptions="StartAndExpand" TextColor="{StaticResource PrimaryAccent}">
                             <Label.FormattedText>
                                 <FormattedString>
@@ -46,19 +51,21 @@
                             </Label.FormattedText>
                         </Label>
                     </StackLayout>
-                    
+
                     <Label Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna"
-                               TextColor="{StaticResource SecondaryText}" FontSize="20" HeightRequest="75" Margin="0, 0, 0, 4"/>
-                    
-                    <Frame CornerRadius="16" HasShadow="False" Padding="0" HeightRequest="40">
-                        <Frame.Background>
-                            <LinearGradientBrush StartPoint="0, 0" EndPoint="1, 0">
-                                <GradientStop Color="Blue" Offset="0.0" />
-                                <GradientStop Color="Red" Offset="1.0" />
-                            </LinearGradientBrush>
-                        </Frame.Background>
-                        <BoxView x:Name="TempBar" BackgroundColor="White" Opacity="0.7"/>
-                    </Frame>
+                           TextColor="{StaticResource SecondaryText}" HeightRequest="75" FontSize="20" Margin="0, 0, 0, 4" x:Name="Description"/>
+
+                    <StackLayout BackgroundColor="{StaticResource Secondary}" x:Name="Therm" HeightRequest="60" Margin="0, -5, 0, 0" Padding="0, 5, 0, 15">
+                        <Frame CornerRadius="16" HasShadow="False" Padding="0">
+                            <Frame.Background>
+                                <LinearGradientBrush StartPoint="0, 0" EndPoint="1, 0">
+                                    <GradientStop Color="Blue" Offset="0.0" />
+                                    <GradientStop Color="Red" Offset="1.0" />
+                                </LinearGradientBrush>
+                            </Frame.Background>
+                            <BoxView x:Name="TempBar" BackgroundColor="White" Opacity="0.7"/>
+                        </Frame>
+                    </StackLayout>
                 </StackLayout>
             </Frame>
         </RelativeLayout>
