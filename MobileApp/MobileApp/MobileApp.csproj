@@ -6,7 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Fonts\fa-brands-400.ttf" />
+    <None Remove="Assets\Fonts\fa-regular-400.ttf" />
+    <None Remove="Assets\Fonts\fa-solid-900.ttf" />
     <None Remove="Assets\Fonts\FontAwesome.otf" />
+    <None Remove="Assets\Images\grid.png" />
     <None Remove="Assets\Images\logo.png" />
     <None Remove="Assets\Images\logo3.png" />
     <None Remove="Assets\Images\logo_alt.png" />
@@ -18,15 +22,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Assets\Fonts\FontAwesome.otf" />
+    <EmbeddedResource Include="Assets\Fonts\fa-brands-400.ttf" />
+    <EmbeddedResource Include="Assets\Fonts\fa-regular-400.ttf" />
+    <EmbeddedResource Include="Assets\Fonts\fa-solid-900.ttf" />
+    <EmbeddedResource Include="Assets\Images\grid.png" />
     <EmbeddedResource Include="Assets\Images\logo.png" />
     <EmbeddedResource Include="Assets\Images\logo_alt.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="sqlite-net-pcl" Version="1.8.0-beta" />
-    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1451" />  
-    <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.7.335" />
+    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1821" />  
+    <PackageReference Include="Xamarin.Essentials" Version="1.6.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -2,15 +2,64 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MobileApp.Views.GamePage"
+             xmlns:ex="clr-namespace:MobileApp.Extensions"
+             xmlns:vm="clr-namespace:MobileApp.ViewModels"
+             xmlns:fa="clr-namespace:MobileApp.Constants"
              Title="Play">
+    <ContentPage.BindingContext>
+        <vm:GameViewModel/>
+    </ContentPage.BindingContext>
     <ContentPage.Content>
         <RelativeLayout>
-            <Frame x:Name="bottomSheet" HasShadow="true" CornerRadius="8" Padding="1,4,1,0" BackgroundColor="{StaticResource Secondary}" 
-                RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=.9,Constant=0}"
-                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1,Constant=0}"
-                RelativeLayout.HeightConstraint="{ConstraintExpression
-                Type=RelativeToParent,Property=Height,Factor=1,Constant=0}">
-                <BoxView HeightRequest="5" CornerRadius="2" WidthRequest="50" BackgroundColor="Gray" HorizontalOptions="Center"/>
+            <Image Aspect="AspectFill" Source="{ex:ImageResource MobileApp.Assets.Images.grid.png}"
+                   RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToView, ElementName=BottomSheet, Property=Y, Factor=1, Constant=5}"
+                   RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"/>
+            <!-- 70 -->
+            <Frame x:Name="BottomSheet" BackgroundColor="{StaticResource Secondary}" Padding="24, 8, 24, 0" CornerRadius="10" HasShadow="true"
+                RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=-180}"
+                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
+                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}">
+                <StackLayout>
+                    <BoxView HeightRequest="5" CornerRadius="2" WidthRequest="48" BackgroundColor="Gray" HorizontalOptions="Center"/>
+
+                    <StackLayout Orientation="Horizontal" Margin="0, 0, 0, -4">
+                        <Label HorizontalOptions="StartAndExpand" TextColor="{StaticResource PrimaryAccent}">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="1"/>
+                                    <Span Text=" Point   "/>
+                                    <Span Text="{x:Static fa:FASolid.Walking}" FontFamily="FASolid"/>
+                                    <Span Text=" "/>
+                                    <Span Text="10"/>
+                                    <Span Text=" Min"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label TextColor="{StaticResource PrimaryAccent}">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{x:Static fa:FASolid.UserFriends}" FontFamily="FASolid"/>
+                                    <Span Text=" "/>
+                                    <Span Text="0/8"/>
+                                    <Span Text=" Ready"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </StackLayout>
+                    
+                    <Label Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna"
+                               TextColor="{StaticResource SecondaryText}" FontSize="20" HeightRequest="75" Margin="0, 0, 0, 4"/>
+                    
+                    <Frame CornerRadius="16" HasShadow="False" Padding="0" HeightRequest="40">
+                        <Frame.Background>
+                            <LinearGradientBrush StartPoint="0, 0" EndPoint="1, 0">
+                                <GradientStop Color="Blue" Offset="0.0" />
+                                <GradientStop Color="Red" Offset="1.0" />
+                            </LinearGradientBrush>
+                        </Frame.Background>
+                        <BoxView x:Name="TempBar" BackgroundColor="White" Opacity="0.7"/>
+                    </Frame>
+                </StackLayout>
             </Frame>
         </RelativeLayout>
     </ContentPage.Content>

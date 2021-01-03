@@ -23,7 +23,7 @@
                     <ColumnDefinition Width="0.8*" />
                 </Grid.ColumnDefinitions>
                 <Image Source="{Binding FlyoutIcon}" Margin="5" HeightRequest="28" />
-                <Label Grid.Column="1" Text="{Binding Title}" VerticalTextAlignment="Center" TextColor="{StaticResource SecondaryText}" FontAttributes="Bold" FontSize="13" />
+                <Label Grid.Column="1" Text="{Binding Title}" VerticalTextAlignment="Center" TextColor="{StaticResource SecondaryText}" FontSize="16" />
             </Grid>
         </DataTemplate>
     </Shell.ItemTemplate>
@@ -36,7 +36,7 @@
                     <ColumnDefinition Width="0.8*" />
                 </Grid.ColumnDefinitions>
                 <Image Source="{Binding FlyoutIcon}" Margin="5" HeightRequest="28" />
-                <Label Grid.Column="1" Text="{Binding Title}" VerticalTextAlignment="Center" TextColor="{StaticResource SecondaryText}" FontAttributes="Bold" FontSize="13" />
+                <Label Grid.Column="1" Text="{Binding Title}" VerticalTextAlignment="Center" TextColor="{StaticResource SecondaryText}" FontSize="16" />
             </Grid>
         </DataTemplate>
     </Shell.MenuItemTemplate>
@@ -65,17 +65,17 @@
     <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
         <ShellContent Title="Play" ContentTemplate="{DataTemplate views:GamePage}" Route="play">
             <ShellContent.Icon>
-                <FontImageSource FontFamily="FA" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FAFont.Play}" />
+                <FontImageSource FontFamily="FASolid" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FASolid.Play}" />
             </ShellContent.Icon>
         </ShellContent>
         <ShellContent Title="Leaderboard" ContentTemplate="{DataTemplate views:LeaderPage}">
             <ShellContent.Icon>
-                <FontImageSource FontFamily="FA" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FAFont.Trophy}" />
+                <FontImageSource FontFamily="FASolid" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FASolid.Trophy}" />
             </ShellContent.Icon>
         </ShellContent>
         <ShellContent Title="My History" ContentTemplate="{DataTemplate views:HistoryPage}">
             <ShellContent.Icon>
-                <FontImageSource FontFamily="FA" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FAFont.History}" />
+                <FontImageSource FontFamily="FASolid" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FASolid.History}" />
             </ShellContent.Icon>
         </ShellContent>
     </FlyoutItem>
@@ -83,19 +83,19 @@
     <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
         <ShellContent Title="Suggest a Location" ContentTemplate="{DataTemplate views:SuggestPage}">
             <ShellContent.Icon>
-                <FontImageSource FontFamily="FA" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FAFont.LightbulbO}" />
+                <FontImageSource FontFamily="FASolid" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FASolid.Lightbulb}" />
             </ShellContent.Icon>
         </ShellContent>
         <ShellContent Title="Submit Feedback" ContentTemplate="{DataTemplate views:FeedbackPage}" >
             <ShellContent.Icon>
-                <FontImageSource FontFamily="FA" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FAFont.Comment}" />
+                <FontImageSource FontFamily="FASolid" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FASolid.Comment}" />
             </ShellContent.Icon>
         </ShellContent>
     </FlyoutItem>
     
     <MenuItem Text="Logout">
         <MenuItem.IconImageSource>
-            <FontImageSource FontFamily="FA" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FAFont.SignOut}" />
+            <FontImageSource FontFamily="FASolid" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FASolid.SignOutAlt}" />
         </MenuItem.IconImageSource>
     </MenuItem>
 </Shell>
