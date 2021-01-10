@@ -11,7 +11,7 @@ namespace MobileApp.ViewModels
         
         public SuggestViewModel()
         {
-            CancelCommand = new Command(async () => await Shell.Current.GoToAsync("//play"));
+            CancelCommand = new Command(async () => await Shell.Current.GoToAsync(".."));
         }
     }
 }

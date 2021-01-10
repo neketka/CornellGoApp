@@ -4,66 +4,122 @@
              x:Class="MobileApp.Views.GamePage"
              xmlns:ex="clr-namespace:MobileApp.Extensions"
              xmlns:vm="clr-namespace:MobileApp.ViewModels"
+             xmlns:local="clr-namespace:MobileApp.Views"
              xmlns:fa="clr-namespace:MobileApp.Constants"
              Title="Play"
              SizeChanged="ContentPage_SizeChanged">
     <ContentPage.BindingContext>
         <vm:GameViewModel/>
     </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <RelativeLayout>
-            <Image Source="{ex:ImageResource MobileApp.Assets.Images.grid.png}" x:Name="PlaceImage"
-                   RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.5}"
+            <Image Source="{ex:ImageResource MobileApp.Assets.Images.grid.png}" x:Name="PlaceImage" Aspect="AspectFill"
+                   RelativeLayout.XConstraint="{ConstraintExpression Type=Constant, Constant=0}"
                    RelativeLayout.YConstraint="{ConstraintExpression Type=Constant, Constant=0}"
-                   RelativeLayout.WidthConstraint="{ConstraintExpression Type=Constant, Constant=1}"
+                   RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                   RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
                    SizeChanged="PlaceImage_SizeChanged"/>
 
-            <Frame x:Name="BottomSheet" BackgroundColor="{StaticResource Secondary}" Padding="24, 8, 24, 0" CornerRadius="10" HasShadow="true"
+            <BoxView RelativeLayout.XConstraint="{ConstraintExpression Type=Constant, Constant=0}"
+                     RelativeLayout.YConstraint="{ConstraintExpression Type=Constant, Constant=0}"
+                     RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                     RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
+                     BackgroundColor="Black"
+                     CornerRadius="0"
+                     x:Name="Darkener"/>
+
+            <Frame x:Name="BottomSheet" BackgroundColor="{StaticResource Secondary}" Padding="0, 8, 0, 0" CornerRadius="8" HasShadow="true"
                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
                    RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}">
                 <Frame.GestureRecognizers>
                     <PanGestureRecognizer PanUpdated="PanGestureRecognizer_PanUpdated"/>
                 </Frame.GestureRecognizers>
                 <StackLayout>
-                    <BoxView HeightRequest="5" CornerRadius="2" WidthRequest="48" BackgroundColor="Gray" HorizontalOptions="Center"/>
+                    <StackLayout Padding="24, 0, 24, 0">
+                        <BoxView HeightRequest="5" CornerRadius="2" WidthRequest="48" BackgroundColor="Gray" HorizontalOptions="Center"/>
 
-                    <StackLayout Orientation="Horizontal" Margin="0, -4, 0, -4">
-                        <Label HorizontalOptions="StartAndExpand" TextColor="{StaticResource PrimaryAccent}">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text="1"/>
-                                    <Span Text=" Point   "/>
-                                    <Span Text="{x:Static fa:FASolid.Walking}" FontFamily="FASolid"/>
-                                    <Span Text=" "/>
-                                    <Span Text="10"/>
-                                    <Span Text=" Min"/>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                        <Label TextColor="{StaticResource PrimaryAccent}">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text="{x:Static fa:FASolid.UserFriends}" FontFamily="FASolid"/>
-                                    <Span Text=" "/>
-                                    <Span Text="0/8"/>
-                                    <Span Text=" Ready"/>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                    </StackLayout>
+                        <StackLayout Orientation="Horizontal" Margin="0, -4, 0, -4">
+                            <Label HorizontalOptions="StartAndExpand" TextColor="{StaticResource PrimaryAccent}">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{Binding PointsString}"/>
+                                        <Span Text="  "/>
+                                        <Span Text="{x:Static fa:FASolid.Walking}" FontFamily="FASolid"/>
+                                        <Span Text=" "/>
+                                        <Span Text="{Binding ProgressString}"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label TextColor="{StaticResource PrimaryAccent}">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{x:Static fa:FASolid.UserFriends}" FontFamily="FASolid"/>
+                                        <Span Text=" "/>
+                                        <Span>
+                                            <Span.Text>
+                                                <MultiBinding StringFormat="{}{0}/{1}">
+                                                    <Binding Path="MembersReady"/>
+                                                    <Binding Path="GroupMembers.Count"/>
+                                                </MultiBinding>
+                                            </Span.Text>
+                                        </Span>
+                                        <Span Text=" Ready"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </StackLayout>
 
-                    <Label Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna"
-                           TextColor="{StaticResource SecondaryText}" HeightRequest="75" FontSize="20" Margin="0, 0, 0, 4" x:Name="Description"/>
+                        <StackLayout HeightRequest="75" Margin="0, 0, 0, 4" x:Name="Description">
+                            <Label Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt"
+                               TextColor="{StaticResource SecondaryText}" FontSize="20"/>
+                        </StackLayout>
 
-                    <StackLayout BackgroundColor="{StaticResource Secondary}" x:Name="Therm" HeightRequest="60" Margin="0, -5, 0, 0" Padding="0, 5, 0, 15">
-                        <Frame CornerRadius="16" HasShadow="False" Padding="0">
+                        <Frame CornerRadius="16" HasShadow="False" Padding="0" Margin="0, 0, 0, 15" IsClippedToBounds="True" x:Name="Therm">
                             <Frame.Background>
                                 <LinearGradientBrush StartPoint="0, 0" EndPoint="1, 0">
                                     <GradientStop Color="Blue" Offset="0.0" />
-                                    <GradientStop Color="Red" Offset="1.0" />
+                                    <GradientStop Color="OrangeRed" Offset="1.0" />
                                 </LinearGradientBrush>
                             </Frame.Background>
-                            <BoxView x:Name="TempBar" BackgroundColor="White" Opacity="0.7"/>
+                            <Grid>
+                                <BoxView x:Name="TempBar" BackgroundColor="White" Opacity="0.6"/>
+                                <StackLayout Orientation="Horizontal" Padding="15, 10, 15, 0">
+                                    <Label Text="Cold" HorizontalOptions="StartAndExpand" TextColor="{StaticResource PrimaryText}"/>
+                                    <Label Text="Hot" TextColor="{StaticResource PrimaryText}"/>
+                                </StackLayout>
+                            </Grid>
+                        </Frame>
+                    </StackLayout>
+                    <BoxView HeightRequest="0.01" HorizontalOptions="FillAndExpand" Color="{StaticResource PrimaryAccent}" x:Name="Divider"/>
+                    <StackLayout Padding="24, 8, 24, 0" HorizontalOptions="FillAndExpand">
+                        <StackLayout Orientation="Horizontal">
+                            <Label FontSize="16" TextColor="{StaticResource SecondaryText}">
+                                <Label.Text>
+                                    <MultiBinding StringFormat="Group {0} ({1}/{2})">
+                                        <Binding Path="GroupCode"/>
+                                        <Binding Path="GroupMembers.Count"/>
+                                        <Binding Path="MaxMembers"/>
+                                    </MultiBinding>
+                                </Label.Text>
+                            </Label>
+                            <Button Text="Join Group" HorizontalOptions="EndAndExpand" HeightRequest="1" Padding="6, 0, 6, 0"/>
+                        </StackLayout>
+                        <Frame BackgroundColor="{StaticResource Tertiary}" Padding="4" BorderColor="{StaticResource TertiaryAccent}" HasShadow="True" CornerRadius="0" Margin="0, 5, 0, 0">
+                            <ListView ItemsSource="{Binding GroupMembers}" SeparatorColor="{StaticResource PrimaryAccent}" RowHeight="43" HeightRequest="174" SelectionMode="None">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <StackLayout VerticalOptions="Center">
+                                                <local:AvatarView Image="{Binding Avatar}" Name="{Binding Username}" Score="{Binding Score}"/>
+                                            </StackLayout>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
                         </Frame>
                     </StackLayout>
                 </StackLayout>

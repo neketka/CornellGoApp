@@ -16,10 +16,13 @@
 
             <Color x:Key="Primary">#FFCB2424</Color>
             <Color x:Key="Secondary">#FF2C2F33</Color>
+            <Color x:Key="Tertiary">#FF272A2D</Color>
             <Color x:Key="PrimaryText">#FF2C2F33</Color>
             <Color x:Key="SecondaryText">#FFFFFFFF</Color>
+            <Color x:Key="TertiaryText">#FFC0C0C0</Color>
             <Color x:Key="PrimaryAccent">#FFC0C0C0</Color>
             <Color x:Key="SecondaryAccent">#FFCB2424</Color>
+            <Color x:Key="TertiaryAccent">#FF1E2023</Color>
             
             <Style TargetType="Button">
                 <Setter Property="TextColor" Value="{StaticResource PrimaryText}"></Setter>

@@ -80,19 +80,18 @@
         </ShellContent>
     </FlyoutItem>
 
-    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
-        <ShellContent Title="Suggest a Location" ContentTemplate="{DataTemplate views:SuggestPage}">
-            <ShellContent.Icon>
-                <FontImageSource FontFamily="FASolid" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FASolid.Lightbulb}" />
-            </ShellContent.Icon>
-        </ShellContent>
-        <ShellContent Title="Submit Feedback" ContentTemplate="{DataTemplate views:FeedbackPage}" >
-            <ShellContent.Icon>
-                <FontImageSource FontFamily="FASolid" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FASolid.Comment}" />
-            </ShellContent.Icon>
-        </ShellContent>
-    </FlyoutItem>
-    
+    <MenuItem Text="Suggest a Location" Clicked="Suggest_Clicked">
+        <MenuItem.IconImageSource>
+            <FontImageSource FontFamily="FASolid" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FASolid.Lightbulb}" />
+        </MenuItem.IconImageSource>
+    </MenuItem>
+
+    <MenuItem Text="Submit Feedback" Clicked="Feedback_Clicked">
+        <MenuItem.IconImageSource>
+            <FontImageSource FontFamily="FASolid" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FASolid.Comment}" />
+        </MenuItem.IconImageSource>
+    </MenuItem>
+
     <MenuItem Text="Logout">
         <MenuItem.IconImageSource>
             <FontImageSource FontFamily="FASolid" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FASolid.SignOutAlt}" />

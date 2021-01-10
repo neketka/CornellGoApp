@@ -11,8 +11,20 @@ namespace MobileApp
         public AppShell()
         {
             InitializeComponent();
-            //Routing.RegisterRoute(nameof(ItemDetailPage), typeof(ItemDetailPage));
-            //Routing.RegisterRoute(nameof(NewItemPage), typeof(NewItemPage));
+            Routing.RegisterRoute(nameof(SuggestPage), typeof(SuggestPage));
+            Routing.RegisterRoute(nameof(FeedbackPage), typeof(FeedbackPage));
+        }
+
+        private void Suggest_Clicked(object sender, EventArgs e)
+        {
+            Current.GoToAsync(nameof(SuggestPage));
+            Current.FlyoutIsPresented = false;
+        }
+
+        private void Feedback_Clicked(object sender, EventArgs e)
+        {
+            Current.GoToAsync(nameof(FeedbackPage));
+            Current.FlyoutIsPresented = false;
         }
     }
 }

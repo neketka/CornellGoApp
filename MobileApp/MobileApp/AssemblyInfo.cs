@@ -4,3 +4,8 @@ using Xamarin.Forms.Xaml;
 [assembly: Xamarin.Forms.ExportFont("fa-brands-400.ttf", Alias = "FABrands")]
 [assembly: Xamarin.Forms.ExportFont("fa-regular-400.ttf", Alias = "FARegular")]
 [assembly: Xamarin.Forms.ExportFont("fa-solid-900.ttf", Alias = "FASolid")]
+
+namespace System.Runtime.CompilerServices
+{
+    public class IsExternalInit { }
+}
