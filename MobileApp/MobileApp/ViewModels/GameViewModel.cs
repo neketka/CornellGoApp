@@ -24,6 +24,9 @@ namespace MobileApp.ViewModels
         private string groupCode = "ABCDEFGH12";
         public string GroupCode { get => groupCode; set => SetProperty(ref groupCode, value); }
 
+        private bool isHost = true;
+        public bool IsHost { get => isHost; set => SetProperty(ref isHost, value); }
+
         public ObservableCollection<GroupMember> GroupMembers { get; private set; }
         private int maxMembers = 8;
         public int MaxMembers { get => maxMembers; set => SetProperty(ref maxMembers, value); }
@@ -32,14 +35,14 @@ namespace MobileApp.ViewModels
         {
             GroupMembers = new ObservableCollection<GroupMember>
             {
-                new GroupMember(ImageSource.FromResource("MobileApp.Assets.Images.logo.png"), true, true, false, "Your username", 12),
-                new GroupMember(ImageSource.FromResource("MobileApp.Assets.Images.logo.png"), false, false, true, "Not ready person", 0),
-                new GroupMember(ImageSource.FromResource("MobileApp.Assets.Images.logo.png"), false, false, true, "Not ready person", 0),
+                new GroupMember(ImageSource.FromResource("MobileApp.Assets.Images.logo.png"), true, true, true, "Your username", 12),
+                new GroupMember(ImageSource.FromResource("MobileApp.Assets.Images.logo.png"), false, false, false, "Not ready person", 0),
+                new GroupMember(ImageSource.FromResource("MobileApp.Assets.Images.logo.png"), false, false, false, "Not ready person", 0),
                 new GroupMember(ImageSource.FromResource("MobileApp.Assets.Images.logo.png"), false, false, true, "Ready person", 0),
                 new GroupMember(ImageSource.FromResource("MobileApp.Assets.Images.logo.png"), false, false, true, "Ready person", 0),
                 new GroupMember(ImageSource.FromResource("MobileApp.Assets.Images.logo.png"), false, false, true, "Ready person", 0),
-                new GroupMember(ImageSource.FromResource("MobileApp.Assets.Images.logo.png"), false, false, true, "Not ready person", 0),
-                new GroupMember(ImageSource.FromResource("MobileApp.Assets.Images.logo.png"), false, false, true, "Not ready person", 0)
+                new GroupMember(ImageSource.FromResource("MobileApp.Assets.Images.logo.png"), false, false, false, "Not ready person", 0),
+                new GroupMember(ImageSource.FromResource("MobileApp.Assets.Images.logo.png"), false, false, false, "Not ready person", 0)
             };
         }
     }

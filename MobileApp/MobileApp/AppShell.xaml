@@ -56,9 +56,9 @@
     </Shell.Resources>
 
     <Shell.FlyoutHeader>
-        <StackLayout Padding="10, 10, 0, 10" Orientation="Horizontal" BackgroundColor="{StaticResource Secondary}">
-            <Image Source="{ext:ImageResource MobileApp.Assets.Images.logo.png}" WidthRequest="48" HeightRequest="48"/>
-            <Label Text="CornellGO!" TextColor="{StaticResource SecondaryText}" FontSize="20" VerticalOptions="Center"></Label>
+        <StackLayout Padding="30, 20, 20, 20" Orientation="Horizontal" BackgroundColor="{StaticResource Secondary}">
+            <views:AvatarView Image="{ext:ImageResource MobileApp.Assets.Images.logo.png}" Name="Username" Score="0" Scale="1.4" />
+            <Button FontFamily="FASolid" Text="{Static fa:FASolid.UserCog}" Padding="0" WidthRequest="35" HeightRequest="0" FontSize="16" HorizontalOptions="EndAndExpand"/>
         </StackLayout>
     </Shell.FlyoutHeader>
 

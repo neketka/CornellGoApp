@@ -10,7 +10,7 @@
             </Frame>
             <StackLayout Orientation="Vertical" Spacing="0">
                 <Label Text="{Binding Name}" TextColor="{StaticResource SecondaryText}" FontSize="14"/>
-                <Label Text="{Binding Path='Score', StringFormat='Score {0}'}" TextColor="{StaticResource TertiaryText}" FontSize="12"/>
+                <Label Text="{Binding Path='Score', StringFormat='Score: {0}'}" TextColor="{StaticResource TertiaryText}" FontSize="12"/>
             </StackLayout>
         </StackLayout>
     </ContentView.Content>

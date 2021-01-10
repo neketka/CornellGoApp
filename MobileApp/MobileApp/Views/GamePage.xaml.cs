@@ -64,14 +64,6 @@ namespace MobileApp.Views
                 Color bgColor = BottomSheet.BackgroundColor;
                 BottomSheet.BackgroundColor = new Color(bgColor.R, bgColor.G, bgColor.B, bottomAlpha);
             }
-
-            /*
-            double imageHeight = BottomSheet.TranslationY;
-            double allocAspect = Width / imageHeight;
-            double aspect = 1.0 / PlaceImage.Height;
-
-            PlaceImage.TranslationY = imageHeight / 2.0;
-            PlaceImage.Scale = aspect > allocAspect ? aspect * imageHeight : Width;*/
         }
 
         private void SnapToNearest(double vel)

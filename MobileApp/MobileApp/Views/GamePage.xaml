@@ -13,6 +13,7 @@
     </ContentPage.BindingContext>
     <ContentPage.Resources>
         <ResourceDictionary>
+            <ex:InverseBoolConverter x:Key="invBool"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
@@ -113,8 +114,43 @@
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <ViewCell>
-                                            <StackLayout VerticalOptions="Center">
+                                            <StackLayout VerticalOptions="Center" Orientation="Horizontal" Padding="0, 0, 10, 0">
+                                                <Label FontFamily="FASolid" Text="{Static fa:FASolid.CheckCircle}" FontSize="16" TextColor="LightGreen" VerticalOptions="Center" Margin="5, 0, 0, 0" WidthRequest="16" 
+                                                       IsVisible="{Binding Path=IsReady}"/>
+                                                <Label FontFamily="FASolid" Text="{Static fa:FASolid.SearchLocation}" FontSize="16" TextColor="Gray" VerticalOptions="Center" Margin="5, 0, 0, 0" WidthRequest="16"
+                                                       IsVisible="{Binding Converter={StaticResource invBool}, Path=IsReady}"/>
                                                 <local:AvatarView Image="{Binding Avatar}" Name="{Binding Username}" Score="{Binding Score}"/>
+                                                <StackLayout VerticalOptions="Center" HorizontalOptions="EndAndExpand" Orientation="Horizontal">
+                                                    <Label FontFamily="FASolid" Text="{Static fa:FASolid.Star}" FontSize="16" TextColor="Goldenrod" IsVisible="{Binding IsHost}" VerticalOptions="Center"/>
+                                                    <Button WidthRequest="72" HeightRequest="22" Padding="0" IsVisible="False" VerticalOptions="Center" Margin="5, 0, 0, 0">
+                                                        <Button.Triggers>
+                                                            <MultiTrigger TargetType="Button">
+                                                                <MultiTrigger.Conditions>
+                                                                    <BindingCondition Binding="{Binding Path=IsHost, Source={RelativeSource AncestorType={x:Type vm:GameViewModel}}}}" Value="True"/>
+                                                                    <BindingCondition Binding="{Binding IsYou}" Value="True"/>
+                                                                </MultiTrigger.Conditions>
+                                                                <Setter Property="IsVisible" Value="True"/>
+                                                                <Setter Property="Text" Value="Disband"/>
+                                                            </MultiTrigger>
+                                                            <MultiTrigger TargetType="Button">
+                                                                <MultiTrigger.Conditions>
+                                                                    <BindingCondition Binding="{Binding Path=IsHost, Source={RelativeSource AncestorType={x:Type vm:GameViewModel}}}}" Value="False"/>
+                                                                    <BindingCondition Binding="{Binding IsYou}" Value="True"/>
+                                                                </MultiTrigger.Conditions>
+                                                                <Setter Property="IsVisible" Value="True"/>
+                                                                <Setter Property="Text" Value="Leave"/>
+                                                            </MultiTrigger>
+                                                            <MultiTrigger TargetType="Button">
+                                                                <MultiTrigger.Conditions>
+                                                                    <BindingCondition Binding="{Binding Path=IsHost, Source={RelativeSource AncestorType={x:Type vm:GameViewModel}}}}}" Value="True"/>
+                                                                    <BindingCondition Binding="{Binding IsYou}" Value="False"/>
+                                                                </MultiTrigger.Conditions>
+                                                                <Setter Property="IsVisible" Value="True"/>
+                                                                <Setter Property="Text" Value="Kick"/>
+                                                            </MultiTrigger>
+                                                        </Button.Triggers>
+                                                    </Button>
+                                                </StackLayout>
                                             </StackLayout>
                                         </ViewCell>
                                     </DataTemplate>
