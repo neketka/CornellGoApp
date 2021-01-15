@@ -28,6 +28,9 @@ namespace MobileApp.ViewModels
         public int MaxMembers { get => maxMembers; set => SetProperty(ref maxMembers, value); }
         public ImageSource ChallengeImage { get => challengeImage; set => SetProperty(ref challengeImage, value); }
 
+        public Command<string> LeaveCommand { get; private set; }
+        public Command JoinCommand { get; private set; }
+
         public GameViewModel()
         {
             GroupMembers = new ObservableCollection<GroupMember>
@@ -43,6 +46,8 @@ namespace MobileApp.ViewModels
             };
 
             ChallengeImage = ImageSource.FromResource("MobileApp.Assets.Images.grid.png");
+            LeaveCommand = new Command<string>(s => { });
+            JoinCommand = new Command(() => { });
         }
     }
 }

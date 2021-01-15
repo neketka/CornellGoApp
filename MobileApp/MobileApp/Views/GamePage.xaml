@@ -109,7 +109,7 @@
                                     </MultiBinding>
                                 </Label.Text>
                             </Label>
-                            <Button Text="Join Group" HeightRequest="22" Padding="6, 0, 6, 0" VerticalOptions="Center"/>
+                            <Button Text="Join Group" HeightRequest="22" Padding="6, 0, 6, 0" VerticalOptions="Center" Command="{Binding JoinCommand}"/>
                         </StackLayout>
                         <Frame BackgroundColor="{StaticResource Tertiary}" Padding="4" BorderColor="{StaticResource TertiaryAccent}" CornerRadius="0" Margin="0, 5, 0, 0">
                             <CollectionView ItemsSource="{Binding GroupMembers}" HeightRequest="174" SelectionMode="None" BackgroundColor="{StaticResource Tertiary}">
@@ -123,10 +123,11 @@
                                                        IsVisible="{Binding Path=IsReady}"/>
                                                 <Label FontFamily="FASolid" Text="{Static fa:FASolid.SearchLocation}" FontSize="16" TextColor="Gray" VerticalOptions="Center" Margin="5, 0, 0, 0" WidthRequest="16"
                                                        IsVisible="{Binding Converter={StaticResource invBool}, Path=IsReady}"/>
-                                                <local:ScoreView Image="{Binding Avatar}" Name="{Binding Username}" Score="{Binding Score}" HeightRequest="36"/>
+                                                <local:ScoreView Image="{Binding Avatar}" Name="{Binding Username}" Score="{Binding Score}" HeightRequest="32" Margin="4, 2, 0, 2"/>
                                                 <StackLayout VerticalOptions="Center" HorizontalOptions="EndAndExpand" Orientation="Horizontal">
                                                     <Label FontFamily="FASolid" Text="{Static fa:FASolid.Star}" FontSize="16" TextColor="Goldenrod" IsVisible="{Binding IsHost}" VerticalOptions="Center"/>
-                                                    <Button WidthRequest="72" HeightRequest="22" Padding="0" IsVisible="False" VerticalOptions="Center" Margin="5, 0, 0, 0">
+                                                    <Button WidthRequest="72" HeightRequest="22" Padding="0" IsVisible="False" VerticalOptions="Center" Margin="5, 0, 0, 0"
+                                                            Command="{Binding Path=LeaveCommand, Source={RelativeSource AncestorType={x:Type vm:GameViewModel}}}" CommandParameter="{Binding Id}">
                                                         <Button.Triggers>
                                                             <MultiTrigger TargetType="Button">
                                                                 <MultiTrigger.Conditions>

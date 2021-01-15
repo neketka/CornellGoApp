@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MobileApp.ViewModels
 {
-    public class FeedbackViewModel : BaseViewModel
+    class VictoryViewModel
     {
     }
 }

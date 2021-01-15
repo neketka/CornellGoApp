@@ -94,6 +94,11 @@
       <Name>MobileApp</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <AndroidEnvironment Include="GarbageCollector.config">
+      <SubType>Designer</SubType>
+    </AndroidEnvironment>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>

@@ -16,15 +16,20 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout Orientation="Vertical" BackgroundColor="{StaticResource Secondary}">
-            <BoxView CornerRadius="0" HeightRequest="48" BackgroundColor="{StaticResource Secondary}" Margin="0"/>
+            <BoxView CornerRadius="0" HeightRequest="48" BackgroundColor="{StaticResource Secondary}" Margin="0">
+                <BoxView.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="LeaderboardLine_Tapped"/>
+                </BoxView.GestureRecognizers>
+            </BoxView>
             <StackLayout Orientation="Vertical" BackgroundColor="{StaticResource Tertiary}" Padding="24, 0, 8, 0">
-                <Frame CornerRadius="32" Padding="0" BorderColor="{StaticResource Secondary}" HorizontalOptions="Center" IsClippedToBounds="True" Margin="0, -46, 0, -18">
-                    <local:AvatarView Image="{Binding ProfilePicture}" HeightRequest="96" WidthRequest="64"/>
-                </Frame>
+                <local:AvatarView Image="{Binding ProfilePicture}" HeightRequest="93" WidthRequest="64" HorizontalOptions="Center" Margin="0, -46, 0, -18"/>
                 <Label FontSize="18" TextColor="{StaticResource SecondaryText}" VerticalOptions="Center" HorizontalOptions="CenterAndExpand" 
                        Text="{Binding YourUsername}" Padding="0, 10, 0, 0" Margin="0, 0, 0, -42"/>
                 <StackLayout Padding="0, 6, 0, 6" Orientation="Horizontal" VerticalOptions="Center">
-                    <Label FontSize="24" TextColor="{StaticResource SecondaryText}">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="UserLine_Tapped"/>
+                    </StackLayout.GestureRecognizers>
+                    <Label FontSize="26" TextColor="{StaticResource SecondaryText}">
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="{Binding YourRank}"/>
@@ -35,7 +40,7 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Label FontSize="24" TextColor="{StaticResource SecondaryText}" VerticalOptions="Center" HorizontalOptions="EndAndExpand"
+                    <Label FontSize="18" TextColor="{StaticResource SecondaryText}" VerticalOptions="Center" HorizontalOptions="EndAndExpand"
                            Text="{Binding Path=YourPoints, StringFormat='{}{0:#,#.}', Converter={StaticResource plural}, ConverterParameter=Pt}"/>
                 </StackLayout>
             </StackLayout>

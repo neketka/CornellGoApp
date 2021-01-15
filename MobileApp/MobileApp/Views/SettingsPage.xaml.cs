@@ -10,19 +10,11 @@ using Xamarin.Forms.Xaml;
 namespace MobileApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class LeaderPage : ContentPage
+    public partial class SettingsPage : ContentPage
     {
-        public LeaderPage()
+        public SettingsPage()
         {
             InitializeComponent();
-        }
-
-        private void UserLine_Tapped(object sender, EventArgs e)
-        {
-        }
-
-        private void LeaderboardLine_Tapped(object sender, EventArgs e)
-        {
         }
     }
 }

@@ -2,6 +2,7 @@
 using MobileApp.Views;
 using System;
 using System.Collections.Generic;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace MobileApp
@@ -11,19 +12,25 @@ namespace MobileApp
         public AppShell()
         {
             InitializeComponent();
-            Routing.RegisterRoute(nameof(SuggestPage), typeof(SuggestPage));
-            Routing.RegisterRoute(nameof(FeedbackPage), typeof(FeedbackPage));
+            //Routing.RegisterRoute(nameof(SuggestPage), typeof(SuggestPage));
+            //Routing.RegisterRoute(nameof(FeedbackPage), typeof(FeedbackPage));
+            //await Current.GoToAsync(nameof(FeedbackPage));
         }
 
-        private void Suggest_Clicked(object sender, EventArgs e)
+        private async void Suggest_Clicked(object sender, EventArgs e)
         {
-            Current.GoToAsync(nameof(SuggestPage));
+            await Browser.OpenAsync("");
             Current.FlyoutIsPresented = false;
         }
 
-        private void Feedback_Clicked(object sender, EventArgs e)
+        private async void Feedback_Clicked(object sender, EventArgs e)
         {
-            Current.GoToAsync(nameof(FeedbackPage));
+            await Browser.OpenAsync("");
+            Current.FlyoutIsPresented = false;
+        }
+
+        private async void Button_Clicked(object sender, EventArgs e)
+        {
             Current.FlyoutIsPresented = false;
         }
     }
