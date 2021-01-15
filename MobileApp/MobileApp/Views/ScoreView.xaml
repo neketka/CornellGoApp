@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MobileApp.Views"
+             xmlns:ex="clr-namespace:MobileApp.Extensions"
+             x:Name="this"
+             x:Class="MobileApp.Views.ScoreView">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <ex:MultiplyPositiveDoubleConverter x:Key="mult"/>
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <ContentView.Content>
+        <StackLayout Orientation="Horizontal" BindingContext="{x:Reference this}">
+            <local:AvatarView Image="{Binding Image}" WidthRequest="{Binding Source={x:Reference this}, Path=HeightRequest}" 
+                              HeightRequest="{Binding Source={x:Reference this}, Path=HeightRequest}" Scale="0.9"/>
+            <StackLayout Orientation="Vertical" Spacing="0">
+                <Label Text="{Binding Name}" TextColor="{StaticResource SecondaryText}" 
+                       FontSize="{Binding Source={x:Reference this}, Converter={x:StaticResource mult}, ConverterParameter=0.389, Path=HeightRequest}"/>
+                <Label Text="{Binding Path='Score', StringFormat='Score: {0}'}" TextColor="{StaticResource TertiaryText}" 
+                       FontSize="{Binding Source={x:Reference this}, Converter={x:StaticResource mult}, ConverterParameter=0.333, Path=HeightRequest}"/>
+            </StackLayout>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

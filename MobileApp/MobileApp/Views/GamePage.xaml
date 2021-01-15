@@ -14,11 +14,13 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <ex:InverseBoolConverter x:Key="invBool"/>
+            <ex:GreaterThanIntConverter x:Key="gtInt"/>
+            <ex:PluralConverter x:Key="plural"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
         <RelativeLayout>
-            <Image Source="{ex:ImageResource MobileApp.Assets.Images.grid.png}" x:Name="PlaceImage" Aspect="AspectFill"
+            <Image Source="{Binding ChallengeImage}" x:Name="PlaceImage" Aspect="AspectFill"
                    RelativeLayout.XConstraint="{ConstraintExpression Type=Constant, Constant=0}"
                    RelativeLayout.YConstraint="{ConstraintExpression Type=Constant, Constant=0}"
                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
@@ -33,7 +35,7 @@
                      CornerRadius="0"
                      x:Name="Darkener"/>
 
-            <Frame x:Name="BottomSheet" BackgroundColor="{StaticResource Secondary}" Padding="0, 8, 0, 0" CornerRadius="8" HasShadow="true"
+            <Frame x:Name="BottomSheet" BackgroundColor="{StaticResource Secondary}" Padding="0, 8, 0, 0" CornerRadius="12" HasShadow="true"
                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
                    RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}">
                 <Frame.GestureRecognizers>
@@ -47,7 +49,7 @@
                             <Label HorizontalOptions="StartAndExpand" TextColor="{StaticResource PrimaryAccent}">
                                 <Label.FormattedText>
                                     <FormattedString>
-                                        <Span Text="{Binding PointsString}"/>
+                                        <Span Text="{Binding Path=Points, Converter={StaticResource plural}, ConverterParameter=Point}"/>
                                         <Span Text="  "/>
                                         <Span Text="{x:Static fa:FASolid.Walking}" FontFamily="FASolid"/>
                                         <Span Text=" "/>
@@ -95,38 +97,42 @@
                             </Grid>
                         </Frame>
                     </StackLayout>
-                    <BoxView HeightRequest="0.01" HorizontalOptions="FillAndExpand" Color="{StaticResource PrimaryAccent}" x:Name="Divider"/>
+                    <BoxView HeightRequest="1" HorizontalOptions="FillAndExpand" Color="{StaticResource PrimaryAccent}" x:Name="Divider" CornerRadius="0"/>
                     <StackLayout Padding="24, 8, 24, 0" HorizontalOptions="FillAndExpand">
                         <StackLayout Orientation="Horizontal">
-                            <Label FontSize="16" TextColor="{StaticResource SecondaryText}">
+                            <Label FontSize="16" TextColor="{StaticResource SecondaryText}" VerticalOptions="Center" HorizontalOptions="StartAndExpand">
                                 <Label.Text>
-                                    <MultiBinding StringFormat="Group {0} ({1}/{2})">
+                                    <MultiBinding StringFormat="Group [{0}] ({1}/{2})">
                                         <Binding Path="GroupCode"/>
                                         <Binding Path="GroupMembers.Count"/>
                                         <Binding Path="MaxMembers"/>
                                     </MultiBinding>
                                 </Label.Text>
                             </Label>
-                            <Button Text="Join Group" HorizontalOptions="EndAndExpand" HeightRequest="1" Padding="6, 0, 6, 0"/>
+                            <Button Text="Join Group" HeightRequest="22" Padding="6, 0, 6, 0" VerticalOptions="Center"/>
                         </StackLayout>
-                        <Frame BackgroundColor="{StaticResource Tertiary}" Padding="4" BorderColor="{StaticResource TertiaryAccent}" HasShadow="True" CornerRadius="0" Margin="0, 5, 0, 0">
-                            <ListView ItemsSource="{Binding GroupMembers}" SeparatorColor="{StaticResource PrimaryAccent}" RowHeight="43" HeightRequest="174" SelectionMode="None">
-                                <ListView.ItemTemplate>
+                        <Frame BackgroundColor="{StaticResource Tertiary}" Padding="4" BorderColor="{StaticResource TertiaryAccent}" CornerRadius="0" Margin="0, 5, 0, 0">
+                            <CollectionView ItemsSource="{Binding GroupMembers}" HeightRequest="174" SelectionMode="None" BackgroundColor="{StaticResource Tertiary}">
+                                <CollectionView.ItemTemplate>
                                     <DataTemplate>
-                                        <ViewCell>
+                                        <StackLayout Orientation="Vertical">
+                                            <BoxView HeightRequest="1" HorizontalOptions="FillAndExpand" CornerRadius="0" Color="{StaticResource PrimaryAccent}" Margin="0, 3, 0, 0"
+                                                     IsVisible="{Binding Path=IsYou, Converter={StaticResource invBool}}"/>
                                             <StackLayout VerticalOptions="Center" Orientation="Horizontal" Padding="0, 0, 10, 0">
                                                 <Label FontFamily="FASolid" Text="{Static fa:FASolid.CheckCircle}" FontSize="16" TextColor="LightGreen" VerticalOptions="Center" Margin="5, 0, 0, 0" WidthRequest="16" 
                                                        IsVisible="{Binding Path=IsReady}"/>
                                                 <Label FontFamily="FASolid" Text="{Static fa:FASolid.SearchLocation}" FontSize="16" TextColor="Gray" VerticalOptions="Center" Margin="5, 0, 0, 0" WidthRequest="16"
                                                        IsVisible="{Binding Converter={StaticResource invBool}, Path=IsReady}"/>
-                                                <local:AvatarView Image="{Binding Avatar}" Name="{Binding Username}" Score="{Binding Score}"/>
+                                                <local:ScoreView Image="{Binding Avatar}" Name="{Binding Username}" Score="{Binding Score}" HeightRequest="36"/>
                                                 <StackLayout VerticalOptions="Center" HorizontalOptions="EndAndExpand" Orientation="Horizontal">
                                                     <Label FontFamily="FASolid" Text="{Static fa:FASolid.Star}" FontSize="16" TextColor="Goldenrod" IsVisible="{Binding IsHost}" VerticalOptions="Center"/>
                                                     <Button WidthRequest="72" HeightRequest="22" Padding="0" IsVisible="False" VerticalOptions="Center" Margin="5, 0, 0, 0">
                                                         <Button.Triggers>
                                                             <MultiTrigger TargetType="Button">
                                                                 <MultiTrigger.Conditions>
-                                                                    <BindingCondition Binding="{Binding Path=IsHost, Source={RelativeSource AncestorType={x:Type vm:GameViewModel}}}}" Value="True"/>
+                                                                    <BindingCondition Binding="{Binding Path=IsHost, Source={RelativeSource AncestorType={x:Type vm:GameViewModel}}}" Value="True"/>
+                                                                    <BindingCondition Binding="{Binding Path=GroupMembers.Count, Converter={StaticResource gtInt}, ConverterParameter=1, 
+                                                                                      Source={RelativeSource AncestorType={x:Type vm:GameViewModel}}}" Value="True"/>
                                                                     <BindingCondition Binding="{Binding IsYou}" Value="True"/>
                                                                 </MultiTrigger.Conditions>
                                                                 <Setter Property="IsVisible" Value="True"/>
@@ -134,7 +140,7 @@
                                                             </MultiTrigger>
                                                             <MultiTrigger TargetType="Button">
                                                                 <MultiTrigger.Conditions>
-                                                                    <BindingCondition Binding="{Binding Path=IsHost, Source={RelativeSource AncestorType={x:Type vm:GameViewModel}}}}" Value="False"/>
+                                                                    <BindingCondition Binding="{Binding Path=IsHost, Source={RelativeSource AncestorType={x:Type vm:GameViewModel}}}" Value="False"/>
                                                                     <BindingCondition Binding="{Binding IsYou}" Value="True"/>
                                                                 </MultiTrigger.Conditions>
                                                                 <Setter Property="IsVisible" Value="True"/>
@@ -142,20 +148,20 @@
                                                             </MultiTrigger>
                                                             <MultiTrigger TargetType="Button">
                                                                 <MultiTrigger.Conditions>
-                                                                    <BindingCondition Binding="{Binding Path=IsHost, Source={RelativeSource AncestorType={x:Type vm:GameViewModel}}}}}" Value="True"/>
+                                                                    <BindingCondition Binding="{Binding Path=IsHost, Source={RelativeSource AncestorType={x:Type vm:GameViewModel}}}" Value="True"/>
                                                                     <BindingCondition Binding="{Binding IsYou}" Value="False"/>
                                                                 </MultiTrigger.Conditions>
                                                                 <Setter Property="IsVisible" Value="True"/>
-                                                                <Setter Property="Text" Value="Kick"/>
+                                                                <Setter Property="Text" Value="Remove"/>
                                                             </MultiTrigger>
                                                         </Button.Triggers>
                                                     </Button>
                                                 </StackLayout>
                                             </StackLayout>
-                                        </ViewCell>
+                                        </StackLayout>
                                     </DataTemplate>
-                                </ListView.ItemTemplate>
-                            </ListView>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
                         </Frame>
                     </StackLayout>
                 </StackLayout>

@@ -1,13 +1,104 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ex="clr-namespace:MobileApp.Extensions"
+             xmlns:vm="clr-namespace:MobileApp.ViewModels"
+             xmlns:local="clr-namespace:MobileApp.Views"
+             xmlns:fa="clr-namespace:MobileApp.Constants"
              x:Class="MobileApp.Views.LeaderPage"
              Title="Leaderboard">
+    <ContentPage.BindingContext>
+        <vm:LeaderViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <ex:NumLengthConverter x:Key="numLen"/>
+        <ex:PluralConverter x:Key="plural"/>
+    </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout Orientation="Vertical" BackgroundColor="{StaticResource Secondary}">
+            <BoxView CornerRadius="0" HeightRequest="48" BackgroundColor="{StaticResource Secondary}" Margin="0"/>
+            <StackLayout Orientation="Vertical" BackgroundColor="{StaticResource Tertiary}" Padding="24, 0, 8, 0">
+                <Frame CornerRadius="32" Padding="0" BorderColor="{StaticResource Secondary}" HorizontalOptions="Center" IsClippedToBounds="True" Margin="0, -46, 0, -18">
+                    <local:AvatarView Image="{Binding ProfilePicture}" HeightRequest="96" WidthRequest="64"/>
+                </Frame>
+                <Label FontSize="18" TextColor="{StaticResource SecondaryText}" VerticalOptions="Center" HorizontalOptions="CenterAndExpand" 
+                       Text="{Binding YourUsername}" Padding="0, 10, 0, 0" Margin="0, 0, 0, -42"/>
+                <StackLayout Padding="0, 6, 0, 6" Orientation="Horizontal" VerticalOptions="Center">
+                    <Label FontSize="24" TextColor="{StaticResource SecondaryText}">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding YourRank}"/>
+                                <Span Text="/" FontSize="18"/>
+                                <Span Text="{Binding RankedPlayers}" FontSize="18"/>
+                                <Span Text=" "/>
+                                <Span Text="{Static fa:FASolid.CaretRight}" FontFamily="FASolid" FontSize="24"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label FontSize="24" TextColor="{StaticResource SecondaryText}" VerticalOptions="Center" HorizontalOptions="EndAndExpand"
+                           Text="{Binding Path=YourPoints, StringFormat='{}{0:#,#.}', Converter={StaticResource plural}, ConverterParameter=Pt}"/>
+                </StackLayout>
+            </StackLayout>
+            <BoxView HeightRequest="1" HorizontalOptions="FillAndExpand" CornerRadius="0" Color="{StaticResource PrimaryAccent}" Margin="0"/>
+            <CollectionView ItemsSource="{Binding Players}" RemainingItemsThresholdReachedCommand="{Binding LoadMore}" RemainingItemsThreshold="4" Margin="0" BackgroundColor="{StaticResource Tertiary}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Orientation="Vertical" BackgroundColor="{StaticResource Tertiary}">
+                            <BoxView HeightRequest="1" HorizontalOptions="FillAndExpand" CornerRadius="0" Color="{StaticResource PrimaryAccent}" Margin="0">
+                                <BoxView.Triggers>
+                                    <DataTrigger TargetType="BoxView" Binding="{Binding Position}" Value="1">
+                                        <Setter Property="IsVisible" Value="False"/>
+                                    </DataTrigger>
+                                </BoxView.Triggers>
+                            </BoxView>
+                            <StackLayout Orientation="Horizontal" Padding="5, 0, 0, 5">
+                                <Label Text="{Binding Path=Position, StringFormat='{}{0:#,#.}'}" FontSize="36" FontAttributes="Bold" TextColor="{StaticResource SecondaryText}"
+                                       WidthRequest="48" VerticalOptions="Center" HorizontalTextAlignment="End">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label" Binding="{Binding IsYou}" Value="True">
+                                            <Setter Property="TextColor" Value="{StaticResource SecondaryAccent}"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label" Binding="{Binding Path=Position, Converter={StaticResource numLen}}" Value="3">
+                                            <Setter Property="FontSize" Value="24"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label" Binding="{Binding Path=Position, Converter={StaticResource numLen}}" Value="4">
+                                            <Setter Property="FontSize" Value="17"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label" Binding="{Binding Path=Position, Converter={StaticResource numLen}}" Value="5">
+                                            <Setter Property="FontSize" Value="14"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label" Binding="{Binding Path=Position, Converter={StaticResource numLen}}" Value="6">
+                                            <Setter Property="FontSize" Value="12"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label" Binding="{Binding Path=Position, Converter={StaticResource numLen}}" Value="7">
+                                            <Setter Property="FontSize" Value="10"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label" Binding="{Binding Path=Position, Converter={StaticResource numLen}}" Value="8">
+                                            <Setter Property="FontSize" Value="9"/>
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                                <local:AvatarView Image="{Binding ProfilePicture}" HeightRequest="42" Margin="8, 4, 0, 4" VerticalOptions="Center"/>
+                                <Label Text="{Binding Username}" FontSize="18" TextColor="{StaticResource SecondaryText}" Margin="8, 0, 0, 0" VerticalOptions="Center">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label" Binding="{Binding IsYou}" Value="True">
+                                            <Setter Property="TextColor" Value="{StaticResource SecondaryAccent}"/>
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                                <Label Text="{Binding Path=Points, StringFormat='{}{0:#,#.}'}" FontSize="18" TextColor="{StaticResource SecondaryText}" 
+                                       HorizontalOptions="EndAndExpand" VerticalOptions="Center" Margin="0, 0, 24, 0">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label" Binding="{Binding IsYou}" Value="True">
+                                            <Setter Property="TextColor" Value="{StaticResource SecondaryAccent}"/>
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                            </StackLayout>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
