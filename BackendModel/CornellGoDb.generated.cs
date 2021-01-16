@@ -278,6 +278,11 @@ namespace BackendModel
                      .HasForeignKey("User", "GroupMemberId")
                      .IsRequired();
          modelBuilder.Entity<global::BackendModel.User>().Navigation(e => e.GroupMember).IsRequired();
+         modelBuilder.Entity<global::BackendModel.User>()
+                     .HasOne<global::BackendModel.UserSession>(p => p.UserSession)
+                     .WithOne(p => p.User)
+                     .HasForeignKey("UserSession", "UserId");
+         modelBuilder.Entity<global::BackendModel.UserSession>().Navigation(e => e.User).IsRequired();
 
          modelBuilder.Entity<global::BackendModel.UserSession>()
                      .ToTable("UserSessions")
@@ -289,11 +294,6 @@ namespace BackendModel
          modelBuilder.Entity<global::BackendModel.UserSession>()
                      .Property(t => t.Timestamp)
                      .IsRequired();
-         modelBuilder.Entity<global::BackendModel.UserSession>().Navigation(e => e.User).IsRequired();
-         modelBuilder.Entity<global::BackendModel.UserSession>()
-                     .HasOne<global::BackendModel.User>(p => p.User)
-                     .WithOne()
-                     .HasForeignKey("UserSession", "UserId");
 
          OnModelCreatedImpl(modelBuilder);
       }

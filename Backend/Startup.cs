@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite;
+using Backend.Hub;
 
 namespace Backend
 {
@@ -21,12 +22,13 @@ namespace Backend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
             services.AddDbContext<BackendModel.CornellGoDb>(o => o.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), e => e.UseNetTopologySuite()));
-            services.AddSwaggerGen(c =>
+            services.AddSignalR();
+            //services.AddControllers();
+            /*services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Backend", Version = "v1" });
-            });
+            });*/
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -35,8 +37,8 @@ namespace Backend
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Backend v1"));
+                //app.UseSwagger();
+                //app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Backend v1"));
             }
 
             app.UseHttpsRedirection();
@@ -47,7 +49,7 @@ namespace Backend
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapHub<CornellGoHub>("/hub");
             });
         }
     }

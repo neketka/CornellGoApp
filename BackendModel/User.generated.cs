@@ -144,6 +144,12 @@ namespace BackendModel
       [Description("User tied to this member")]
       public virtual global::BackendModel.GroupMember GroupMember { get; set; }
 
+      /// <summary>
+      /// User tied to session
+      /// </summary>
+      [Description("User tied to session")]
+      public virtual global::BackendModel.UserSession UserSession { get; set; }
+
    }
 }
 

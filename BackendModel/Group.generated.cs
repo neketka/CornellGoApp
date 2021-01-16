@@ -99,6 +99,12 @@ namespace BackendModel
       [System.ComponentModel.Description("Modification version of this group")]
       public byte[] Version { get; set; }
 
+      /// <summary>
+      /// SignalR group id associated with this group
+      /// </summary>
+      [System.ComponentModel.Description("SignalR group id associated with this group")]
+      public string SignalRId { get; set; }
+
       /*************************************************************************
        * Navigation properties
        *************************************************************************/

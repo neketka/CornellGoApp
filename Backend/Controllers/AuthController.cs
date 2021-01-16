@@ -9,7 +9,7 @@ using BackendModel;
 using RequestModel;
 
 namespace Backend.Controllers
-{
+{/*
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
@@ -22,13 +22,13 @@ namespace Backend.Controllers
         }
 
         [HttpGet]
-        public async Task<GetAuthResponse> CheckLoginStatus(GetAuthIdRequest request)
+        public async Task<CheckLoginStatusResponse> CheckLoginStatus(GetUserIdRequest request)
         {
             return new(await _context.UserSessions.FromToken(request.Session) != null);
         }
 
         [HttpPost]
-        public async Task<PostAuthResponse> Login(PostAuthRequest request)
+        public async Task<LoginResponse> Login(LoginRequest request)
         {
             User user = (await _context.Authenticators.FirstOrDefaultAsync(u => u.Username == request.Username && u.Password == request.Password))?.User;
 
@@ -48,7 +48,7 @@ namespace Backend.Controllers
         }
 
         [HttpDelete]
-        public async Task<DeleteAuthResponse> Logout(DeleteAuthRequest request)
+        public async Task<LogoutResponse> Logout(LogoutRequest request)
         {
             UserSession session = await _context.UserSessions.FromToken(request.Session);
 
@@ -62,9 +62,9 @@ namespace Backend.Controllers
         }
 
         [HttpGet("id")]
-        public async Task<GetAuthIdResponse> GetUserId(GetAuthIdRequest request)
+        public async Task<GetUserIdResponse> GetUserId(GetUserIdRequest request)
         {
             return new((await _context.UserSessions.FromToken(request.Session))?.User.Id.ToString() ?? "");
         }
-    }
+    }*/
 }

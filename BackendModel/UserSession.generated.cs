@@ -98,15 +98,21 @@ namespace BackendModel
       [System.ComponentModel.Description("Creation timestamp")]
       public DateTime Timestamp { get; set; }
 
+      /// <summary>
+      /// SignalR id tied to this user session
+      /// </summary>
+      [System.ComponentModel.Description("SignalR id tied to this user session")]
+      public string SignalRId { get; set; }
+
       /*************************************************************************
        * Navigation properties
        *************************************************************************/
 
       /// <summary>
       /// Required&lt;br/&gt;
-      /// User associated with this session
+      /// User session tied to user
       /// </summary>
-      [Description("User associated with this session")]
+      [Description("User session tied to user")]
       public virtual global::BackendModel.User User { get; set; }
 
    }
