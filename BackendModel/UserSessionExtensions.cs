@@ -13,6 +13,10 @@ namespace BackendModel
         {
             return userSessions.FirstOrDefaultAsync(s => s.Id.ToString() == session);
         }
+        public static Task<UserSession> FromSignalRId(this DbSet<UserSession> userSessions, string id)
+        {
+            return userSessions.FirstOrDefaultAsync(s => s.SignalRId.ToString() == id);
+        }
     }
 
     public static class UserSessionExtensions

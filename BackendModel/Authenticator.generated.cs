@@ -57,7 +57,8 @@ namespace BackendModel
       /// <param name="username">Username associated with the authenticator up to 60 chars</param>
       /// <param name="password">User&apos;s password hash</param>
       /// <param name="timestamp">Creation timestamp</param>
-      public Authenticator(string username, string password, DateTime timestamp)
+      /// <param name="user"></param>
+      public Authenticator(string username, string password, DateTime timestamp, global::BackendModel.User user)
       {
          if (string.IsNullOrEmpty(username)) throw new ArgumentNullException(nameof(username));
          this.Username = username;
@@ -66,6 +67,9 @@ namespace BackendModel
          this.Password = password;
 
          this.Timestamp = timestamp;
+
+         if (user == null) throw new ArgumentNullException(nameof(user));
+         this.User = user;
 
 
          Init();
@@ -77,9 +81,10 @@ namespace BackendModel
       /// <param name="username">Username associated with the authenticator up to 60 chars</param>
       /// <param name="password">User&apos;s password hash</param>
       /// <param name="timestamp">Creation timestamp</param>
-      public static Authenticator Create(string username, string password, DateTime timestamp)
+      /// <param name="user"></param>
+      public static Authenticator Create(string username, string password, DateTime timestamp, global::BackendModel.User user)
       {
-         return new Authenticator(username, password, timestamp);
+         return new Authenticator(username, password, timestamp, user);
       }
 
       /*************************************************************************

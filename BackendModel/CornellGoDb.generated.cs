@@ -117,11 +117,12 @@ namespace BackendModel
          modelBuilder.Entity<global::BackendModel.Authenticator>()
                      .Property(t => t.Timestamp)
                      .IsRequired();
+         modelBuilder.Entity<global::BackendModel.Authenticator>().Navigation(e => e.User).IsRequired();
          modelBuilder.Entity<global::BackendModel.Authenticator>()
                      .HasOne<global::BackendModel.User>(p => p.User)
                      .WithOne()
-                     .HasForeignKey("User", "AuthenticatorUserId")
-                     .IsRequired();
+                     .HasForeignKey("Authenticator", "UserId")
+                     .OnDelete(DeleteBehavior.NoAction);
 
          modelBuilder.Entity<global::BackendModel.Challenge>()
                      .ToTable("Challenges")
@@ -181,11 +182,13 @@ namespace BackendModel
          modelBuilder.Entity<global::BackendModel.Group>()
                      .HasOne<global::BackendModel.Challenge>(p => p.Challenge)
                      .WithOne()
-                     .HasForeignKey("Group", "ChallengeId");
+                     .HasForeignKey("Group", "ChallengeId")
+                     .OnDelete(DeleteBehavior.NoAction);
          modelBuilder.Entity<global::BackendModel.Group>()
                      .HasMany<global::BackendModel.Challenge>(p => p.PrevChallenges)
                      .WithOne()
-                     .HasForeignKey("GroupPrevChallengesId");
+                     .HasForeignKey("GroupPrevChallengesId")
+                     .OnDelete(DeleteBehavior.NoAction);
          modelBuilder.Entity<global::BackendModel.Group>()
                      .HasMany<global::BackendModel.GroupMember>(p => p.GroupMembers)
                      .WithOne(p => p.Group)
@@ -217,7 +220,8 @@ namespace BackendModel
          modelBuilder.Entity<global::BackendModel.PrevChallenge>()
                      .HasOne<global::BackendModel.Challenge>(p => p.Challenge)
                      .WithOne()
-                     .HasForeignKey("PrevChallenge", "ChallengeId");
+                     .HasForeignKey("PrevChallenge", "ChallengeId")
+                     .OnDelete(DeleteBehavior.NoAction);
 
          modelBuilder.Entity<global::BackendModel.Suggestion>()
                      .ToTable("Suggestions")
@@ -261,23 +265,27 @@ namespace BackendModel
          modelBuilder.Entity<global::BackendModel.User>()
                      .HasMany<global::BackendModel.PrevChallenge>(p => p.PrevChallenges)
                      .WithOne()
-                     .HasForeignKey("UserPrevChallengesId");
+                     .HasForeignKey("UserPrevChallengesId")
+                     .OnDelete(DeleteBehavior.Cascade);
          modelBuilder.Entity<global::BackendModel.User>()
                      .HasMany<global::BackendModel.Suggestion>(p => p.Suggestions)
                      .WithOne(p => p.User)
-                     .HasForeignKey("UserId");
+                     .HasForeignKey("UserId")
+                     .OnDelete(DeleteBehavior.NoAction);
          modelBuilder.Entity<global::BackendModel.Suggestion>().Navigation(e => e.User).IsRequired();
          modelBuilder.Entity<global::BackendModel.User>()
                      .HasMany<global::BackendModel.Feedback>(p => p.Feedbacks)
                      .WithOne(p => p.User)
-                     .HasForeignKey("UserId");
+                     .HasForeignKey("UserId")
+                     .OnDelete(DeleteBehavior.NoAction);
          modelBuilder.Entity<global::BackendModel.Feedback>().Navigation(e => e.User).IsRequired();
          modelBuilder.Entity<global::BackendModel.User>()
                      .HasOne<global::BackendModel.GroupMember>(p => p.GroupMember)
                      .WithOne(p => p.User)
-                     .HasForeignKey("User", "GroupMemberId")
+                     .HasForeignKey("GroupMember", "UserId")
+                     .OnDelete(DeleteBehavior.Cascade)
                      .IsRequired();
-         modelBuilder.Entity<global::BackendModel.User>().Navigation(e => e.GroupMember).IsRequired();
+         modelBuilder.Entity<global::BackendModel.GroupMember>().Navigation(e => e.User).IsRequired();
          modelBuilder.Entity<global::BackendModel.User>()
                      .HasOne<global::BackendModel.UserSession>(p => p.UserSession)
                      .WithOne(p => p.User)

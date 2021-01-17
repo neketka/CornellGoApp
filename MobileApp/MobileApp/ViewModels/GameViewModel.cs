@@ -13,7 +13,7 @@ namespace MobileApp.ViewModels
         private string progressString = "10 min";
         private int points = 1;
         private int membersReady = 0;
-        private string groupCode = "ABCDEFGH12";
+        private string groupCode = "ABCDEF12";
         private bool isHost = true;
         private int maxMembers = 8;
         private ImageSource challengeImage;
