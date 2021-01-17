@@ -3,84 +3,55 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace RequestModel
 {
     public partial class CornellGoClient : IServerHub
     {
         public async Task<bool> AttemptRelog(string session)
-        {
-            throw new NotImplementedException();
-        }
+            => await Connection.InvokeAsync<bool>("AttemptRelog", session);
 
-        public async Task<ChallengeProgressData> CheckProgress(double lat, double @long)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<ChallengeProgressData> CheckProgress(double lat, double @long) 
+            => await Connection.InvokeAsync<ChallengeProgressData>("CheckProgress", lat, @long);
 
         public async Task<ChallengeData> GetChallengeData()
-        {
-            throw new NotImplementedException();
-        }
+            => await Connection.InvokeAsync<ChallengeData>("GetChallengeData");
 
         public async Task<string> GetFriendlyGroupId()
-        {
-            throw new NotImplementedException();
-        }
+            => await Connection.InvokeAsync<string>("GetFriendlyGroupId");
 
         public async Task<GroupMemberData> GetGroupMember(string userId)
-        {
-            throw new NotImplementedException();
-        }
+            => await Connection.InvokeAsync<GroupMemberData>("GetGroupMemeber", userId);
 
-        public async Task<GroupMemberData[]> GetGroupMembers()
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<GroupMemberData[]> GetGroupMembers() 
+            => await Connection.InvokeAsync<GroupMemberData[]>("GetGroupMembers");
 
-        public async Task<string> GetPrevChallengeName()
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<string> GetPrevChallengeName() 
+            => await Connection.InvokeAsync<string>("GetPrevChallengeName");
 
-        public async Task<string> GetSessionToken()
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<string> GetSessionToken() 
+            => await Connection.InvokeAsync<string>("GetSessionToken");
 
         public async Task<LeaderboardData[]> GetTopPlayers(int index, int count)
-        {
-            throw new NotImplementedException();
-        }
+            => await Connection.InvokeAsync<LeaderboardData[]>("GetTopPlayers", index, count);
 
         public async Task<UserData> GetUserData()
-        {
-            throw new NotImplementedException();
-        }
+            => await Connection.InvokeAsync<UserData>("GetUserData");
 
         public async Task<bool> JoinGroup(string groupId)
-        {
-            throw new NotImplementedException();
-        }
+            => await Connection.InvokeAsync<bool>("JoinGroup", groupId);
 
         public async Task<bool> Kick(string userId)
-        {
-            throw new NotImplementedException();
-        }
+            => await Connection.InvokeAsync<bool>("Kick", userId);
 
         public async Task<bool> Login(string username, string password)
-        {
-            throw new NotImplementedException();
-        }
+            => await Connection.InvokeAsync<bool>("Login", username, password);
 
         public async Task<bool> Logout()
-        {
-            throw new NotImplementedException();
-        }
+            => await Connection.InvokeAsync<bool>("Logout");
 
-        public async Task<bool> Register(string username, string password)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<bool> Register(string username, string password, string email)
+            => await Connection.InvokeAsync<bool>("Register", username, password, email);
     }
 }

@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ex="clr-namespace:MobileApp.Extensions"
+             xmlns:vm="clr-namespace:MobileApp.ViewModels"
+             xmlns:local="clr-namespace:MobileApp.Views"
+             xmlns:fa="clr-namespace:MobileApp.Constants"
+             x:Class="MobileApp.Views.LoginPage"
+              BackgroundColor="{StaticResource Secondary}"
+             Shell.PresentationMode="ModalAnimated">
+    <ContentPage.BindingContext>
+        <vm:LoginViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <StackLayout>
+            <Image Source="{ex:ImageResource MobileApp.Assets.Images.logo.png}" Aspect="AspectFill" HorizontalOptions="Center" HeightRequest="128" Margin="0, 84, 0, 0"/>
+            <Label Text="{Binding BadText}" TextColor="Red" HorizontalOptions="Center" HeightRequest="32" FontSize="18"/>
+            <Entry Text="{Binding Path=Username, Mode=TwoWay}" HorizontalOptions="Center" TextColor="{StaticResource SecondaryText}"
+                   WidthRequest="2000" Placeholder="Username" PlaceholderColor="{StaticResource PrimaryAccent}" Margin="20, 0, 20, 0"/>
+            <Entry Text="{Binding Path=Password, Mode=TwoWay}" IsPassword="True" HorizontalOptions="Center" TextColor="{StaticResource SecondaryText}"
+                   WidthRequest="2000" Placeholder="Password" PlaceholderColor="{StaticResource PrimaryAccent}" Margin="20, 0, 20, 0"/>
+            <Grid Margin="0, 10, 0, 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Text="Log In" VerticalOptions="Center" HeightRequest="30" Padding="0" Margin="20, 0, 0, 0" Grid.Column="0"/>
+                <Button Text="Register" VerticalOptions="Center" HeightRequest="30" Padding="0" Margin="0, 0, 20, 0" Grid.Column="1"/>
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

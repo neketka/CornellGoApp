@@ -26,6 +26,8 @@ namespace MobileApp.ViewModels
         public string YourUsername { get => yourUsername; set => SetProperty(ref yourUsername, value); }
         public LeaderViewModel()
         {
+            Console.WriteLine("LeaderViewModel");
+
             Players = new ObservableCollection<LeaderboardPlayer>(Enumerable.Range(1, 100)
                 .Select(i => new LeaderboardPlayer(i.ToString(), i, ImageSource.FromResource(i == 3 ? "MobileApp.Assets.Images.bsquare.jpg" :
                     "MobileApp.Assets.Images.logo.png"), "User" + i, 1000 - i, i == 3)));

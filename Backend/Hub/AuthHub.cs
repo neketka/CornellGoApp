@@ -65,12 +65,12 @@ namespace Backend.Hub
             return (await Database.UserSessions.FromSignalRId(Context.UserIdentifier))?.ToToken();
         }
 
-        public async Task<bool> Register(string username, string password)
+        public async Task<bool> Register(string username, string password, string email)
         {
             if (await Database.Authenticators.AnyAsync(e => e.Username == username))
                 return false;
 
-            Authenticator authenticator = new Authenticator(username, password, DateTime.UtcNow, new User(0, username));
+            Authenticator authenticator = new Authenticator(username, password, DateTime.UtcNow, new User(0, username, email));
 
             await Database.Authenticators.AddAsync(authenticator);
             return true;

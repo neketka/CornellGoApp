@@ -61,7 +61,7 @@
                                        WidthRequest="48" VerticalOptions="Center" HorizontalTextAlignment="End">
                                     <Label.Triggers>
                                         <DataTrigger TargetType="Label" Binding="{Binding IsYou}" Value="True">
-                                            <Setter Property="TextColor" Value="{StaticResource SecondaryAccent}"/>
+                                            <Setter Property="TextColor" Value="{StaticResource Primary}"/>
                                         </DataTrigger>
                                         <DataTrigger TargetType="Label" Binding="{Binding Path=Position, Converter={StaticResource numLen}}" Value="3">
                                             <Setter Property="FontSize" Value="24"/>
@@ -87,7 +87,7 @@
                                 <Label Text="{Binding Username}" FontSize="18" TextColor="{StaticResource SecondaryText}" Margin="8, 0, 0, 0" VerticalOptions="Center">
                                     <Label.Triggers>
                                         <DataTrigger TargetType="Label" Binding="{Binding IsYou}" Value="True">
-                                            <Setter Property="TextColor" Value="{StaticResource SecondaryAccent}"/>
+                                            <Setter Property="TextColor" Value="{StaticResource Primary}"/>
                                         </DataTrigger>
                                     </Label.Triggers>
                                 </Label>
@@ -95,7 +95,7 @@
                                        HorizontalOptions="EndAndExpand" VerticalOptions="Center" Margin="0, 0, 24, 0">
                                     <Label.Triggers>
                                         <DataTrigger TargetType="Label" Binding="{Binding IsYou}" Value="True">
-                                            <Setter Property="TextColor" Value="{StaticResource SecondaryAccent}"/>
+                                            <Setter Property="TextColor" Value="{StaticResource Primary}"/>
                                         </DataTrigger>
                                     </Label.Triggers>
                                 </Label>

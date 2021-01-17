@@ -59,12 +59,16 @@ namespace BackendModel
       /// </summary>
       /// <param name="score">Total score of a user</param>
       /// <param name="username">Username of this user</param>
-      public User(int score, string username)
+      /// <param name="email">Email address for user</param>
+      public User(int score, string username, string email)
       {
          this.Score = score;
 
          if (string.IsNullOrEmpty(username)) throw new ArgumentNullException(nameof(username));
          this.Username = username;
+
+         if (string.IsNullOrEmpty(email)) throw new ArgumentNullException(nameof(email));
+         this.Email = email;
 
          this.PrevChallenges = new System.Collections.Generic.HashSet<global::BackendModel.PrevChallenge>();
          this.Suggestions = new System.Collections.Generic.HashSet<global::BackendModel.Suggestion>();
@@ -78,9 +82,10 @@ namespace BackendModel
       /// </summary>
       /// <param name="score">Total score of a user</param>
       /// <param name="username">Username of this user</param>
-      public static User Create(int score, string username)
+      /// <param name="email">Email address for user</param>
+      public static User Create(int score, string username, string email)
       {
-         return new User(score, username);
+         return new User(score, username, email);
       }
 
       /*************************************************************************
@@ -114,6 +119,15 @@ namespace BackendModel
       [StringLength(120)]
       [System.ComponentModel.Description("Username of this user")]
       public string Username { get; set; }
+
+      /// <summary>
+      /// Required, Min length = 1
+      /// Email address for user
+      /// </summary>
+      [Required]
+      [MinLength(1)]
+      [System.ComponentModel.Description("Email address for user")]
+      public string Email { get; set; }
 
       /*************************************************************************
        * Navigation properties

@@ -263,6 +263,9 @@ namespace BackendModel
                      .HasMaxLength(120)
                      .IsRequired();
          modelBuilder.Entity<global::BackendModel.User>()
+                     .Property(t => t.Email)
+                     .IsRequired();
+         modelBuilder.Entity<global::BackendModel.User>()
                      .HasMany<global::BackendModel.PrevChallenge>(p => p.PrevChallenges)
                      .WithOne()
                      .HasForeignKey("UserPrevChallengesId")

@@ -1,12 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MobileApp.Views.VictoryPage">
+             xmlns:ex="clr-namespace:MobileApp.Extensions"
+             xmlns:vm="clr-namespace:MobileApp.ViewModels"
+             xmlns:local="clr-namespace:MobileApp.Views"
+             xmlns:fa="clr-namespace:MobileApp.Constants"
+             x:Class="MobileApp.Views.VictoryPage"
+             Shell.PresentationMode="ModalAnimated">
+    <ContentPage.BindingContext>
+        <vm:VictoryViewModel/>
+    </ContentPage.BindingContext>
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <Grid>
+            <Image Source="{Binding Image}" Aspect="AspectFill" />
+            <BoxView CornerRadius="0" Margin="0" BackgroundColor="Black" Opacity="0.4"/>
+            <StackLayout Margin="0, 24, 0, 0">
+                <Label Text="Congrats!" FontSize="64" TextColor="White" HorizontalOptions="Center"/>
+                <Label FontSize="120" TextColor="White" HorizontalOptions="Center" Margin="-20">&#x2605;</Label>
+                <Label Text="You have found" Margin="0, 18, 0, 0" FontSize="36" TextColor="White" HorizontalOptions="Center"/>
+                <Label Text="{Binding Name}" FontSize="36" TextColor="White" HorizontalOptions="Center" FontAttributes="Bold"/>
+                <Label Text="{Binding Path=Points, StringFormat='+{0}!'}" FontSize="64" TextColor="White" HorizontalOptions="Center"/>
+                <Button Text="Keep searching..." HorizontalOptions="Center" Padding="0" Margin="0, 16, 0, 0" WidthRequest="250" HeightRequest="40" Clicked="Continue_Clicked"/>
+                <Button Text="Find out more information" HorizontalOptions="Center" Padding="0" Margin="0, 8, 0, 0" WidthRequest="250" HeightRequest="40" Command="{Binding FindOutMore}"/>
+            </StackLayout>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

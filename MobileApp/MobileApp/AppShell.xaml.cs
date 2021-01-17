@@ -12,7 +12,11 @@ namespace MobileApp
         public AppShell()
         {
             InitializeComponent();
-            //Routing.RegisterRoute(nameof(SuggestPage), typeof(SuggestPage));
+            Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
+
+            Routing.RegisterRoute(nameof(VictoryPage), typeof(VictoryPage));
+            Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
+            Routing.RegisterRoute($"{nameof(LoginPage)}/{nameof(RegistrationPage)}", typeof(RegistrationPage));
             //Routing.RegisterRoute(nameof(FeedbackPage), typeof(FeedbackPage));
             //await Current.GoToAsync(nameof(FeedbackPage));
         }
@@ -29,8 +33,9 @@ namespace MobileApp
             Current.FlyoutIsPresented = false;
         }
 
-        private async void Button_Clicked(object sender, EventArgs e)
+        private async void Settings_Clicked(object sender, EventArgs e)
         {
+            await Current.GoToAsync(nameof(LoginPage));
             Current.FlyoutIsPresented = false;
         }
     }

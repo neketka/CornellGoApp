@@ -12,7 +12,7 @@ namespace RequestModel
         Task<bool> Login(string username, string password);
         Task<bool> Logout();
         Task<string> GetSessionToken();
-        Task<bool> Register(string username, string password);
+        Task<bool> Register(string username, string password, string email);
         Task<UserData> GetUserData();
         Task<bool> Kick(string userId);
         Task<LeaderboardData[]> GetTopPlayers(int index, int count);

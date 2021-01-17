@@ -59,7 +59,7 @@
         <StackLayout Padding="10, 12, 20, 12" Orientation="Horizontal" BackgroundColor="{StaticResource Secondary}">
             <views:ScoreView Image="{ex:ImageResource MobileApp.Assets.Images.bsquare.jpg}" Name="Username" Score="0" HeightRequest="48" />
             <Button FontFamily="FASolid" Text="{Static fa:FASolid.UserCog}" Padding="0" WidthRequest="36" HeightRequest="36" FontSize="16" 
-                    VerticalOptions="Center" HorizontalOptions="EndAndExpand" Clicked="Button_Clicked"/>
+                    VerticalOptions="Center" HorizontalOptions="EndAndExpand" Clicked="Settings_Clicked"/>
         </StackLayout>
     </Shell.FlyoutHeader>
 
