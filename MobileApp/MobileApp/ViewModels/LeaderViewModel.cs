@@ -28,12 +28,12 @@ namespace MobileApp.ViewModels
         {
             Console.WriteLine("LeaderViewModel");
 
-            Players = new ObservableCollection<LeaderboardPlayer>(Enumerable.Range(1, 100)
+            Players = new ObservableCollection<LeaderboardPlayer>(Enumerable.Range(1, 20)
                 .Select(i => new LeaderboardPlayer(i.ToString(), i, ImageSource.FromResource(i == 3 ? "MobileApp.Assets.Images.bsquare.jpg" :
                     "MobileApp.Assets.Images.logo.png"), "User" + i, 1000 - i, i == 3)));
             LoadMore = new Command(() => IsBusy = false);
             ProfilePicture = ImageSource.FromResource("MobileApp.Assets.Images.bsquare.jpg");
-            RankedPlayers = 100;
+            RankedPlayers = 20;
             YourRank = 4;
             YourPoints = 997;
             YourUsername = "User3";

@@ -36,6 +36,9 @@ namespace RequestModel
         public async Task<IAsyncEnumerable<LeaderboardData>> GetTopPlayers(int index, int count)
             => await Connection.InvokeAsync<IAsyncEnumerable<LeaderboardData>>("GetTopPlayers", index, count);
 
+        public async Task<IAsyncEnumerable<ChallengeHistoryEntry>> GetHistoryData()
+            => await Connection.InvokeAsync<IAsyncEnumerable<ChallengeHistoryEntry>>("GetHistoryData");
+
         public async Task<UserData> GetUserData()
             => await Connection.InvokeAsync<UserData>("GetUserData");
 

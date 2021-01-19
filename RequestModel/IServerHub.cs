@@ -23,5 +23,6 @@ namespace RequestModel
         Task<string> GetFriendlyGroupId();
         Task<bool> JoinGroup(string groupId);
         Task<ChallengeProgressData> CheckProgress(double lat, double @long);
+        Task<IAsyncEnumerable<ChallengeHistoryEntry>> GetHistoryData();
     }
 }

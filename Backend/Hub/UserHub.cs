@@ -13,6 +13,11 @@ namespace Backend.Hub
             throw new NotImplementedException();
         }
 
+        public Task<IAsyncEnumerable<ChallengeHistoryEntryData>> GetHistoryData()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<string> GetPrevChallengeName()
         {
             throw new NotImplementedException();

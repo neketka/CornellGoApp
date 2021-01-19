@@ -23,6 +23,7 @@ namespace MobileApp.Views
 
         private void LeaderboardLine_Tapped(object sender, EventArgs e)
         {
+            Leaderboard.ScrollTo(0);
         }
     }
 }

@@ -45,7 +45,13 @@
                 </StackLayout>
             </StackLayout>
             <BoxView HeightRequest="1" HorizontalOptions="FillAndExpand" CornerRadius="0" Color="{StaticResource PrimaryAccent}" Margin="0"/>
-            <CollectionView ItemsSource="{Binding Players}" RemainingItemsThresholdReachedCommand="{Binding LoadMore}" RemainingItemsThreshold="4" Margin="0" BackgroundColor="{StaticResource Tertiary}">
+            <CollectionView ItemsSource="{Binding Players}" RemainingItemsThresholdReachedCommand="{Binding LoadMore}" x:Name="Leaderboard"
+                            RemainingItemsThresholdReachedCommandParameter="15" RemainingItemsThreshold="4" Margin="0" BackgroundColor="{StaticResource Tertiary}">
+                <CollectionView.Triggers>
+                    <DataTrigger TargetType="CollectionView" Binding="{Binding IsBusy}" Value="True">
+                        <Setter Property="Footer" Value=""/>
+                    </DataTrigger>
+                </CollectionView.Triggers>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Orientation="Vertical" BackgroundColor="{StaticResource Tertiary}">
@@ -103,6 +109,13 @@
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
+                <CollectionView.FooterTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+                            <ActivityIndicator Color="{StaticResource SecondaryText}" IsRunning="True" HorizontalOptions="Center" />
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.FooterTemplate>
             </CollectionView>
         </StackLayout>
     </ContentPage.Content>
