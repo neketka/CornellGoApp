@@ -33,8 +33,8 @@ namespace RequestModel
         public async Task<string> GetSessionToken() 
             => await Connection.InvokeAsync<string>("GetSessionToken");
 
-        public async Task<LeaderboardData[]> GetTopPlayers(int index, int count)
-            => await Connection.InvokeAsync<LeaderboardData[]>("GetTopPlayers", index, count);
+        public async Task<IAsyncEnumerable<LeaderboardData>> GetTopPlayers(int index, int count)
+            => await Connection.InvokeAsync<IAsyncEnumerable<LeaderboardData>>("GetTopPlayers", index, count);
 
         public async Task<UserData> GetUserData()
             => await Connection.InvokeAsync<UserData>("GetUserData");

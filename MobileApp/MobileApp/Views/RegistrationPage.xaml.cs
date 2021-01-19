@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MobileApp.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,22 @@ namespace MobileApp.Views
         public RegistrationPage()
         {
             InitializeComponent();
+        }
+
+        private async void Cancel_Clicked(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync($"..");
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            RegistrationViewModel viewModel = (RegistrationViewModel)BindingContext;
+            viewModel.Username = "";
+            viewModel.Password = "";
+            viewModel.PasswordVerification = "";
+            viewModel.Email = "";
+            viewModel.EmailVerification = "";
         }
     }
 }

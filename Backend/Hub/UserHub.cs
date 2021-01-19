@@ -18,7 +18,7 @@ namespace Backend.Hub
             throw new NotImplementedException();
         }
 
-        public async Task<LeaderboardData[]> GetTopPlayers(int index, int count)
+        public async Task<IAsyncEnumerable<LeaderboardData>> GetTopPlayers(int index, int count)
         {
             throw new NotImplementedException();
         }

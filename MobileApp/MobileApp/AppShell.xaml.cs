@@ -17,8 +17,6 @@ namespace MobileApp
             Routing.RegisterRoute(nameof(VictoryPage), typeof(VictoryPage));
             Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
             Routing.RegisterRoute($"{nameof(LoginPage)}/{nameof(RegistrationPage)}", typeof(RegistrationPage));
-            //Routing.RegisterRoute(nameof(FeedbackPage), typeof(FeedbackPage));
-            //await Current.GoToAsync(nameof(FeedbackPage));
         }
 
         private async void Suggest_Clicked(object sender, EventArgs e)
@@ -35,8 +33,8 @@ namespace MobileApp
 
         private async void Settings_Clicked(object sender, EventArgs e)
         {
-            await Current.GoToAsync(nameof(LoginPage));
             Current.FlyoutIsPresented = false;
+            await Current.GoToAsync(nameof(SettingsPage));
         }
     }
 }

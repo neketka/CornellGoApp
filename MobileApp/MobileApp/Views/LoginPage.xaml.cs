@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MobileApp.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,29 @@ namespace MobileApp.Views
         public LoginPage()
         {
             InitializeComponent();
+            ((LoginViewModel)BindingContext).PropertyChanged += LoginPage_PropertyChanged;
+        }
+
+        private async void LoginPage_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "ShouldAppear" && !((LoginViewModel)BindingContext).ShouldAppear)
+                await Shell.Current.GoToAsync("//play");
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            ((LoginViewModel)BindingContext).ShouldAppear = true;
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            return true;
+        }
+
+        private async void Register_Clicked(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync($"{nameof(LoginPage)}/{nameof(RegistrationPage)}");
         }
     }
 }

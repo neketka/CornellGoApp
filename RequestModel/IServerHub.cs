@@ -15,7 +15,7 @@ namespace RequestModel
         Task<bool> Register(string username, string password, string email);
         Task<UserData> GetUserData();
         Task<bool> Kick(string userId);
-        Task<LeaderboardData[]> GetTopPlayers(int index, int count);
+        Task<IAsyncEnumerable<LeaderboardData>> GetTopPlayers(int index, int count);
         Task<ChallengeData> GetChallengeData();
         Task<string> GetPrevChallengeName();
         Task<GroupMemberData[]> GetGroupMembers();
