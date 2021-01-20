@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
 
-namespace RequestModel
+namespace CommunicationModel
 {
     public partial class CornellGoClient : IServerHub
     {
@@ -33,11 +33,11 @@ namespace RequestModel
         public async Task<string> GetSessionToken() 
             => await Connection.InvokeAsync<string>("GetSessionToken");
 
-        public async Task<IAsyncEnumerable<LeaderboardData>> GetTopPlayers(int index, int count)
-            => await Connection.InvokeAsync<IAsyncEnumerable<LeaderboardData>>("GetTopPlayers", index, count);
+        public IAsyncEnumerable<LeaderboardData> GetTopPlayers(int index, int count)
+            => Connection.StreamAsync<LeaderboardData>("GetTopPlayers", index, count);
 
-        public async Task<IAsyncEnumerable<ChallengeHistoryEntry>> GetHistoryData()
-            => await Connection.InvokeAsync<IAsyncEnumerable<ChallengeHistoryEntry>>("GetHistoryData");
+        public IAsyncEnumerable<ChallengeHistoryEntryData> GetHistoryData()
+            => Connection.StreamAsync<ChallengeHistoryEntryData>("GetHistoryData");
 
         public async Task<UserData> GetUserData()
             => await Connection.InvokeAsync<UserData>("GetUserData");

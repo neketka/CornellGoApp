@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MobileApp.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,11 +18,17 @@ namespace MobileApp.Views
             InitializeComponent();
         }
 
-        private void UserLine_Tapped(object sender, EventArgs e)
+        private async void UserLine_Tapped(object sender, EventArgs e)
         {
+            LeaderViewModel vm = (LeaderViewModel)BindingContext;
+            int index = vm.YourRank - 1;
+            if (index >= vm.Players.Count)
+            {
+
+            }
         }
 
-        private void LeaderboardLine_Tapped(object sender, EventArgs e)
+        private async void LeaderboardLine_Tapped(object sender, EventArgs e)
         {
             Leaderboard.ScrollTo(0);
         }

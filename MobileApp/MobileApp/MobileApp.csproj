@@ -46,6 +46,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\CommunicationModel\CommunicationModel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Views\GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>

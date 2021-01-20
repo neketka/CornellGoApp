@@ -1,4 +1,4 @@
-﻿using RequestModel;
+﻿using CommunicationModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,12 @@ namespace Backend.Hub
             throw new NotImplementedException();
         }
 
-        public Task<IAsyncEnumerable<ChallengeHistoryEntryData>> GetHistoryData()
+        public async IAsyncEnumerable<LeaderboardData> GetTopPlayers(int index, int count)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async IAsyncEnumerable<ChallengeHistoryEntryData> GetHistoryData()
         {
             throw new NotImplementedException();
         }
@@ -23,9 +28,5 @@ namespace Backend.Hub
             throw new NotImplementedException();
         }
 
-        public async Task<IAsyncEnumerable<LeaderboardData>> GetTopPlayers(int index, int count)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

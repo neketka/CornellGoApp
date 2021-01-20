@@ -4,8 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RequestModel
+namespace System.Runtime.CompilerServices
 {
+    internal static class IsExternalInit { }
+}
+
+namespace CommunicationModel
+{
+
     public record UserData(string Username, int Points, string GroupId, string UserId);
     public record LeaderboardData(string UserId, string Username, int Index, int Score);
     public record ChallengeData(string ChallengeId, string Description, int Points, string ImageUrl);

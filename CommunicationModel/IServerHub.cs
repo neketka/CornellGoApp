@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RequestModel
+namespace CommunicationModel
 {
     public interface IServerHub
     {
@@ -15,7 +15,8 @@ namespace RequestModel
         Task<bool> Register(string username, string password, string email);
         Task<UserData> GetUserData();
         Task<bool> Kick(string userId);
-        Task<IAsyncEnumerable<LeaderboardData>> GetTopPlayers(int index, int count);
+        IAsyncEnumerable<LeaderboardData> GetTopPlayers(int index, int count);
+        IAsyncEnumerable<ChallengeHistoryEntryData> GetHistoryData();
         Task<ChallengeData> GetChallengeData();
         Task<string> GetPrevChallengeName();
         Task<GroupMemberData[]> GetGroupMembers();
@@ -23,6 +24,5 @@ namespace RequestModel
         Task<string> GetFriendlyGroupId();
         Task<bool> JoinGroup(string groupId);
         Task<ChallengeProgressData> CheckProgress(double lat, double @long);
-        Task<IAsyncEnumerable<ChallengeHistoryEntryData>> GetHistoryData();
     }
 }

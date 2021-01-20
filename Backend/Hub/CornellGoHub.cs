@@ -1,6 +1,6 @@
 ﻿using BackendModel;
+using CommunicationModel;
 using Microsoft.AspNetCore.SignalR;
-using RequestModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;

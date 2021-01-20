@@ -5,9 +5,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
-using RequestModel;
 
-namespace RequestModel
+namespace CommunicationModel
 {
     public partial class CornellGoClient
     {
@@ -18,15 +17,20 @@ namespace RequestModel
         public event UpdateChallenge ChallengeUpdated;
         public event FinishChallenge ChallengeFinished;
         public event UpdateScorePositions ScorePositionsUpdated;
+        public event Func<Task> ConnectionClosed;
 
         private HubConnection Connection { get; }
         private ClientCalls Client { get; }
 
         public CornellGoClient(string url)
         {
-            Connection = new HubConnectionBuilder().WithAutomaticReconnect().WithUrl(url).Build();
+            Connection = new HubConnectionBuilder().WithAutomaticReconnect()
+                                                   .WithUrl(url)
+                                                   .Build();
             Client = new ClientCalls(this);
+
             Connection.StartAsync().RunSynchronously();
+            Connection.Closed += async (e) => await ConnectionClosed();
         }
 
         private class ClientCalls : IClientCallback
@@ -45,26 +49,26 @@ namespace RequestModel
                 Client.Connection.On<string, string, int, int, int>("UpdateScorePositions", UpdateScorePositions);
             }
 
-            public void UpdateGroupData(string friendlyId, GroupMemberData[] members) 
-                => Client.GroupDataUpdated(friendlyId, members);
+            public async Task UpdateGroupData(string friendlyId, GroupMemberData[] members) 
+                => await Client.GroupDataUpdated(friendlyId, members);
 
-            public void UpdateGroupMember(GroupMemberData data) 
-                => Client.GroupMemberUpdated(data);
+            public async Task UpdateGroupMember(GroupMemberData data) 
+                => await Client.GroupMemberUpdated(data);
 
-            public void LeaveGroupMember(string userId) 
-                => Client.GroupMemberLeft(userId);
+            public async Task LeaveGroupMember(string userId) 
+                => await Client.GroupMemberLeft(userId);
 
-            public void UpdateUserData(string username, int points) 
-                => Client.UserDataUpdated(username, points);
+            public async Task UpdateUserData(string username, int points) 
+                => await Client.UserDataUpdated(username, points);
 
-            public void UpdateChallenge(ChallengeData data) 
-                => Client.ChallengeUpdated(data);
+            public async Task UpdateChallenge(ChallengeData data) 
+                => await Client.ChallengeUpdated(data);
 
-            public void FinishChallenge() 
-                => Client.ChallengeFinished();
+            public async Task FinishChallenge() 
+                => await Client.ChallengeFinished();
 
-            public void UpdateScorePositions(string userId, string username, int oldIndex, int newIndex, int score)
-                => Client.ScorePositionsUpdated(userId, username, oldIndex, newIndex, score);
+            public async Task UpdateScorePositions(string userId, string username, int oldIndex, int newIndex, int score)
+                => await Client.ScorePositionsUpdated(userId, username, oldIndex, newIndex, score);
         }
     }
 }
