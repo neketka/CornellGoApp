@@ -28,9 +28,12 @@ namespace CommunicationModel
                                                    .WithUrl(url)
                                                    .Build();
             Client = new ClientCalls(this);
-
-            Connection.StartAsync().RunSynchronously();
             Connection.Closed += async (e) => await ConnectionClosed();
+        }
+
+        public async Task Connect()
+        {
+            await Connection.StartAsync();
         }
 
         private class ClientCalls : IClientCallback

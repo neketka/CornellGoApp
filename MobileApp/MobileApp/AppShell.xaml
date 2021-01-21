@@ -15,6 +15,12 @@
         https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/shell/
     -->
 
+    <TabBar>
+        <ShellContent Route="LoadingPage"
+                  Shell.FlyoutBehavior="Disabled"
+                  ContentTemplate="{DataTemplate views:LoadingPage}"/>
+    </TabBar>
+
     <Shell.ItemTemplate>
         <DataTemplate>
             <Grid Style="{StaticResource FlyoutItemStyle}" Padding="5">
@@ -64,17 +70,20 @@
     </Shell.FlyoutHeader>
 
     <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
-        <ShellContent Title="Play" ContentTemplate="{DataTemplate views:GamePage}" Route="play">
+        <ShellContent Title="Play" Route="play">
+            <views:GamePage/>
             <ShellContent.Icon>
                 <FontImageSource FontFamily="FASolid" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FASolid.Play}" />
             </ShellContent.Icon>
         </ShellContent>
-        <ShellContent Title="Leaderboard" ContentTemplate="{DataTemplate views:LeaderPage}">
+        <ShellContent Title="Leaderboard">
+            <views:LeaderPage/>
             <ShellContent.Icon>
                 <FontImageSource FontFamily="FASolid" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FASolid.Trophy}" />
             </ShellContent.Icon>
         </ShellContent>
-        <ShellContent Title="My History" ContentTemplate="{DataTemplate views:HistoryPage}">
+        <ShellContent Title="My History">
+            <views:HistoryPage/>
             <ShellContent.Icon>
                 <FontImageSource FontFamily="FASolid" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FASolid.History}" />
             </ShellContent.Icon>
@@ -93,7 +102,7 @@
         </MenuItem.IconImageSource>
     </MenuItem>
 
-    <MenuItem Text="Logout">
+    <MenuItem Text="Logout" Clicked="Logout_Clicked">
         <MenuItem.IconImageSource>
             <FontImageSource FontFamily="FASolid" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FASolid.SignOutAlt}" />
         </MenuItem.IconImageSource>

@@ -11,6 +11,7 @@ namespace MobileApp.ViewModels
         private string password;
         private string badText;
         private bool shouldAppear;
+
         public string Username { get => username; set => SetProperty(ref username, value); }
         public string Password { get => password; set => SetProperty(ref password, value); }
         public string BadText { get => badText; set => SetProperty(ref badText, value); }

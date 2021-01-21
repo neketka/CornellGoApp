@@ -12,78 +12,78 @@
         <vm:RegistrationViewModel/>
     </ContentPage.BindingContext>
     <ContentPage.Content>
-        <StackLayout Padding="20, 18, 20, 0">
+        <StackLayout Padding="20, 30, 20, 0">
             <Label Text="Register new account" HorizontalOptions="Center" TextColor="{StaticResource SecondaryText}" FontSize="22"/>
             <Entry Text="{Binding Username, Mode=TwoWay}" WidthRequest="2000" Placeholder="Username"
                    PlaceholderColor="{StaticResource PrimaryAccent}" TextColor="{StaticResource SecondaryText}"/>
-            <Label Text="1-24 characters long" HeightRequest="16" FontSize="12" FontAttributes="Italic" TextColor="{StaticResource SecondaryText}" Margin="12, 0, 0, 0">
+            <Label Text="1-24 characters long" HeightRequest="16" FontSize="12" TextColor="Red" Margin="12, 0, 0, 0" FontAttributes="Bold">
                 <Label.Triggers>
                     <DataTrigger TargetType="Label" Binding="{Binding UsernameLengthValid}" Value="True">
-                        <Setter Property="FontAttributes" Value="Bold"/>
+                        <Setter Property="TextColor" Value="Green"/>
                     </DataTrigger>
                 </Label.Triggers>
             </Label>
-            <Label Text="Only letters, numbers, and underscores" HeightRequest="16" FontSize="12" FontAttributes="Italic" TextColor="{StaticResource SecondaryText}" Margin="12, 0, 0, 0">
+            <Label Text="Only letters, numbers, and underscores" HeightRequest="16" FontSize="12" TextColor="Red" Margin="12, 0, 0, 0" FontAttributes="Bold">
                 <Label.Triggers>
                     <DataTrigger TargetType="Label" Binding="{Binding UsernameFormatValid}" Value="True">
-                        <Setter Property="FontAttributes" Value="Bold"/>
+                        <Setter Property="TextColor" Value="Green"/>
                     </DataTrigger>
                 </Label.Triggers>
             </Label>
             <Entry Text="{Binding Password, Mode=TwoWay}" WidthRequest="2000" Placeholder="Password" IsPassword="True"
                    PlaceholderColor="{StaticResource PrimaryAccent}" TextColor="{StaticResource SecondaryText}"/>
-            <Label Text="8-128 characters long" HeightRequest="16" FontSize="12" FontAttributes="Italic" TextColor="{StaticResource SecondaryText}" Margin="12, 0, 0, 0">
+            <Label Text="8-128 characters long" HeightRequest="16" FontSize="12" TextColor="Red" Margin="12, 0, 0, 0" FontAttributes="Bold">
                 <Label.Triggers>
                     <DataTrigger TargetType="Label" Binding="{Binding PasswordLengthValid}" Value="True">
-                        <Setter Property="FontAttributes" Value="Bold"/>
+                        <Setter Property="TextColor" Value="Green"/>
                     </DataTrigger>
                 </Label.Triggers>
             </Label>
-            <Label Text="At least one number" HeightRequest="16" FontSize="12" FontAttributes="Italic" TextColor="{StaticResource SecondaryText}" Margin="12, 0, 0, 0">
+            <Label Text="At least one number" HeightRequest="16" FontSize="12" TextColor="Red" Margin="12, 0, 0, 0" FontAttributes="Bold">
                 <Label.Triggers>
                     <DataTrigger TargetType="Label" Binding="{Binding PasswordNumberValid}" Value="True">
-                        <Setter Property="FontAttributes" Value="Bold"/>
+                        <Setter Property="TextColor" Value="Green"/>
                     </DataTrigger>
                 </Label.Triggers>
             </Label>
-            <Label Text="At least one letter" HeightRequest="16" FontSize="12" FontAttributes="Italic" TextColor="{StaticResource SecondaryText}" Margin="12, 0, 0, 0">
+            <Label Text="At least one letter" HeightRequest="16" FontSize="12" TextColor="Red" Margin="12, 0, 0, 0" FontAttributes="Bold">
                 <Label.Triggers>
                     <DataTrigger TargetType="Label" Binding="{Binding PasswordLetterValid}" Value="True">
-                        <Setter Property="FontAttributes" Value="Bold"/>
+                        <Setter Property="TextColor" Value="Green"/>
                     </DataTrigger>
                 </Label.Triggers>
             </Label>
-            <Label Text="At least one symbol" HeightRequest="16" FontSize="12" FontAttributes="Italic" TextColor="{StaticResource SecondaryText}" Margin="12, 0, 0, 0">
+            <Label Text="At least one symbol" HeightRequest="16" FontSize="12" TextColor="Red" Margin="12, 0, 0, 0" FontAttributes="Bold">
                 <Label.Triggers>
                     <DataTrigger TargetType="Label" Binding="{Binding PasswordSymbolValid}" Value="True">
-                        <Setter Property="FontAttributes" Value="Bold"/>
+                        <Setter Property="TextColor" Value="Green"/>
                     </DataTrigger>
                 </Label.Triggers>
             </Label>
             <Entry Text="{Binding PasswordVerification, Mode=TwoWay}" WidthRequest="2000" Placeholder="Confirm password" IsPassword="True"
                    PlaceholderColor="{StaticResource PrimaryAccent}" TextColor="{StaticResource SecondaryText}"/>
-            <Label Text="Matches password field" HeightRequest="16" FontSize="12" FontAttributes="Italic" TextColor="{StaticResource SecondaryText}" Margin="12, 0, 0, 0">
+            <Label Text="Matches password field" HeightRequest="16" FontSize="12" TextColor="Red" Margin="12, 0, 0, 0" FontAttributes="Bold">
                 <Label.Triggers>
                     <DataTrigger TargetType="Label" Binding="{Binding PasswordMatches}" Value="True">
-                        <Setter Property="FontAttributes" Value="Bold"/>
+                        <Setter Property="TextColor" Value="Green"/>
                     </DataTrigger>
                 </Label.Triggers>
             </Label>
             <Entry Text="{Binding Email, Mode=TwoWay}" WidthRequest="2000" Placeholder="Email address"
                    PlaceholderColor="{StaticResource PrimaryAccent}" TextColor="{StaticResource SecondaryText}"/>
-            <Label Text="Valid email address format (e.g. ab123@example.com)" HeightRequest="16" FontSize="12" FontAttributes="Italic" TextColor="{StaticResource SecondaryText}" Margin="12, 0, 0, 0">
+            <Label Text="Valid email address format (e.g. ab123@example.com)" HeightRequest="16" FontSize="12" TextColor="Red" Margin="12, 0, 0, 0" FontAttributes="Bold">
                 <Label.Triggers>
                     <DataTrigger TargetType="Label" Binding="{Binding EmailAddressValid}" Value="True">
-                        <Setter Property="FontAttributes" Value="Bold"/>
+                        <Setter Property="TextColor" Value="Green"/>
                     </DataTrigger>
                 </Label.Triggers>
             </Label>
             <Entry Text="{Binding EmailVerification, Mode=TwoWay}" WidthRequest="2000" Placeholder="Confirm email address"
                    PlaceholderColor="{StaticResource PrimaryAccent}" TextColor="{StaticResource SecondaryText}"/>
-            <Label Text="Matches email field" HeightRequest="16" FontSize="12" FontAttributes="Italic" TextColor="{StaticResource SecondaryText}" Margin="12, 0, 0, 0">
+            <Label Text="Matches email field" HeightRequest="16" FontSize="12" TextColor="Red" Margin="12, 0, 0, 0" FontAttributes="Bold">
                 <Label.Triggers>
                     <DataTrigger TargetType="Label" Binding="{Binding EmailAddressMatches}" Value="True">
-                        <Setter Property="FontAttributes" Value="Bold"/>
+                        <Setter Property="TextColor" Value="Green"/>
                     </DataTrigger>
                 </Label.Triggers>
             </Label>
@@ -99,6 +99,7 @@
                 <Button Text="Register" IsEnabled="{Binding FormValid}" VerticalOptions="Center" HeightRequest="30" Padding="0" Grid.Column="0" Command="{Binding RegisterCommand}"/>
                 <Button Text="Cancel" VerticalOptions="Center" HeightRequest="30" Padding="0" Grid.Column="1" Clicked="Cancel_Clicked"/>
             </Grid>
+            <ActivityIndicator Color="{StaticResource SecondaryText}" IsRunning="{Binding IsBusy}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

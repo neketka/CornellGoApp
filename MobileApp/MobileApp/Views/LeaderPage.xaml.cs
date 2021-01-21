@@ -1,4 +1,5 @@
-﻿using MobileApp.ViewModels;
+﻿using MobileApp.Services;
+using MobileApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,19 +19,18 @@ namespace MobileApp.Views
             InitializeComponent();
         }
 
-        private async void UserLine_Tapped(object sender, EventArgs e)
+        private void UserLine_Tapped(object sender, EventArgs e)
         {
             LeaderViewModel vm = (LeaderViewModel)BindingContext;
             int index = vm.YourRank - 1;
             if (index >= vm.Players.Count)
-            {
-
-            }
+                vm.LoadMoreCommand.Execute(vm.Players.Count - index);
+            Leaderboard.ScrollTo(index, position: ScrollToPosition.Center);
         }
 
-        private async void LeaderboardLine_Tapped(object sender, EventArgs e)
+        private void LeaderboardLine_Tapped(object sender, EventArgs e)
         {
-            Leaderboard.ScrollTo(0);
+            Leaderboard.ScrollTo(0, position: ScrollToPosition.Center);
         }
     }
 }

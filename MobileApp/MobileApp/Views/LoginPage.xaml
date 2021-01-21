@@ -30,6 +30,7 @@
                 <Button Text="Log In" VerticalOptions="Center" HeightRequest="30" Padding="0" Margin="20, 0, 0, 0" Grid.Column="0" Command="{Binding LoginCommand}"/>
                 <Button Text="Register" VerticalOptions="Center" HeightRequest="30" Padding="0" Margin="0, 0, 20, 0" Grid.Column="1" Clicked="Register_Clicked"/>
             </Grid>
+            <ActivityIndicator Color="{StaticResource SecondaryText}" IsRunning="{Binding IsBusy}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -1,4 +1,5 @@
-﻿using MobileApp.ViewModels;
+﻿using MobileApp.Services;
+using MobileApp.ViewModels;
 using MobileApp.Views;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,8 @@ namespace MobileApp
         public AppShell()
         {
             InitializeComponent();
-            Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
 
+            Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
             Routing.RegisterRoute(nameof(VictoryPage), typeof(VictoryPage));
             Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
             Routing.RegisterRoute($"{nameof(LoginPage)}/{nameof(RegistrationPage)}", typeof(RegistrationPage));
@@ -21,13 +22,13 @@ namespace MobileApp
 
         private async void Suggest_Clicked(object sender, EventArgs e)
         {
-            await Browser.OpenAsync("");
+            await Browser.OpenAsync("https://forms.gle/wSPq9z2ymjxcob2w6");
             Current.FlyoutIsPresented = false;
         }
 
         private async void Feedback_Clicked(object sender, EventArgs e)
         {
-            await Browser.OpenAsync("");
+            await Browser.OpenAsync("https://forms.gle/ZsCg6PFQshd53GPm7");
             Current.FlyoutIsPresented = false;
         }
 
@@ -35,6 +36,13 @@ namespace MobileApp
         {
             Current.FlyoutIsPresented = false;
             await Current.GoToAsync(nameof(SettingsPage));
+        }
+
+        private async void Logout_Clicked(object sender, EventArgs e)
+        {
+            if (await DependencyService.Get<GameService>().LogoutWithSession())
+                await Current.GoToAsync(nameof(LoginPage));
+            Current.FlyoutIsPresented = false;
         }
     }
 }

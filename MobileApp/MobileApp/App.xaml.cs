@@ -13,7 +13,7 @@ namespace MobileApp
         {
             InitializeComponent();
             Device.SetFlags(new string[] { "Brush_Experimental" });
-            //DependencyService.Register<MockDataStore>();
+            DependencyService.Register<GameService>();
             MainPage = new AppShell();
         }
 

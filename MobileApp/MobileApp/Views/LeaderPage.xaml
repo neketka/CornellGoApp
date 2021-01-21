@@ -45,7 +45,7 @@
                 </StackLayout>
             </StackLayout>
             <BoxView HeightRequest="1" HorizontalOptions="FillAndExpand" CornerRadius="0" Color="{StaticResource PrimaryAccent}" Margin="0"/>
-            <CollectionView ItemsSource="{Binding Players}" RemainingItemsThresholdReachedCommand="{Binding LoadMore}" x:Name="Leaderboard"
+            <CollectionView ItemsSource="{Binding Players}" RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}" x:Name="Leaderboard"
                             RemainingItemsThresholdReachedCommandParameter="15" RemainingItemsThreshold="4" Margin="0" BackgroundColor="{StaticResource Tertiary}">
                 <CollectionView.Triggers>
                     <DataTrigger TargetType="CollectionView" Binding="{Binding IsBusy}" Value="True">

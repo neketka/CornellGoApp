@@ -18,8 +18,13 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout Orientation="Vertical" Padding="15, 5, 15, 0">
-            <SearchBar TextChanged="SearchBar_TextChanged" SearchButtonPressed="SearchBar_SearchButtonPressed" TextColor="{StaticResource SecondaryText}" BackgroundColor="{StaticResource SecondaryAccent}"/>
+            <SearchBar TextChanged="SearchBar_TextChanged" SearchButtonPressed="SearchBar_SearchButtonPressed" TextColor="{StaticResource SecondaryText}"/>
             <CollectionView Margin="0, 0, 0, 0" ItemsSource="{Binding HistoryEntries}" x:Name="EntryCollection">
+                <CollectionView.Triggers>
+                    <DataTrigger TargetType="CollectionView" Binding="{Binding IsBusy}" Value="True">
+                        <Setter Property="Footer" Value=""/>
+                    </DataTrigger>
+                </CollectionView.Triggers>
                 <CollectionView.EmptyViewTemplate>
                     <DataTemplate>
                         <Label Text="There seems to be nothing here...go out and search!" TextColor="{StaticResource SecondaryText}" FontSize="24"/>
@@ -43,6 +48,13 @@
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
+                <CollectionView.FooterTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+                            <ActivityIndicator Color="{StaticResource SecondaryText}" IsRunning="True" HorizontalOptions="Center" />
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.FooterTemplate>
             </CollectionView>
         </StackLayout>
     </ContentPage.Content>
