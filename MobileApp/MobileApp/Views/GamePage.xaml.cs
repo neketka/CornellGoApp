@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 using Xamarin.Forms.PlatformConfiguration;
 
 namespace MobileApp.Views
@@ -37,7 +38,8 @@ namespace MobileApp.Views
 
         private void ContentPage_SizeChanged(object sender, EventArgs e)
         {
-            double bias = Device.RuntimePlatform == Device.iOS ? 65 : 0;
+            //Other: 65, X: 95
+            double bias = Device.RuntimePlatform == Device.iOS ? On<iOS>().SafeAreaInsets().Bottom > 10 ? 95 : 65 : 0;
 
             double desc = Height - Divider.Bounds.Y - bias;
             double max = desc + Description.Height;

@@ -10,7 +10,7 @@
         </ResourceDictionary>
     </ContentView.Resources>
     <ContentView.Content>
-        <Frame BindingContext="{x:Reference this}" IsClippedToBounds="True" Padding="0" BackgroundColor="#0000"
+        <Frame BindingContext="{x:Reference this}" IsClippedToBounds="True" Padding="0" BackgroundColor="#0000" HasShadow="False"
                CornerRadius="{Binding Source={x:Reference this}, Converter={x:StaticResource mult}, ConverterParameter=0.5, Path=Height}">
             <Image Source="{Binding Image}" Aspect="AspectFill" WidthRequest="{Binding Source={x:Reference this}, Path=Height}"
                    HeightRequest="{Binding Source={x:Reference this}, Path=Height}"/>

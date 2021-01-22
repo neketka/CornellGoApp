@@ -70,20 +70,17 @@
     </Shell.FlyoutHeader>
 
     <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
-        <ShellContent Title="Play" Route="play">
-            <views:GamePage/>
+        <ShellContent Title="Play" Route="play" ContentTemplate="{DataTemplate views:GamePage}">
             <ShellContent.Icon>
                 <FontImageSource FontFamily="FASolid" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FASolid.Play}" />
             </ShellContent.Icon>
         </ShellContent>
-        <ShellContent Title="Leaderboard">
-            <views:LeaderPage/>
+        <ShellContent Title="Leaderboard" ContentTemplate="{DataTemplate views:LeaderPage}">
             <ShellContent.Icon>
                 <FontImageSource FontFamily="FASolid" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FASolid.Trophy}" />
             </ShellContent.Icon>
         </ShellContent>
-        <ShellContent Title="My History">
-            <views:HistoryPage/>
+        <ShellContent Title="My History" ContentTemplate="{DataTemplate views:HistoryPage}">
             <ShellContent.Icon>
                 <FontImageSource FontFamily="FASolid" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FASolid.History}" />
             </ShellContent.Icon>

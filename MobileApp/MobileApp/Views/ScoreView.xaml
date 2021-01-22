@@ -14,7 +14,7 @@
         <StackLayout Orientation="Horizontal" BindingContext="{x:Reference this}">
             <local:AvatarView Image="{Binding Image}" WidthRequest="{Binding Source={x:Reference this}, Path=HeightRequest}" 
                               HeightRequest="{Binding Source={x:Reference this}, Path=HeightRequest}"/>
-            <StackLayout Orientation="Vertical" Spacing="0" Margin="4, 0, 0, 0">
+            <StackLayout Orientation="Vertical" Spacing="0" Margin="4, 0, 0, 0" VerticalOptions="Center">
                 <Label Text="{Binding Name}" TextColor="{StaticResource SecondaryText}" 
                        FontSize="{Binding Source={x:Reference this}, Converter={x:StaticResource mult}, ConverterParameter=0.389, Path=HeightRequest}"/>
                 <Label Text="{Binding Path='Score', StringFormat='Score: {0}'}" TextColor="{StaticResource TertiaryText}" 
