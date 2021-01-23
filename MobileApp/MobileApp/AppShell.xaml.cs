@@ -12,12 +12,14 @@ namespace MobileApp
     {
         public AppShell()
         {
-            InitializeComponent();
-
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
             Routing.RegisterRoute(nameof(VictoryPage), typeof(VictoryPage));
             Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
             Routing.RegisterRoute($"{nameof(LoginPage)}/{nameof(RegistrationPage)}", typeof(RegistrationPage));
+            Routing.RegisterRoute($"{nameof(GamePage)}/{nameof(HistoryPage)}", typeof(HistoryPage));
+            Routing.RegisterRoute($"{nameof(GamePage)}/{nameof(LeaderPage)}", typeof(LeaderPage));
+
+            InitializeComponent();
         }
 
         private async void Suggest_Clicked(object sender, EventArgs e)
@@ -38,11 +40,16 @@ namespace MobileApp
             await Current.GoToAsync(nameof(SettingsPage));
         }
 
-        private async void Logout_Clicked(object sender, EventArgs e)
+        private async void Leaderboard_Clicked(object sender, EventArgs e)
         {
-            if (await DependencyService.Get<GameService>().LogoutWithSession())
-                await Current.GoToAsync(nameof(LoginPage));
             Current.FlyoutIsPresented = false;
+            await Current.GoToAsync($"{nameof(GamePage)}/{nameof(LeaderPage)}");
+        }
+
+        private async void History_Clicked(object sender, EventArgs e)
+        {
+            Current.FlyoutIsPresented = false;
+            await Current.GoToAsync($"{nameof(GamePage)}/{nameof(HistoryPage)}");
         }
     }
 }

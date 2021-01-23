@@ -22,7 +22,7 @@ namespace MobileApp.Views
         private async void LoginPage_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "ShouldAppear" && !((LoginViewModel)BindingContext).ShouldAppear)
-                await Shell.Current.GoToAsync("//play");
+                await Shell.Current.GoToAsync($"//{nameof(GamePage)}");
         }
 
         protected override void OnAppearing()

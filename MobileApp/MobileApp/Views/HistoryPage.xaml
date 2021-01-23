@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:MobileApp.Views"
              xmlns:fa="clr-namespace:MobileApp.Constants"
              x:Class="MobileApp.Views.HistoryPage"
-             Title="My History"
+             Title="Visited Places"
              BackgroundColor="{StaticResource Secondary}">
     <ContentPage.BindingContext>
         <vm:HistoryViewModel/>

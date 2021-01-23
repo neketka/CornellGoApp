@@ -7,6 +7,9 @@
   
   <PropertyGroup>
     <LangVersion>9.0</LangVersion>
+    <Authors>Nikita Kasumov, Tobi Alade</Authors>
+    <Company>CornellGO!</Company>
+    <Product>CornellGO</Product>
   </PropertyGroup>
   
   <ItemGroup>

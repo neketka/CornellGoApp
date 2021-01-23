@@ -7,7 +7,8 @@
              xmlns:local="clr-namespace:MobileApp.Views"
              xmlns:fa="clr-namespace:MobileApp.Constants"
              Title="Play"
-             SizeChanged="ContentPage_SizeChanged">
+             SizeChanged="ContentPage_SizeChanged"
+             Shell.NavBarIsVisible="False">
     <ContentPage.BindingContext>
         <vm:GameViewModel/>
     </ContentPage.BindingContext>
@@ -21,7 +22,16 @@
     <ContentPage.Content>
         <Grid>
             <Image Source="{Binding ChallengeImage}" x:Name="PlaceImage" Aspect="AspectFill" SizeChanged="PlaceImage_SizeChanged"/>
-            <BoxView CornerRadius="0" x:Name="Darkener"/>
+            <BoxView CornerRadius="0" x:Name="Darkener" BackgroundColor="Black"/>
+
+            <StackLayout>
+                <Frame WidthRequest="40" HeightRequest="40" CornerRadius="20" HasShadow="False" Margin="16" 
+                       Padding="0" HorizontalOptions="Start" Opacity="0.75" BorderColor="{StaticResource Tertiary}">
+                    <Button FontFamily="FASolid" Text="{Static fa:FASolid.Bars}" TextColor="{StaticResource Primary}" FontSize="24" Padding="0"
+                        BackgroundColor="{StaticResource Secondary}" Clicked="Hamburger_Tapped"/>
+                </Frame>
+            </StackLayout>
+            
             <Frame x:Name="BottomSheet" BackgroundColor="{StaticResource Secondary}" Padding="0, 8, 0, 0" CornerRadius="12" HasShadow="true">
                 <Frame.GestureRecognizers>
                     <PanGestureRecognizer PanUpdated="PanGestureRecognizer_PanUpdated"/>

@@ -7,18 +7,30 @@
        xmlns:fa="clr-namespace:MobileApp.Constants"
        xmlns:ex="clr-namespace:MobileApp.Extensions"
        Shell.TabBarIsVisible="False"
-       FlyoutBackgroundColor="{StaticResource Secondary}">
+       FlyoutBackgroundColor="{StaticResource Tertiary}"
+       Shell.BackgroundColor="{StaticResource Secondary}"
+       Shell.ForegroundColor="{StaticResource Primary}"
+       Shell.TitleColor="{StaticResource SecondaryText}"
+       Shell.DisabledColor="{StaticResource PrimaryAccent}"
+       Shell.UnselectedColor="{StaticResource Secondary}">
 
-    <!--
-        The overall app visual hierarchy is defined here, along with navigation.
-    
-        https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/shell/
-    -->
+    <Shell.Resources>
+        <ResourceDictionary>
+            <Style x:Key="BaseStyle" TargetType="Element">
+                <Setter Property="Shell.BackgroundColor" Value="{StaticResource Secondary}" />
+                <Setter Property="Shell.ForegroundColor" Value="{StaticResource Primary}" />
+                <Setter Property="Shell.TitleColor" Value="{StaticResource SecondaryText}" />
+                <Setter Property="Shell.DisabledColor" Value="{StaticResource PrimaryAccent}" />
+                <Setter Property="Shell.UnselectedColor" Value="{StaticResource Secondary}" />
+            </Style>
+            <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}" />
+            <Style TargetType="FlyoutItem" BasedOn="{StaticResource BaseStyle}" />
+        </ResourceDictionary>
+    </Shell.Resources>
 
     <TabBar>
-        <ShellContent Route="LoadingPage"
-                  Shell.FlyoutBehavior="Disabled"
-                  ContentTemplate="{DataTemplate views:LoadingPage}"/>
+        <ShellContent Route="LoadingPage" ContentTemplate="{DataTemplate views:LoadingPage}"
+                      Shell.FlyoutBehavior="Disabled"/>
     </TabBar>
 
     <Shell.ItemTemplate>
@@ -47,45 +59,32 @@
         </DataTemplate>
     </Shell.MenuItemTemplate>
 
-    <Shell.Resources>
-        <ResourceDictionary>
-            <Style x:Key="BaseStyle" TargetType="Element">
-                <Setter Property="Shell.BackgroundColor" Value="{StaticResource Secondary}" />
-                <Setter Property="Shell.ForegroundColor" Value="{StaticResource Primary}" />
-                <Setter Property="Shell.TitleColor" Value="{StaticResource SecondaryText}" />
-                <Setter Property="Shell.DisabledColor" Value="{StaticResource PrimaryAccent}" />
-                <Setter Property="Shell.UnselectedColor" Value="{StaticResource Secondary}" />
-            </Style>
-            <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}" />
-            <Style TargetType="FlyoutItem" BasedOn="{StaticResource BaseStyle}" />
-        </ResourceDictionary>
-    </Shell.Resources>
-
     <Shell.FlyoutHeader>
         <StackLayout Padding="10, 12, 20, 12" Orientation="Horizontal" BackgroundColor="{StaticResource Secondary}">
-            <views:ScoreView Image="{ex:ImageResource MobileApp.Assets.Images.bsquare.jpg}" Name="Username" Score="0" HeightRequest="48" />
-            <Button FontFamily="FASolid" Text="{Static fa:FASolid.UserCog}" Padding="0" WidthRequest="36" HeightRequest="36" FontSize="16" 
-                    VerticalOptions="Center" HorizontalOptions="EndAndExpand" Clicked="Settings_Clicked"/>
+            <views:ScoreView Image="{ex:ImageResource MobileApp.Assets.Images.bsquare.jpg}" Name="Username" Score="0" HeightRequest="52" />
         </StackLayout>
     </Shell.FlyoutHeader>
 
-    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
-        <ShellContent Title="Play" Route="play" ContentTemplate="{DataTemplate views:GamePage}">
-            <ShellContent.Icon>
-                <FontImageSource FontFamily="FASolid" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FASolid.Play}" />
-            </ShellContent.Icon>
-        </ShellContent>
-        <ShellContent Title="Leaderboard" ContentTemplate="{DataTemplate views:LeaderPage}">
-            <ShellContent.Icon>
-                <FontImageSource FontFamily="FASolid" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FASolid.Trophy}" />
-            </ShellContent.Icon>
-        </ShellContent>
-        <ShellContent Title="My History" ContentTemplate="{DataTemplate views:HistoryPage}">
-            <ShellContent.Icon>
-                <FontImageSource FontFamily="FASolid" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FASolid.History}" />
-            </ShellContent.Icon>
-        </ShellContent>
-    </FlyoutItem>
+    <Shell.FlyoutFooter>
+        <StackLayout Orientation="Horizontal" Padding="8">
+            <Label Text="CornellGO" FontSize="14" TextColor="{StaticResource PrimaryAccent}"/>
+            <Label Text="Beta Test v0.1.0" FontSize="14" TextColor="{StaticResource PrimaryAccent}" HorizontalOptions="EndAndExpand"/>
+        </StackLayout>
+    </Shell.FlyoutFooter>
+    
+    <ShellContent Route="GamePage" ContentTemplate="{DataTemplate views:GamePage}" FlyoutItemIsVisible="False"/>
+
+    <MenuItem Text="Leaderboard" Clicked="Leaderboard_Clicked">
+        <MenuItem.IconImageSource>
+            <FontImageSource FontFamily="FASolid" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FASolid.Trophy}" />
+        </MenuItem.IconImageSource>
+    </MenuItem>
+
+    <MenuItem Text="Visited Places" Clicked="History_Clicked">
+        <MenuItem.IconImageSource>
+            <FontImageSource FontFamily="FASolid" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FASolid.History}" />
+        </MenuItem.IconImageSource>
+    </MenuItem>
 
     <MenuItem Text="Suggest a Location" Clicked="Suggest_Clicked">
         <MenuItem.IconImageSource>
@@ -99,9 +98,9 @@
         </MenuItem.IconImageSource>
     </MenuItem>
 
-    <MenuItem Text="Logout" Clicked="Logout_Clicked">
+    <MenuItem Text="Settings" Clicked="Settings_Clicked">
         <MenuItem.IconImageSource>
-            <FontImageSource FontFamily="FASolid" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FASolid.SignOutAlt}" />
+            <FontImageSource FontFamily="FASolid" Color="{StaticResource SecondaryText}" Glyph="{x:Static fa:FASolid.Cog}" />
         </MenuItem.IconImageSource>
     </MenuItem>
 </Shell>

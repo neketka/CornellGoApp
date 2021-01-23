@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MobileApp.Services;
+using MobileApp.Views;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
@@ -16,6 +18,8 @@ namespace MobileApp.ViewModels
         public Command ChangeAvatarCommand { get; }
         public Command ChangeUsernameCommand { get; }
         public Command ChangePasswordCommand { get; }
+        public Command CloseAccountCommand { get; }
+        public Command LogoutCommand { get; }
 
         public SettingsViewModel()
         {
@@ -23,6 +27,12 @@ namespace MobileApp.ViewModels
             ChangeAvatarCommand = new Command(async () => { });
             ChangeUsernameCommand = new Command(async () => { });
             ChangePasswordCommand = new Command(async () => { });
+            CloseAccountCommand = new Command(async () => { });
+            LogoutCommand = new Command(async () => 
+            {
+                if (await DependencyService.Get<GameService>().LogoutWithSession())
+                    await Shell.Current.GoToAsync(nameof(LoginPage));
+            });
         }
     }
 }

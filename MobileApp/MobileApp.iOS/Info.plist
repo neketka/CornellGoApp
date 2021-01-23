@@ -21,9 +21,9 @@
 	<key>MinimumOSVersion</key>
 	<string>8.0</string>
 	<key>CFBundleDisplayName</key>
-	<string>MobileApp</string>
+	<string>CornellGO!</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.companyname.MobileApp</string>
+	<string>com.cornellgo.CornellGO</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>UILaunchStoryboardName</key>

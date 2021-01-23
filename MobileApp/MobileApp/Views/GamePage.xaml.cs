@@ -25,6 +25,12 @@ namespace MobileApp.Views
             BottomSheet.PropertyChanged += BottomSheet_PropertyChanged;
         }
 
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            ContentPage_SizeChanged(null, null);
+        }
+
         private void AdjustTemp(double value)
         {
             TempBar.TranslateTo((Width - 12.0) * value + 12.0, 0);
@@ -105,6 +111,11 @@ namespace MobileApp.Views
         private void BottomSheet_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             UpdateLayout();
+        }
+
+        private void Hamburger_Tapped(object sender, EventArgs e)
+        {
+            Shell.Current.FlyoutIsPresented = true;
         }
     }
 }

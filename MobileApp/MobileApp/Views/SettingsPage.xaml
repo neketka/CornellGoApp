@@ -32,6 +32,11 @@
             <BoxView HeightRequest="1" HorizontalOptions="FillAndExpand" Color="{StaticResource PrimaryAccent}" CornerRadius="0" Margin="0, 15, 0, 0"/>
             <Label Text="Password and Authentication" TextTransform="Uppercase" TextColor="{StaticResource SecondaryText}" FontSize="18" FontAttributes="Bold" Margin="0, 20, 0, 20"/>
             <Button Text="Change Password" Command="{Binding ChangePasswordCommand}" Margin="15, 0, 15, 0" HeightRequest="40" Padding="0"/>
+            <BoxView HeightRequest="1" HorizontalOptions="FillAndExpand" Color="{StaticResource PrimaryAccent}" CornerRadius="0" Margin="0, 15, 0, 0"/>
+            <Label Text="Actions" TextTransform="Uppercase" TextColor="{StaticResource SecondaryText}" FontSize="18" FontAttributes="Bold" Margin="0, 20, 0, 20"/>
+            <Button Text="Close Account" Command="{Binding CloseAccountCommand}" Margin="15, 0, 15, 0" HeightRequest="40" Padding="0"/>
+            <Button Text="Logout" Command="{Binding LogoutCommand}" Margin="15, 0, 15, 0" HeightRequest="40" Padding="0"/>
+            <BoxView HeightRequest="1" HorizontalOptions="FillAndExpand" Color="{StaticResource PrimaryAccent}" CornerRadius="0" Margin="0, 15, 0, 0"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
