@@ -66,13 +66,16 @@
     </Shell.FlyoutHeader>
 
     <Shell.FlyoutFooter>
-        <StackLayout Orientation="Horizontal" Padding="8">
-            <Label Text="CornellGO" FontSize="14" TextColor="{StaticResource PrimaryAccent}"/>
-            <Label Text="Beta Test v0.1.0" FontSize="14" TextColor="{StaticResource PrimaryAccent}" HorizontalOptions="EndAndExpand"/>
-        </StackLayout>
+        <Grid RowDefinitions="1, *" ColumnDefinitions="*, *">
+            <BoxView CornerRadius="0" Color="{StaticResource SecondaryAccent}" Grid.Row="0" Grid.ColumnSpan="2"/>
+            <Label Text="CornellGO!" Margin="8, 0, 0, 8" FontSize="14" TextColor="{StaticResource SecondaryText}" Grid.Row="1"
+                   VerticalOptions="CenterAndExpand"/>
+            <Label Text="Beta Test v0.1.0" Margin="0, 0, 8, 8" FontSize="14" TextColor="{StaticResource PrimaryAccent}" 
+                   Grid.Row="1" Grid.Column="1" HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand"/>
+        </Grid>
     </Shell.FlyoutFooter>
     
-    <ShellContent Route="GamePage" ContentTemplate="{DataTemplate views:GamePage}" FlyoutItemIsVisible="False"/>
+    <ShellContent Route="GamePage" ContentTemplate="{DataTemplate views:GamePage}" FlyoutItemIsVisible="False" Title="Play"/>
 
     <MenuItem Text="Leaderboard" Clicked="Leaderboard_Clicked">
         <MenuItem.IconImageSource>

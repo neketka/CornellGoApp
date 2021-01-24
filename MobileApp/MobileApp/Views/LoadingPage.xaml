@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MobileApp.Views.LoadingPage"
              Shell.PresentationMode="ModalNotAnimated" 
-             BackgroundColor="{StaticResource Secondary}">
+             BackgroundColor="{StaticResource Secondary}"
+             Shell.FlyoutBehavior="Disabled">
     <ContentPage.Content>
         <StackLayout>
             <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">

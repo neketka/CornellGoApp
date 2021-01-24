@@ -7,7 +7,8 @@
              xmlns:fa="clr-namespace:MobileApp.Constants"
              x:Class="MobileApp.Views.HistoryPage"
              Title="Visited Places"
-             BackgroundColor="{StaticResource Secondary}">
+             BackgroundColor="{StaticResource Secondary}"
+             Shell.FlyoutBehavior="Disabled">
     <ContentPage.BindingContext>
         <vm:HistoryViewModel/>
     </ContentPage.BindingContext>

@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:MobileApp.Views"
              xmlns:fa="clr-namespace:MobileApp.Constants"
              x:Class="MobileApp.Views.VictoryPage"
-             Shell.PresentationMode="ModalAnimated">
+             Shell.PresentationMode="ModalAnimated"
+             Shell.FlyoutBehavior="Disabled">
     <ContentPage.BindingContext>
         <vm:VictoryViewModel/>
     </ContentPage.BindingContext>

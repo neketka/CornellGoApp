@@ -38,7 +38,7 @@ namespace MobileApp.Views
 
         private async void Register_Clicked(object sender, EventArgs e)
         {
-            await Shell.Current.GoToAsync($"{nameof(LoginPage)}/{nameof(RegistrationPage)}");
+            await Shell.Current.GoToAsync($"{nameof(RegistrationPage)}");
         }
     }
 }

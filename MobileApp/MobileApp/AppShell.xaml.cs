@@ -15,9 +15,9 @@ namespace MobileApp
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
             Routing.RegisterRoute(nameof(VictoryPage), typeof(VictoryPage));
             Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
-            Routing.RegisterRoute($"{nameof(LoginPage)}/{nameof(RegistrationPage)}", typeof(RegistrationPage));
-            Routing.RegisterRoute($"{nameof(GamePage)}/{nameof(HistoryPage)}", typeof(HistoryPage));
-            Routing.RegisterRoute($"{nameof(GamePage)}/{nameof(LeaderPage)}", typeof(LeaderPage));
+            Routing.RegisterRoute(nameof(RegistrationPage), typeof(RegistrationPage));
+            Routing.RegisterRoute(nameof(HistoryPage), typeof(HistoryPage));
+            Routing.RegisterRoute(nameof(LeaderPage), typeof(LeaderPage));
 
             InitializeComponent();
         }
@@ -36,20 +36,26 @@ namespace MobileApp
 
         private async void Settings_Clicked(object sender, EventArgs e)
         {
+            bool wasPresented = Current.FlyoutIsPresented;
             Current.FlyoutIsPresented = false;
-            await Current.GoToAsync(nameof(SettingsPage));
+            if (wasPresented)
+                await Current.GoToAsync(nameof(SettingsPage));
         }
 
         private async void Leaderboard_Clicked(object sender, EventArgs e)
         {
+            bool wasPresented = Current.FlyoutIsPresented;
             Current.FlyoutIsPresented = false;
-            await Current.GoToAsync($"{nameof(GamePage)}/{nameof(LeaderPage)}");
+            if (wasPresented)
+                await Current.GoToAsync(nameof(LeaderPage));
         }
 
         private async void History_Clicked(object sender, EventArgs e)
         {
+            bool wasPresented = Current.FlyoutIsPresented;
             Current.FlyoutIsPresented = false;
-            await Current.GoToAsync($"{nameof(GamePage)}/{nameof(HistoryPage)}");
+            if (wasPresented)
+                await Current.GoToAsync(nameof(HistoryPage));
         }
     }
 }
