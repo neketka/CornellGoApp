@@ -62,6 +62,13 @@ namespace MobileApp.Views
                     await BottomSheet.TranslateTo(0, positions[1], 350u, Easing.CubicOut); 
                 }
             }
+            else if (e.PropertyName == nameof(GameViewModel.IsDone))
+            {
+                if (((GameViewModel)BindingContext).IsDone)
+                    TempFinisher.FadeTo(1);
+                else
+                    TempFinisher.FadeTo(0);
+            }
         }
 
         private void ContentPage_SizeChanged(object sender, EventArgs e)
@@ -138,7 +145,6 @@ namespace MobileApp.Views
         private void Hamburger_Tapped(object sender, EventArgs e)
         {
             Shell.Current.FlyoutIsPresented = true;
-            //((GameViewModel)BindingContext).DoVictoryCommand.Execute(null);
         }
     }
 }

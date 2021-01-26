@@ -22,6 +22,7 @@ namespace MobileApp.ViewModels
         private string oldChallengeName;
         private int oldChallengePoints;
         private bool victoryMode;
+        private bool isDone = false;
 
         public double Progress { get => progress; set => SetProperty(ref progress, value); }
         public string ProgressString { get => progressString; set => SetProperty(ref progressString, value); }
@@ -34,6 +35,7 @@ namespace MobileApp.ViewModels
         public bool IsHost { get => isHost; set => SetProperty(ref isHost, value); }
         public ObservableCollection<GroupMember> GroupMembers { get; private set; }
         public int MaxMembers { get => maxMembers; set => SetProperty(ref maxMembers, value); }
+        public bool IsDone { get => isDone; set => SetProperty(ref isDone, value); }
 
         public ImageSource OldChallengeImage { get => oldChallengeImage; set => SetProperty(ref oldChallengeImage, value); }
         public string OldChallengeName { get => oldChallengeName; set => SetProperty(ref oldChallengeName, value); }

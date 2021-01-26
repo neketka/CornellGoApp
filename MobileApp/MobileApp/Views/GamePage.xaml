@@ -97,6 +97,10 @@
                                     <Label Text="Cold" HorizontalOptions="StartAndExpand" TextColor="{StaticResource PrimaryText}"/>
                                     <Label Text="Hot" TextColor="{StaticResource PrimaryText}"/>
                                 </StackLayout>
+                                <StackLayout BackgroundColor="LightGreen" x:Name="TempFinisher" Opacity="0">
+                                    <Label Text="Waiting on group to finish..." TextColor="{StaticResource PrimaryText}" 
+                                           HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+                                </StackLayout>
                             </Grid>
                         </Frame>
                     </StackLayout>
