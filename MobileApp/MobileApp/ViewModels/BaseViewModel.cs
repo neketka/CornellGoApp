@@ -36,6 +36,15 @@ namespace MobileApp.ViewModels
             return true;
         }
 
+        protected GameService GameService { get; }
+        protected NavigationService NavigationService { get; }
+
+        public BaseViewModel()
+        {
+            GameService = DependencyService.Get<GameService>();
+            NavigationService = DependencyService.Get<NavigationService>();
+        }
+
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = "")

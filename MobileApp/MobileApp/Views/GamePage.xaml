@@ -22,10 +22,23 @@
     <ContentPage.Content>
         <Grid>
             <Image Source="{Binding ChallengeImage}" x:Name="PlaceImage" Aspect="AspectFill" SizeChanged="PlaceImage_SizeChanged"/>
+            <Image Source="{Binding OldChallengeImage}" x:Name="OldImage" Aspect="AspectFill" Opacity="0"/>
+
             <BoxView CornerRadius="0" x:Name="Darkener" BackgroundColor="Black"/>
 
+            <StackLayout Margin="0, 24, 0, 0" x:Name="VictoryView" IsEnabled="{Binding VictoryMode}" Opacity="0">
+                <Label Text="Congrats!" FontSize="64" TextColor="White" HorizontalOptions="Center"/>
+                <Label FontSize="120" TextColor="White" HorizontalOptions="Center" Margin="-20">&#x2605;</Label>
+                <Label Text="You have found" Margin="0, 18, 0, 0" FontSize="36" TextColor="White" HorizontalOptions="Center"/>
+                <Label Text="{Binding OldChallengeName}" FontSize="36" TextColor="White" HorizontalOptions="Center" FontAttributes="Bold"/>
+                <Label Text="{Binding Path=OldChallengePoints, StringFormat='+{0}!'}" FontSize="64" TextColor="White" HorizontalOptions="Center"/>
+                <Button Text="Keep searching..." HorizontalOptions="Center" Padding="0" Margin="0, 16, 0, 0" WidthRequest="250" HeightRequest="40" Command="{Binding NextChallengeCommand}"/>
+                <Button Text="Find out more information" HorizontalOptions="Center" Padding="0" Margin="0, 8, 0, 0" WidthRequest="250" HeightRequest="40" Command="{Binding FindOutMoreCommand}"/>
+            </StackLayout>
+
             <Frame WidthRequest="42" HeightRequest="42" CornerRadius="21" HasShadow="True" Margin="12" VerticalOptions="Start"
-                       Padding="0" HorizontalOptions="Start" Opacity="0.75" BorderColor="Black">
+                   Padding="0" HorizontalOptions="Start" Opacity="0.75" BorderColor="Black" x:Name="HamburgerButton"
+                   IsEnabled="{Binding Path=VictoryMode, Converter={StaticResource invBool}}">
                 <Button FontFamily="FASolid" Text="{Static fa:FASolid.Bars}" TextColor="{StaticResource Primary}" FontSize="24" Padding="0"
                         BackgroundColor="{StaticResource Secondary}" Clicked="Hamburger_Tapped" VerticalOptions="Center" HorizontalOptions="Center"/>
             </Frame>
@@ -68,8 +81,7 @@
                         </StackLayout>
 
                         <StackLayout HeightRequest="75" Margin="0, 0, 0, 4" x:Name="Description">
-                            <Label Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt"
-                               TextColor="{StaticResource SecondaryText}" FontSize="20"/>
+                            <Label Text="{Binding ChallengeDescription}" TextColor="{StaticResource SecondaryText}" FontSize="20"/>
                         </StackLayout>
 
                         <Frame CornerRadius="16" HasShadow="False" Padding="0" Margin="0, 0, 0, 15" IsClippedToBounds="True" x:Name="Therm">

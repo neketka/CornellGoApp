@@ -30,7 +30,7 @@ namespace MobileApp.ViewModels
             CloseAccountCommand = new Command(async () => { });
             LogoutCommand = new Command(async () => 
             {
-                if (await DependencyService.Get<GameService>().LogoutWithSession())
+                if (await GameService.LogoutWithSession())
                     await Shell.Current.GoToAsync(nameof(LoginPage));
             });
         }

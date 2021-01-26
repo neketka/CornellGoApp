@@ -13,7 +13,6 @@ namespace MobileApp
         public AppShell()
         {
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
-            Routing.RegisterRoute(nameof(VictoryPage), typeof(VictoryPage));
             Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
             Routing.RegisterRoute(nameof(RegistrationPage), typeof(RegistrationPage));
             Routing.RegisterRoute(nameof(HistoryPage), typeof(HistoryPage));

@@ -36,10 +36,32 @@ namespace MobileApp.Views
             TempBar.TranslateTo((Width - 12.0) * value + 12.0, 0);
         }
 
-        private void GamePage_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private async void GamePage_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(GameViewModel.Progress)) 
                 AdjustTemp(((GameViewModel)BindingContext).Progress);
+            else if (e.PropertyName == nameof(GameViewModel.VictoryMode))
+            {
+                bool state = ((GameViewModel)BindingContext).VictoryMode;
+                Shell.Current.FlyoutBehavior = state ? FlyoutBehavior.Disabled : FlyoutBehavior.Flyout;
+                if (state)
+                {
+                    OldImage.Opacity = 1;
+                    HamburgerButton.FadeTo(0, 800u, Easing.CubicOut);
+                    await BottomSheet.TranslateTo(0, Height, 800u, Easing.CubicOut);
+                    Darkener.FadeTo(0.4);
+                    VictoryView.FadeTo(1);
+                }
+                else
+                {
+                    Darkener.FadeTo(0);
+                    await VictoryView.FadeTo(0);
+                    await OldImage.FadeTo(0, easing: Easing.CubicIn);
+                    await Task.Delay(250);
+                    HamburgerButton.FadeTo(1);
+                    await BottomSheet.TranslateTo(0, positions[1], 350u, Easing.CubicOut); 
+                }
+            }
         }
 
         private void ContentPage_SizeChanged(object sender, EventArgs e)
@@ -116,6 +138,7 @@ namespace MobileApp.Views
         private void Hamburger_Tapped(object sender, EventArgs e)
         {
             Shell.Current.FlyoutIsPresented = true;
+            //((GameViewModel)BindingContext).DoVictoryCommand.Execute(null);
         }
     }
 }

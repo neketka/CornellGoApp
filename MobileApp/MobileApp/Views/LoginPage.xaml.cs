@@ -13,22 +13,16 @@ namespace MobileApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginPage : ContentPage
     {
+        private bool canNavigate = true;
         public LoginPage()
         {
             InitializeComponent();
-            ((LoginViewModel)BindingContext).PropertyChanged += LoginPage_PropertyChanged;
-        }
-
-        private async void LoginPage_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "ShouldAppear" && !((LoginViewModel)BindingContext).ShouldAppear)
-                await Shell.Current.GoToAsync($"//{nameof(GamePage)}");
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            ((LoginViewModel)BindingContext).ShouldAppear = true;
+            canNavigate = true;
         }
 
         protected override bool OnBackButtonPressed()
@@ -38,7 +32,11 @@ namespace MobileApp.Views
 
         private async void Register_Clicked(object sender, EventArgs e)
         {
-            await Shell.Current.GoToAsync($"{nameof(RegistrationPage)}");
+            if (canNavigate)
+            {
+                canNavigate = false;
+                await Shell.Current.GoToAsync($"{nameof(RegistrationPage)}");
+            }
         }
     }
 }

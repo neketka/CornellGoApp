@@ -16,21 +16,11 @@
         <StackLayout>
             <Image Source="{ex:ImageResource MobileApp.Assets.Images.logo.png}" Aspect="AspectFill" HorizontalOptions="Center" HeightRequest="128" Margin="0, 84, 0, 0"/>
             <Label Text="{Binding BadText}" TextColor="Red" HorizontalOptions="Center" HeightRequest="32" FontSize="18"/>
-            <Entry Text="{Binding Path=Username, Mode=TwoWay}" HorizontalOptions="Center" TextColor="{StaticResource SecondaryText}"
-                   WidthRequest="2000" Placeholder="Username" PlaceholderColor="{StaticResource PrimaryAccent}" Margin="20, 0, 20, 0"/>
-            <Entry Text="{Binding Path=Password, Mode=TwoWay}" IsPassword="True" HorizontalOptions="Center" TextColor="{StaticResource SecondaryText}"
-                   WidthRequest="2000" Placeholder="Password" PlaceholderColor="{StaticResource PrimaryAccent}" Margin="20, 0, 20, 0"/>
-            <Grid Margin="0, 10, 0, 0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Button Text="Log In" VerticalOptions="Center" HeightRequest="30" Padding="0" Margin="20, 0, 0, 0" Grid.Column="0" Command="{Binding LoginCommand}"/>
-                <Button Text="Register" VerticalOptions="Center" HeightRequest="30" Padding="0" Margin="0, 0, 20, 0" Grid.Column="1" Clicked="Register_Clicked"/>
-            </Grid>
+            <Entry Text="{Binding Path=Username, Mode=TwoWay}" HorizontalOptions="FillAndExpand" TextColor="{StaticResource SecondaryText}"
+                   Placeholder="Username" PlaceholderColor="{StaticResource PrimaryAccent}" Margin="20, 0, 20, 0"/>
+            <Entry Text="{Binding Path=Password, Mode=TwoWay}" IsPassword="True" HorizontalOptions="FillAndExpand" TextColor="{StaticResource SecondaryText}"
+                   Placeholder="Password" PlaceholderColor="{StaticResource PrimaryAccent}" Margin="20, 0, 20, 0"/>
+            <Button Text="Log In" VerticalOptions="Center" HeightRequest="30" Padding="0" Margin="20, 0, 20, 0" Grid.Column="0" Command="{Binding LoginCommand}"/>
             <ActivityIndicator Color="{StaticResource SecondaryText}" IsRunning="{Binding IsBusy}"/>
         </StackLayout>
     </ContentPage.Content>

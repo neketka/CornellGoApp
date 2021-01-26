@@ -17,19 +17,38 @@ namespace MobileApp.ViewModels
         private bool isHost = true;
         private int maxMembers = 8;
         private ImageSource challengeImage;
+        private string challengeDescription;
+        private ImageSource oldChallengeImage;
+        private string oldChallengeName;
+        private int oldChallengePoints;
+        private bool victoryMode;
 
         public double Progress { get => progress; set => SetProperty(ref progress, value); }
         public string ProgressString { get => progressString; set => SetProperty(ref progressString, value); }
         public int Points { get => points; set => SetProperty(ref points, value); }
+        public ImageSource ChallengeImage { get => challengeImage; set => SetProperty(ref challengeImage, value); }
+        public string ChallengeDescription { get => challengeDescription; set => SetProperty(ref challengeDescription, value); }
+
         public int MembersReady { get => membersReady; set => SetProperty(ref membersReady, value); }
         public string GroupCode { get => groupCode; set => SetProperty(ref groupCode, value); }
         public bool IsHost { get => isHost; set => SetProperty(ref isHost, value); }
         public ObservableCollection<GroupMember> GroupMembers { get; private set; }
         public int MaxMembers { get => maxMembers; set => SetProperty(ref maxMembers, value); }
-        public ImageSource ChallengeImage { get => challengeImage; set => SetProperty(ref challengeImage, value); }
 
-        public Command<string> LeaveCommand { get; private set; }
-        public Command JoinCommand { get; private set; }
+        public ImageSource OldChallengeImage { get => oldChallengeImage; set => SetProperty(ref oldChallengeImage, value); }
+        public string OldChallengeName { get => oldChallengeName; set => SetProperty(ref oldChallengeName, value); }
+        public int OldChallengePoints { get => oldChallengePoints; set => SetProperty(ref oldChallengePoints, value); }
+        public bool VictoryMode 
+        { 
+            get => victoryMode;
+            set => SetProperty(ref victoryMode, value, onChanged: () => { if (value) (OldChallengeImage, OldChallengePoints) = (ChallengeImage, Points); });
+        }
+        public Command FindOutMoreCommand { get; }
+        public Command NextChallengeCommand { get; }
+        public Command DoVictoryCommand { get; }
+
+        public Command<string> LeaveCommand { get; }
+        public Command JoinCommand { get; }
 
         public GameViewModel()
         {
@@ -46,8 +65,22 @@ namespace MobileApp.ViewModels
             };
 
             ChallengeImage = ImageSource.FromResource("MobileApp.Assets.Images.grid.png");
+            ChallengeDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt";
+
             LeaveCommand = new Command<string>(s => { });
             JoinCommand = new Command(() => { });
+            FindOutMoreCommand = new Command(() => { });
+            NextChallengeCommand = new Command(() => { VictoryMode = false; });
+
+            DoVictoryCommand = new Command(() =>
+            {
+                OldChallengeName = "Test Challenge";
+                ImageSource source = ImageSource.FromUri(new Uri("https://media-cdn.tripadvisor.com/media/photo-m/1280/13/bd/12/dd/triphammer-falls-the.jpg"));
+                VictoryMode = true;
+                ChallengeImage = source;
+                Points = 100;
+                ChallengeDescription = "New challenge description";
+            });
         }
     }
 }
