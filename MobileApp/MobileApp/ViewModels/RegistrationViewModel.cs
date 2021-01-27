@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace MobileApp.ViewModels
@@ -36,7 +37,7 @@ namespace MobileApp.ViewModels
         public bool PasswordLetterValid { get => passwordLetterValid; set => SetProperty(ref passwordLetterValid, value); }
         public bool PasswordSymbolValid { get => passwordSymbolValid; set => SetProperty(ref passwordSymbolValid, value); }
         public bool PasswordMatches { get => passwordMatches; set => SetProperty(ref passwordMatches, value); }
-        public bool EmailAddressValid { get => passwordNumberValid; set => SetProperty(ref emailAddressValid, value); }
+        public bool EmailAddressValid { get => emailAddressValid; set => SetProperty(ref emailAddressValid, value); }
         public bool EmailAddressMatches { get => emailAddressMatches; set => SetProperty(ref emailAddressMatches, value); }
         public bool FormValid { get => formValid; set => SetProperty(ref formValid, value); }
 
@@ -46,12 +47,13 @@ namespace MobileApp.ViewModels
         public string Email { get => email; set => SetProperty(ref email, value, onChanged: ValidateEmail); }
         public string EmailVerification { get => emailVerification; set => SetProperty(ref emailVerification, value, onChanged: ValidateEmailMatch); }
         public string BadText { get => badText; set => SetProperty(ref badText, value); }
-        public Command RegisterCommmand { get; }
+        public Command RegisterCommand { get; }
 
         private void Validate()
         {
             FormValid = UsernameLengthValid && UsernameFormatValid && PasswordLengthValid && PasswordNumberValid && PasswordSymbolValid &&
                 PasswordMatches && EmailAddressValid && EmailAddressMatches;
+            RegisterCommand.ChangeCanExecute();
         }
 
         private void ValidateUsername()
@@ -80,9 +82,7 @@ namespace MobileApp.ViewModels
 
         private void ValidateEmail()
         {
-            EmailAddressValid = Regex.IsMatch(Email,
-                    @"^[^@\s]+@[^@\s]+\.[^@\s]+$",
-                    RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250));
+            EmailAddressValid = IsValidEmail(email);
             EmailAddressMatches = !string.IsNullOrWhiteSpace(Email) && Email == EmailVerification;
             Validate();
         }
@@ -93,9 +93,30 @@ namespace MobileApp.ViewModels
             Validate();
         }
 
+        private bool IsValidEmail(string emailaddress)
+        {
+            try
+            {
+                System.Net.Mail.MailAddress m = new System.Net.Mail.MailAddress(emailaddress);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
         public RegistrationViewModel()
         {
-            RegisterCommmand = new Command(async () => { });
+            RegisterCommand = new Command(async () => 
+            {
+                IsBusy = true;
+                RegisterCommand.ChangeCanExecute();
+                await Task.Delay(2000);
+                IsBusy = false;
+                await NavigationService.ToGamePage();
+                RegisterCommand.ChangeCanExecute();
+            }, () => !IsBusy && FormValid);
         }
     }
 }

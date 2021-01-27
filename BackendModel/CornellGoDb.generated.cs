@@ -108,8 +108,7 @@ namespace BackendModel
                      .ValueGeneratedOnAdd()
                      .IsRequired();
          modelBuilder.Entity<global::BackendModel.Authenticator>()
-                     .Property(t => t.Username)
-                     .HasMaxLength(120)
+                     .Property(t => t.Email)
                      .IsRequired();
          modelBuilder.Entity<global::BackendModel.Authenticator>()
                      .Property(t => t.Password)

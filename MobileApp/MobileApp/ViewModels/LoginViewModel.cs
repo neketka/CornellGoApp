@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace MobileApp.ViewModels
@@ -20,8 +21,13 @@ namespace MobileApp.ViewModels
         {
             LoginCommand = new Command(async () =>
             {
+                IsBusy = true;
+                LoginCommand.ChangeCanExecute();
+                await Task.Delay(2000);
+                IsBusy = false;
                 await NavigationService.ToGamePage();
-            });
+                LoginCommand.ChangeCanExecute();
+            }, () => !IsBusy);
         }
     }
 }

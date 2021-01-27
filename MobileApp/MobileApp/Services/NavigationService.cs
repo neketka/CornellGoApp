@@ -38,5 +38,41 @@ namespace MobileApp.Services
         {
             await Shell.Current.GoToAsync($"{nameof(LandingPage)}");
         }
+
+        public async Task<string> ShowJoinGroup()
+        {
+            return await Shell.Current.DisplayPromptAsync("Join Group", "Enter the code between the brackets from a group member's screen.");
+        }
+
+        public async Task<bool> ConfirmKick(string user)
+        {
+        }
+
+        public async Task<bool> ConfirmDisband(bool isJoining)
+        {
+        }
+
+        public async Task<bool> ConfirmLeave(bool isJoining)
+        {
+        }
+
+        public async Task<string> ShowChangeUsername(string oldName)
+        {
+
+        }
+
+        public async Task<(string pass, string confirmPass)> ShowChangePassword(bool invalid)
+        {
+
+        }
+
+        public async Task<(string pass, string email)> ShowChangeEmail(bool invalidPass, bool invalidEmail)
+        {
+
+        }
+
+        public async Task<string> ShowCloseAccount(bool invalid)
+        {
+        }
     }
 }

@@ -30,6 +30,12 @@ namespace MobileApp.Views
             declaringType: typeof(AvatarView),
             defaultValue: 0);
 
+        public static readonly BindableProperty IsHighlightedProperty = BindableProperty.Create(
+            propertyName: "IsHighlighted",
+            returnType: typeof(bool),
+            declaringType: typeof(AvatarView),
+            defaultValue: false);
+
         public ImageSource Image
         {
             get => (ImageSource)GetValue(ImageProperty);
@@ -46,6 +52,12 @@ namespace MobileApp.Views
         {
             get => (int)GetValue(ScoreProperty);
             set => SetValue(ScoreProperty, value);
+        }
+
+        public bool IsHighlighted
+        {
+            get => (bool)GetValue(IsHighlightedProperty);
+            set => SetValue(IsHighlightedProperty, value);
         }
 
         public ScoreView()

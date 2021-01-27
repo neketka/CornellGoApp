@@ -34,9 +34,9 @@ namespace Backend.Hub
             return false;
         }
 
-        public async Task<bool> Login(string username, string password)
+        public async Task<bool> Login(string email, string password)
         {
-            Authenticator authenticator = await Database.Authenticators.FirstOrDefaultAsync(e => e.Username == username && e.Password == password);
+            Authenticator authenticator = await Database.Authenticators.FirstOrDefaultAsync(e => e.Email == email && e.Password == password);
             if (authenticator == null)
                 return false;
 
@@ -67,10 +67,10 @@ namespace Backend.Hub
 
         public async Task<bool> Register(string username, string password, string email)
         {
-            if (await Database.Authenticators.AnyAsync(e => e.Username == username))
+            if (await Database.Authenticators.AnyAsync(e => e.Email == email))
                 return false;
 
-            Authenticator authenticator = new Authenticator(username, password, DateTime.UtcNow, new User(0, username, email));
+            Authenticator authenticator = new Authenticator(email, password, DateTime.UtcNow, new User(0, username, email));
 
             await Database.Authenticators.AddAsync(authenticator);
             return true;

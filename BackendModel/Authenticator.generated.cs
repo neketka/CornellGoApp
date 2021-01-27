@@ -54,14 +54,14 @@ namespace BackendModel
       /// <summary>
       /// Public constructor with required data
       /// </summary>
-      /// <param name="username">Username associated with the authenticator up to 60 chars</param>
+      /// <param name="email">Email associated with the authenticator.</param>
       /// <param name="password">User&apos;s password hash</param>
       /// <param name="timestamp">Creation timestamp</param>
       /// <param name="user"></param>
-      public Authenticator(string username, string password, DateTime timestamp, global::BackendModel.User user)
+      public Authenticator(string email, string password, DateTime timestamp, global::BackendModel.User user)
       {
-         if (string.IsNullOrEmpty(username)) throw new ArgumentNullException(nameof(username));
-         this.Username = username;
+         if (string.IsNullOrEmpty(email)) throw new ArgumentNullException(nameof(email));
+         this.Email = email;
 
          if (string.IsNullOrEmpty(password)) throw new ArgumentNullException(nameof(password));
          this.Password = password;
@@ -78,13 +78,13 @@ namespace BackendModel
       /// <summary>
       /// Static create function (for use in LINQ queries, etc.)
       /// </summary>
-      /// <param name="username">Username associated with the authenticator up to 60 chars</param>
+      /// <param name="email">Email associated with the authenticator.</param>
       /// <param name="password">User&apos;s password hash</param>
       /// <param name="timestamp">Creation timestamp</param>
       /// <param name="user"></param>
-      public static Authenticator Create(string username, string password, DateTime timestamp, global::BackendModel.User user)
+      public static Authenticator Create(string email, string password, DateTime timestamp, global::BackendModel.User user)
       {
-         return new Authenticator(username, password, timestamp, user);
+         return new Authenticator(email, password, timestamp, user);
       }
 
       /*************************************************************************
@@ -101,15 +101,13 @@ namespace BackendModel
       public long Id { get; set; }
 
       /// <summary>
-      /// Required, Min length = 1, Max length = 120
-      /// Username associated with the authenticator up to 60 chars
+      /// Required, Min length = 4
+      /// Email associated with the authenticator.
       /// </summary>
       [Required]
-      [MinLength(1)]
-      [MaxLength(120)]
-      [StringLength(120)]
-      [System.ComponentModel.Description("Username associated with the authenticator up to 60 chars")]
-      public string Username { get; set; }
+      [MinLength(4)]
+      [System.ComponentModel.Description("Email associated with the authenticator.")]
+      public string Email { get; set; }
 
       /// <summary>
       /// Required, Min length = 8

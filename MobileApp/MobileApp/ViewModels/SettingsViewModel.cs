@@ -24,6 +24,7 @@ namespace MobileApp.ViewModels
         public SettingsViewModel()
         {
             Avatar = ImageSource.FromResource("MobileApp.Assets.Images.bsquare.jpg");
+            Username = "Username";
             ChangeAvatarCommand = new Command(async () => { });
             ChangeUsernameCommand = new Command(async () => { });
             ChangePasswordCommand = new Command(async () => { });

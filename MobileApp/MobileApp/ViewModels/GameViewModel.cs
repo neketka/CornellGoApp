@@ -70,7 +70,10 @@ namespace MobileApp.ViewModels
             ChallengeDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt";
 
             LeaveCommand = new Command<string>(s => { });
-            JoinCommand = new Command(() => { });
+            JoinCommand = new Command(async () => 
+            {
+                await NavigationService.ShowJoinGroup();
+            });
             FindOutMoreCommand = new Command(() => { });
             NextChallengeCommand = new Command(() => { VictoryMode = false; });
 

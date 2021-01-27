@@ -9,7 +9,7 @@ namespace CommunicationModel
     public interface IServerHub
     {
         Task<bool> AttemptRelog(string session);
-        Task<bool> Login(string username, string password);
+        Task<bool> Login(string email, string password);
         Task<bool> Logout();
         Task<string> GetSessionToken();
         Task<bool> Register(string username, string password, string email);

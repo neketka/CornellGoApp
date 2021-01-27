@@ -14,7 +14,7 @@
     </ContentPage.BindingContext>
     <ContentPage.Content>
         <StackLayout>
-            <Image Source="{ex:ImageResource MobileApp.Assets.Images.logo.png}" Aspect="AspectFill" HorizontalOptions="Center" HeightRequest="128" Margin="0, 84, 0, 0"/>
+            <Image Source="{ex:ImageResource MobileApp.Assets.Images.logo.png}" Aspect="AspectFill" HorizontalOptions="Center" HeightRequest="128" Margin="0, 64, 0, 0"/>
             <Label Text="{Binding BadText}" TextColor="Red" HorizontalOptions="Center" HeightRequest="32" FontSize="18"/>
             <Entry Text="{Binding Path=Username, Mode=TwoWay}" HorizontalOptions="FillAndExpand" TextColor="{StaticResource SecondaryText}"
                    Placeholder="Username" PlaceholderColor="{StaticResource PrimaryAccent}" Margin="20, 0, 20, 0"/>
