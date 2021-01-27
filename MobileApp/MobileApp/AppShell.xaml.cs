@@ -17,6 +17,7 @@ namespace MobileApp
             Routing.RegisterRoute(nameof(RegistrationPage), typeof(RegistrationPage));
             Routing.RegisterRoute(nameof(HistoryPage), typeof(HistoryPage));
             Routing.RegisterRoute(nameof(LeaderPage), typeof(LeaderPage));
+            Routing.RegisterRoute(nameof(LandingPage), typeof(LandingPage));
 
             InitializeComponent();
         }

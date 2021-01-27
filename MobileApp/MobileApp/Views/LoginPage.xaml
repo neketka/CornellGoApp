@@ -6,9 +6,9 @@
              xmlns:local="clr-namespace:MobileApp.Views"
              xmlns:fa="clr-namespace:MobileApp.Constants"
              x:Class="MobileApp.Views.LoginPage"
-              BackgroundColor="{StaticResource Secondary}"
-             Shell.PresentationMode="ModalAnimated"
-             Shell.FlyoutBehavior="Disabled">
+             BackgroundColor="{StaticResource Secondary}"
+             Shell.FlyoutBehavior="Disabled"
+             Title="Login">
     <ContentPage.BindingContext>
         <vm:LoginViewModel/>
     </ContentPage.BindingContext>

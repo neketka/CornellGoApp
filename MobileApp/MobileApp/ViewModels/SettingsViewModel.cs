@@ -31,7 +31,7 @@ namespace MobileApp.ViewModels
             LogoutCommand = new Command(async () => 
             {
                 if (await GameService.LogoutWithSession())
-                    await Shell.Current.GoToAsync(nameof(LoginPage));
+                    await NavigationService.PushLandingPage();
             });
         }
     }

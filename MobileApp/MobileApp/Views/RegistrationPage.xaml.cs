@@ -18,11 +18,6 @@ namespace MobileApp.Views
             InitializeComponent();
         }
 
-        private async void Cancel_Clicked(object sender, EventArgs e)
-        {
-            await Shell.Current.GoToAsync($"..");
-        }
-
         protected override void OnAppearing()
         {
             base.OnAppearing();

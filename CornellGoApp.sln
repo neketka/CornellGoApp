@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backend", "Backend\Backend.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backend.Test", "Backend.Test\Backend.Test.csproj", "{3442CCEC-05E1-4C07-B523-35EC6CDF0E9F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CornellGoApp.Test", "CornellGoApp.Test\CornellGoApp.Test.csproj", "{DDF51ECC-8C90-4435-B20C-E14B81C1D40E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackendModel", "BackendModel\BackendModel.csproj", "{1AB5D54A-8739-4009-8DFE-F9972B9E1339}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileApp.Android", "MobileApp\MobileApp.Android\MobileApp.Android.csproj", "{5719D5B6-29C2-4B81-9CC1-44F456CCA9D6}"
@@ -17,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileApp.iOS", "MobileApp\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MobileApp", "MobileApp\MobileApp\MobileApp.csproj", "{038FB39E-3C99-4217-A87C-425C376EFCAD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommunicationModel", "CommunicationModel\CommunicationModel.csproj", "{1E9F7BEB-36CF-4A82-B861-41FCEA00D959}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommunicationModel", "CommunicationModel\CommunicationModel.csproj", "{1E9F7BEB-36CF-4A82-B861-41FCEA00D959}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,18 +51,6 @@ Global
 		{3442CCEC-05E1-4C07-B523-35EC6CDF0E9F}.Release|iPhone.Build.0 = Release|Any CPU
 		{3442CCEC-05E1-4C07-B523-35EC6CDF0E9F}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{3442CCEC-05E1-4C07-B523-35EC6CDF0E9F}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
-		{DDF51ECC-8C90-4435-B20C-E14B81C1D40E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DDF51ECC-8C90-4435-B20C-E14B81C1D40E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DDF51ECC-8C90-4435-B20C-E14B81C1D40E}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{DDF51ECC-8C90-4435-B20C-E14B81C1D40E}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{DDF51ECC-8C90-4435-B20C-E14B81C1D40E}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{DDF51ECC-8C90-4435-B20C-E14B81C1D40E}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{DDF51ECC-8C90-4435-B20C-E14B81C1D40E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DDF51ECC-8C90-4435-B20C-E14B81C1D40E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DDF51ECC-8C90-4435-B20C-E14B81C1D40E}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{DDF51ECC-8C90-4435-B20C-E14B81C1D40E}.Release|iPhone.Build.0 = Release|Any CPU
-		{DDF51ECC-8C90-4435-B20C-E14B81C1D40E}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{DDF51ECC-8C90-4435-B20C-E14B81C1D40E}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{1AB5D54A-8739-4009-8DFE-F9972B9E1339}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1AB5D54A-8739-4009-8DFE-F9972B9E1339}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1AB5D54A-8739-4009-8DFE-F9972B9E1339}.Debug|iPhone.ActiveCfg = Debug|Any CPU

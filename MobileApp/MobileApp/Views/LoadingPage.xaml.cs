@@ -16,18 +16,6 @@ namespace MobileApp.Views
         public LoadingPage()
         {
             InitializeComponent();
-            DependencyService.Get<GameService>().Client.ConnectionClosed += Client_ConnectionClosed;
-        }
-
-        private async Task Client_ConnectionClosed()
-        {
-            await Shell.Current.GoToAsync($"//{nameof(LoadingPage)}");
-        }
-
-        protected override async void OnAppearing()
-        {
-            await Task.Delay(1500);
-            await Shell.Current.GoToAsync($"{nameof(LoginPage)}");
         }
     }
 }

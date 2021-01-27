@@ -7,6 +7,7 @@
              xmlns:local="clr-namespace:MobileApp.Views"
              xmlns:fa="clr-namespace:MobileApp.Constants"
              Title="Play"
+             Shell.PresentationMode="Animated"
              SizeChanged="ContentPage_SizeChanged"
              Shell.NavBarIsVisible="False">
     <ContentPage.BindingContext>
@@ -33,7 +34,7 @@
                 <Label Text="{Binding OldChallengeName}" FontSize="36" TextColor="White" HorizontalOptions="Center" FontAttributes="Bold"/>
                 <Label Text="{Binding Path=OldChallengePoints, StringFormat='+{0}!'}" FontSize="64" TextColor="White" HorizontalOptions="Center"/>
                 <Button Text="Keep searching..." HorizontalOptions="Center" Padding="0" Margin="0, 16, 0, 0" WidthRequest="250" HeightRequest="40" Command="{Binding NextChallengeCommand}"/>
-                <Button Text="Find out more information" HorizontalOptions="Center" Padding="0" Margin="0, 8, 0, 0" WidthRequest="250" HeightRequest="40" Command="{Binding FindOutMoreCommand}"/>
+                <Button Text="Find out more" HorizontalOptions="Center" Padding="0" Margin="0, 8, 0, 0" WidthRequest="250" HeightRequest="40" Command="{Binding FindOutMoreCommand}"/>
             </StackLayout>
 
             <Frame WidthRequest="42" HeightRequest="42" CornerRadius="21" HasShadow="True" Margin="12" VerticalOptions="Start"
