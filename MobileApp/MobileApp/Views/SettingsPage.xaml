@@ -21,13 +21,14 @@
                             <TapGestureRecognizer Command="{Binding ChangeAvatarCommand}"/>
                         </local:AvatarView.GestureRecognizers>
                     </local:AvatarView>
-                    <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="Center" Margin="15, 0, 15, 0">
-                        <Label Text="Username" VerticalOptions="Center" TextColor="{StaticResource SecondaryText}"/>
-                        <Entry Text="{Binding Username}" TextColor="{StaticResource SecondaryText}" IsReadOnly="True" HorizontalOptions="FillAndExpand">
-                            <Entry.GestureRecognizers>
+                    <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="Center" Margin="12, 0, 15, 0">
+                        <Label Margin="4, 0, 0, 0" Text="Username" VerticalOptions="Center" TextColor="{StaticResource SecondaryText}"/>
+                        <Grid HorizontalOptions="FillAndExpand">
+                            <Grid.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ChangeUsernameCommand}"/>
-                            </Entry.GestureRecognizers>
-                        </Entry>
+                            </Grid.GestureRecognizers>
+                            <Entry Text="{Binding Username}" TextColor="{StaticResource SecondaryText}" IsReadOnly="True" IsEnabled="False"/>
+                        </Grid>
                     </StackLayout>
                 </StackLayout>
                 <Button Text="Change Email Address" Command="{Binding ChangeEmailCommand}" Margin="15, 0, 15, 0" HeightRequest="40" Padding="0"/>

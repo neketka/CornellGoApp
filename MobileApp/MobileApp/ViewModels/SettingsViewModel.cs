@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
+using Xamarin.Essentials;
 
 namespace MobileApp.ViewModels
 {
@@ -26,7 +27,10 @@ namespace MobileApp.ViewModels
         {
             Avatar = ImageSource.FromResource("MobileApp.Assets.Images.bsquare.jpg");
             Username = "Username";
-            ChangeAvatarCommand = new Command(async () => { });
+            ChangeAvatarCommand = new Command(async () => 
+            {
+                await MediaPicker.PickPhotoAsync();
+            });
             ChangeUsernameCommand = new Command(async () => await NavigationService.ShowChangeUsername(Username, false));
             ChangePasswordCommand = new Command(async () => await NavigationService.PushChangePasswordPage());
             ChangeEmailCommand = new Command(async () => await NavigationService.PushChangeEmailPage());
