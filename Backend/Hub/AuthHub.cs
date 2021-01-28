@@ -78,6 +78,8 @@ namespace Backend.Hub
 
             // TODO: add user to a new group, sync the group with users, and generate a new challenge. There should be an extenstion method for each one.
 
+            await Groups.AddToGroupAsync(Context.UserIdentifier, auth.User.GroupMember.Group.Id.ToString());
+
             await Database.Authenticators.AddAsync(auth);
             return true;
         }
