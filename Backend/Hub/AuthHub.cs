@@ -76,17 +76,25 @@ namespace Backend.Hub
             return true;
         }
 
-        public Task<bool> ChangeUsername(string username)
+        public async Task<bool> ChangeUsername(string username)
+        {
+            UserSession session = await Database.UserSessions.FromSignalRId(Context.UserIdentifier);
+            if (session == null)
+                return false;
+            User user = session.User;
+            user.Username = username;
+            await Database.SaveChangesAsync();
+            Clients.Group(user.GroupMember.Group.SignalRId).UpdateGroupMember(new(user.Id.ToString(), username, user.GroupMember.IsHost, user.GroupMember.IsDone, user.Score));
+            Clients.Caller.UpdateUserData(username, user.Score);
+            return true;
+        }
+
+        public async Task<bool> ChangePassword(string password)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> ChangePassword(string password)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> ChangeEmail(string email, string password)
+        public async Task<bool> ChangeEmail(string email, string password)
         {
             throw new NotImplementedException();
         }

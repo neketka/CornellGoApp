@@ -59,13 +59,16 @@ namespace BackendModel
       /// Public constructor with required data
       /// </summary>
       /// <param name="ishost">True if this member is a host</param>
+      /// <param name="isdone">Is the group member done.</param>
       /// <param name="group"></param>
-      public GroupMember(bool ishost, global::BackendModel.Group group)
+      public GroupMember(bool ishost, bool isdone, global::BackendModel.Group group)
       {
          // NOTE: This class has one-to-one associations with GroupMember.
          // One-to-one associations are not validated in constructors since this causes a scenario where each one must be constructed before the other.
 
          this.IsHost = ishost;
+
+         this.IsDone = isdone;
 
          if (group == null) throw new ArgumentNullException(nameof(group));
          this.Group = group;
@@ -78,10 +81,11 @@ namespace BackendModel
       /// Static create function (for use in LINQ queries, etc.)
       /// </summary>
       /// <param name="ishost">True if this member is a host</param>
+      /// <param name="isdone">Is the group member done.</param>
       /// <param name="group"></param>
-      public static GroupMember Create(bool ishost, global::BackendModel.Group group)
+      public static GroupMember Create(bool ishost, bool isdone, global::BackendModel.Group group)
       {
-         return new GroupMember(ishost, group);
+         return new GroupMember(ishost, isdone, group);
       }
 
       /*************************************************************************
@@ -104,6 +108,14 @@ namespace BackendModel
       [Required]
       [System.ComponentModel.Description("True if this member is a host")]
       public bool IsHost { get; set; }
+
+      /// <summary>
+      /// Required
+      /// Is the group member done.
+      /// </summary>
+      [Required]
+      [System.ComponentModel.Description("Is the group member done.")]
+      public bool IsDone { get; set; }
 
       /*************************************************************************
        * Navigation properties

@@ -204,6 +204,9 @@ namespace BackendModel
          modelBuilder.Entity<global::BackendModel.GroupMember>()
                      .Property(t => t.IsHost)
                      .IsRequired();
+         modelBuilder.Entity<global::BackendModel.GroupMember>()
+                     .Property(t => t.IsDone)
+                     .IsRequired();
 
          modelBuilder.Entity<global::BackendModel.PrevChallenge>()
                      .ToTable("PrevChallenges")
