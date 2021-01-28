@@ -18,6 +18,7 @@ namespace MobileApp.ViewModels
         public Command ChangeAvatarCommand { get; }
         public Command ChangeUsernameCommand { get; }
         public Command ChangePasswordCommand { get; }
+        public Command ChangeEmailCommand { get; }
         public Command CloseAccountCommand { get; }
         public Command LogoutCommand { get; }
 
@@ -26,9 +27,10 @@ namespace MobileApp.ViewModels
             Avatar = ImageSource.FromResource("MobileApp.Assets.Images.bsquare.jpg");
             Username = "Username";
             ChangeAvatarCommand = new Command(async () => { });
-            ChangeUsernameCommand = new Command(async () => { });
-            ChangePasswordCommand = new Command(async () => { });
-            CloseAccountCommand = new Command(async () => { });
+            ChangeUsernameCommand = new Command(async () => await NavigationService.ShowChangeUsername(Username, false));
+            ChangePasswordCommand = new Command(async () => await NavigationService.PushChangePasswordPage());
+            ChangeEmailCommand = new Command(async () => await NavigationService.PushChangeEmailPage());
+            CloseAccountCommand = new Command(async () => await NavigationService.PushCloseAccountPage());
             LogoutCommand = new Command(async () => 
             {
                 if (await GameService.LogoutWithSession())

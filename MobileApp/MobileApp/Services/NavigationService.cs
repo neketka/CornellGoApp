@@ -39,40 +39,52 @@ namespace MobileApp.Services
             await Shell.Current.GoToAsync($"{nameof(LandingPage)}");
         }
 
-        public async Task<string> ShowJoinGroup()
+        public async Task<string> ShowJoinGroup(bool invalid)
         {
-            return await Shell.Current.DisplayPromptAsync("Join Group", "Enter the code between the brackets from a group member's screen.");
+            return await Shell.Current.DisplayPromptAsync("Join Group", invalid ? "Could not join this group! Make sure you are entering the correct code." 
+                : "Enter the code between the brackets from a group member's screen.");
         }
 
         public async Task<bool> ConfirmKick(string user)
         {
+            return await Shell.Current.DisplayAlert("Kick member", $"Are you sure you want to kick \"{user}\"?", "Kick", "Cancel");
         }
 
         public async Task<bool> ConfirmDisband(bool isJoining)
         {
+            if (isJoining)
+                return await Shell.Current.DisplayAlert("Disband group", $"Joining another group will disband this one. Do you wish to proceed?", "Continue", "Cancel");
+            else
+                return await Shell.Current.DisplayAlert("Disband group", $"Are you sure you want to disband this group?", "Disband", "Cancel");
         }
 
         public async Task<bool> ConfirmLeave(bool isJoining)
         {
+            if (isJoining)
+                return await Shell.Current.DisplayAlert("Leave group", $"Joining another group will leave this one. Do you wish to proceed?", "Continue", "Cancel");
+            else
+                return await Shell.Current.DisplayAlert("Leave group", $"Are you sure you want to leave this group?", "Leave", "Cancel");
         }
 
-        public async Task<string> ShowChangeUsername(string oldName)
+        public async Task<string> ShowChangeUsername(string oldName, bool invalid)
         {
-
+            return await Shell.Current.DisplayPromptAsync("Change username", invalid ? "Invalid username! Must have letters, numbers, underscores, and 1-24 characters." : 
+                "Enter your desired username (letters, numbers, underscores, 1-24 characters).", "Change", "Cancel", "Username", 24, null, oldName);
         }
 
-        public async Task<(string pass, string confirmPass)> ShowChangePassword(bool invalid)
+        public async Task PushChangePasswordPage()
         {
-
+            await Shell.Current.GoToAsync($"{nameof(ChangePasswordPage)}");
         }
 
-        public async Task<(string pass, string email)> ShowChangeEmail(bool invalidPass, bool invalidEmail)
+        public async Task PushChangeEmailPage()
         {
-
+            await Shell.Current.GoToAsync($"{nameof(ChangeEmailPage)}");
         }
 
-        public async Task<string> ShowCloseAccount(bool invalid)
+        public async Task PushCloseAccountPage()
         {
+            await Shell.Current.GoToAsync($"{nameof(CloseAccountPage)}");
         }
     }
 }

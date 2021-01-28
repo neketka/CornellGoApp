@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Linq;
 using Xamarin.Forms;
 
 namespace MobileApp.ViewModels
@@ -69,10 +70,29 @@ namespace MobileApp.ViewModels
             ChallengeImage = ImageSource.FromResource("MobileApp.Assets.Images.grid.png");
             ChallengeDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt";
 
-            LeaveCommand = new Command<string>(s => { });
+            LeaveCommand = new Command<string>(async (s) => 
+            {
+                GroupMember gm = GroupMembers.First(e => e.Id == s);
+                if (gm.IsYou)
+                {
+                    if (gm.IsHost)
+                    {
+                        await NavigationService.ConfirmDisband(false);
+                    }
+                    else
+                    {
+                        await NavigationService.ConfirmLeave(false);
+                    }
+                }
+                else
+                {
+                    await NavigationService.ConfirmKick(gm.Username);
+                }
+            });
             JoinCommand = new Command(async () => 
             {
-                await NavigationService.ShowJoinGroup();
+                await NavigationService.ConfirmDisband(true);
+                await NavigationService.ShowJoinGroup(false);
             });
             FindOutMoreCommand = new Command(() => { });
             NextChallengeCommand = new Command(() => { VictoryMode = false; });

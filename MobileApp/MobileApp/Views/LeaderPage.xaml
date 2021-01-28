@@ -16,17 +16,17 @@
         <ex:PluralConverter x:Key="plural"/>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout Orientation="Vertical" BackgroundColor="{StaticResource Secondary}">
-            <BoxView CornerRadius="0" HeightRequest="48" BackgroundColor="{StaticResource Secondary}" Margin="0">
+        <StackLayout Orientation="Vertical" BackgroundColor="{StaticResource Tertiary}">
+            <BoxView CornerRadius="0" HeightRequest="54" BackgroundColor="{StaticResource Secondary}" Margin="0">
                 <BoxView.GestureRecognizers>
                     <TapGestureRecognizer Tapped="LeaderboardLine_Tapped"/>
                 </BoxView.GestureRecognizers>
             </BoxView>
             <StackLayout Orientation="Vertical" BackgroundColor="{StaticResource Tertiary}" Padding="24, 0, 8, 0">
-                <local:AvatarView Image="{Binding ProfilePicture}" HeightRequest="93" WidthRequest="64" HorizontalOptions="Center" Margin="0, -46, 0, -18"/>
+                <local:AvatarView Image="{Binding ProfilePicture}" HeightRequest="94" WidthRequest="64" HorizontalOptions="Center" Margin="0, -46, 0, -18"/>
                 <Label FontSize="18" TextColor="{StaticResource SecondaryText}" VerticalOptions="Center" HorizontalOptions="CenterAndExpand" 
                        Text="{Binding YourUsername}" Padding="0, 10, 0, 0" Margin="0, 0, 0, -42"/>
-                <StackLayout Padding="0, 6, 0, 6" Orientation="Horizontal" VerticalOptions="Center">
+                <StackLayout Padding="0, 0, 0, 6" Orientation="Horizontal" VerticalOptions="Center">
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Tapped="UserLine_Tapped"/>
                     </StackLayout.GestureRecognizers>

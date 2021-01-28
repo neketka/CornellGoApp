@@ -20,7 +20,7 @@
                    Placeholder="Username" PlaceholderColor="{StaticResource PrimaryAccent}" Margin="20, 0, 20, 0"/>
             <Entry Text="{Binding Path=Password, Mode=TwoWay}" IsPassword="True" HorizontalOptions="FillAndExpand" TextColor="{StaticResource SecondaryText}"
                    Placeholder="Password" PlaceholderColor="{StaticResource PrimaryAccent}" Margin="20, 0, 20, 0"/>
-            <Button Text="Log In" VerticalOptions="Center" HeightRequest="30" Padding="0" Margin="20, 0, 20, 0" Grid.Column="0" Command="{Binding LoginCommand}"/>
+            <Button Text="Log In" VerticalOptions="Center" HeightRequest="30" Padding="0" Margin="20, 8, 20, 0" Command="{Binding LoginCommand}"/>
             <ActivityIndicator Color="{StaticResource SecondaryText}" IsRunning="{Binding IsBusy}"/>
         </StackLayout>
     </ContentPage.Content>

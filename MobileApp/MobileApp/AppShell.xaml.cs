@@ -14,6 +14,9 @@ namespace MobileApp
         {
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
             Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
+            Routing.RegisterRoute(nameof(ChangePasswordPage), typeof(ChangePasswordPage));
+            Routing.RegisterRoute(nameof(ChangeEmailPage), typeof(ChangeEmailPage));
+            Routing.RegisterRoute(nameof(CloseAccountPage), typeof(CloseAccountPage));
             Routing.RegisterRoute(nameof(RegistrationPage), typeof(RegistrationPage));
             Routing.RegisterRoute(nameof(HistoryPage), typeof(HistoryPage));
             Routing.RegisterRoute(nameof(LeaderPage), typeof(LeaderPage));
@@ -24,13 +27,13 @@ namespace MobileApp
 
         private async void Suggest_Clicked(object sender, EventArgs e)
         {
-            await Browser.OpenAsync("https://forms.gle/wSPq9z2ymjxcob2w6");
+            await Browser.OpenAsync("https://docs.google.com/forms/d/e/1FAIpQLSeUQFU8LI2LnHHSg7I4r-i10BNYr4zDiwp_la0v0nBT-fP4GA/viewform", BrowserLaunchMode.SystemPreferred);
             Current.FlyoutIsPresented = false;
         }
 
         private async void Feedback_Clicked(object sender, EventArgs e)
         {
-            await Browser.OpenAsync("https://forms.gle/ZsCg6PFQshd53GPm7");
+            await Browser.OpenAsync("https://docs.google.com/forms/d/e/1FAIpQLSfwl50y3ebjjsQrtoAxkXoYYoQntodpQhp9RFkYURv_vg94Ug/viewform", BrowserLaunchMode.SystemPreferred);
             Current.FlyoutIsPresented = false;
         }
 
