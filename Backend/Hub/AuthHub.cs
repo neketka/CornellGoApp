@@ -30,6 +30,7 @@ namespace Backend.Hub
             {
                 usession.SignalRId = Context.UserIdentifier;
                 await Database.SaveChangesAsync();
+                await Groups.AddToGroupAsync(Context.UserIdentifier, usession.User.GroupMember.Group.Id.ToString());
                 return true;
             }
             return false;
@@ -46,6 +47,7 @@ namespace Backend.Hub
 
             session.SignalRId = Context.UserIdentifier;
 
+            await Groups.AddToGroupAsync(Context.UserIdentifier, session.User.GroupMember.Group.Id.ToString());
             await Database.SaveChangesAsync();
             return true;
         }
@@ -57,6 +59,7 @@ namespace Backend.Hub
                 return false;
 
             Database.Remove(session);
+            await Groups.RemoveFromGroupAsync(Context.UserIdentifier, session.User.GroupMember.Group.Id.ToString());
             await Database.SaveChangesAsync();
             return true;
         }
@@ -72,6 +75,8 @@ namespace Backend.Hub
                 return false;
 
             Authenticator auth = new(email, CreatePasswordHash(password), DateTime.UtcNow, new(0, username, email));
+
+            // TODO: add user to a new group, sync the group with users, and generate a new challenge. There should be an extenstion method for each one.
 
             await Database.Authenticators.AddAsync(auth);
             return true;
