@@ -84,8 +84,8 @@ namespace Backend.Hub
             User user = session.User;
             user.Username = username;
             await Database.SaveChangesAsync();
-            Clients.Group(user.GroupMember.Group.SignalRId).UpdateGroupMember(new(user.Id.ToString(), username, user.GroupMember.IsHost, user.GroupMember.IsDone, user.Score));
-            Clients.Caller.UpdateUserData(username, user.Score);
+            await Clients.Group(user.GroupMember.Group.SignalRId).UpdateGroupMember(new(user.Id.ToString(), username, user.GroupMember.IsHost, user.GroupMember.IsDone, user.Score));
+            await Clients.Caller.UpdateUserData(username, user.Score);
             return true;
         }
 
