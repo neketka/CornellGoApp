@@ -75,5 +75,20 @@ namespace Backend.Hub
             await Database.Authenticators.AddAsync(authenticator);
             return true;
         }
+
+        public Task<bool> ChangeUsername(string username)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> ChangePassword(string password)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> ChangeEmail(string email, string password)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
