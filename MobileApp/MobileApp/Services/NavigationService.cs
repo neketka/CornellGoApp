@@ -69,7 +69,12 @@ namespace MobileApp.Services
         public async Task<string> ShowChangeUsername(string oldName, bool invalid)
         {
             return await Shell.Current.DisplayPromptAsync("Change username", invalid ? "Invalid username! Must have letters, numbers, underscores, and 1-24 characters." : 
-                "Enter your desired username (letters, numbers, underscores, 1-16 characters).", "Change", "Cancel", "Username", 24, null, oldName);
+                "Enter your desired username (letters, numbers, underscores, 1-16 characters).", "Change", "Cancel", "Username", 16, null, oldName);
+        }
+
+        public async Task ShowServerError()
+        {
+            await Shell.Current.DisplayAlert("Error!", "Server returned an error while processing your request!", "OK");
         }
 
         public async Task PushChangePasswordPage()

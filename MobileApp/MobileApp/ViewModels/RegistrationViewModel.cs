@@ -101,7 +101,7 @@ namespace MobileApp.ViewModels
                 System.Net.Mail.MailAddress m = new System.Net.Mail.MailAddress(emailaddress);
                 return true;
             }
-            catch (Exception)
+            catch
             {
                 return false;
             }
@@ -113,10 +113,30 @@ namespace MobileApp.ViewModels
             {
                 IsBusy = true;
                 RegisterCommand.ChangeCanExecute();
-                await Task.Delay(2000);
-                IsBusy = false;
-                await NavigationService.PushGamePage();
-                RegisterCommand.ChangeCanExecute();
+                BadText = "";
+                try
+                {
+                    if (await GameService.Client.Register(Username, Password, Email))
+                    {
+                        if (await GameService.LoginWithSession(Username, Password))
+                            await NavigationService.PushGamePage();
+                        else
+                            await NavigationService.ToLoginPage();
+                    }
+                    else
+                    {
+                        BadText = $"An account with this email already exists or the email is invalid.";
+                    }
+                }
+                catch (Exception e)
+                {
+                    BadText = $"An error occured while contacting the server ({e.GetType()}).";
+                }
+                finally
+                {
+                    IsBusy = false;
+                    RegisterCommand.ChangeCanExecute();
+                }
             }, () => !IsBusy && FormValid);
         }
     }

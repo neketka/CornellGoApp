@@ -63,7 +63,7 @@ namespace CommunicationModel
         public async Task<bool> ChangePassword(string password)
             => await Connection.InvokeAsync<bool>("ChangePassword", password);
 
-        public async Task<bool> ChangeEmail(string email, string password)
-            => await Connection.InvokeAsync<bool>("ChangeEmail", email, password);
+        public async Task<bool> ChangeEmail(string email)
+            => await Connection.InvokeAsync<bool>("ChangeEmail", email);
     }
 }

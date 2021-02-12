@@ -59,7 +59,13 @@ namespace MobileApp.ViewModels
 
         public ChangeEmailViewModel()
         {
-            ChangeEmailCommand = new Command(() => { }, () => !IsBusy && FormValid);
+            ChangeEmailCommand = new Command(async () => 
+            {
+                if (await GameService.Client.ChangeEmail(Email))
+                    await NavigationService.GoBack();
+                else
+                    BadText = "Either this email is in use, or it is not a valid email.";
+            }, () => !IsBusy && FormValid);
         }
     }
 }

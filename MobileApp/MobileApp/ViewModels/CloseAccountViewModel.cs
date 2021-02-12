@@ -13,7 +13,10 @@ namespace MobileApp.ViewModels
 
         public CloseAccountViewModel()
         {
-            CloseAccountCommand = new Command(() => { }, () => !(IsBusy || string.IsNullOrWhiteSpace(Password)));
+            CloseAccountCommand = new Command(async () => 
+            {
+                await NavigationService.ShowServerError();
+            }, () => !(IsBusy || string.IsNullOrWhiteSpace(Password)));
         }
     }
 }

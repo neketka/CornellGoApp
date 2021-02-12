@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
 using Xamarin.Essentials;
+using System.Linq;
 
 namespace MobileApp.ViewModels
 {
@@ -31,7 +32,30 @@ namespace MobileApp.ViewModels
             {
                 await MediaPicker.PickPhotoAsync();
             });
-            ChangeUsernameCommand = new Command(async () => await NavigationService.ShowChangeUsername(Username, false));
+            ChangeUsernameCommand = new Command(async () =>
+            {
+                bool isValid = true;
+
+                string newName = Username;
+                do
+                {
+                    newName = await NavigationService.ShowChangeUsername(newName, isValid);
+
+                    bool lenValid = newName.Length is >= 1 and <= 16;
+                    bool formatValid = newName.All(c => char.IsLetterOrDigit(c) || c == '_') && !string.IsNullOrWhiteSpace(newName);
+
+                    isValid = lenValid && formatValid;
+                }
+                while (!isValid && newName != null);
+
+                if (newName == null)
+                    return;
+
+                if (await GameService.Client.ChangeUsername(newName))
+                    Username = newName;
+                else
+                    await NavigationService.ShowServerError();
+            });
             ChangePasswordCommand = new Command(async () => await NavigationService.PushChangePasswordPage());
             ChangeEmailCommand = new Command(async () => await NavigationService.PushChangeEmailPage());
             CloseAccountCommand = new Command(async () => await NavigationService.PushCloseAccountPage());

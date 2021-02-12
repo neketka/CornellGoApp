@@ -77,10 +77,13 @@ namespace Backend.Hub
             Authenticator auth = new(email, CreatePasswordHash(password), DateTime.UtcNow, new(0, username, email));
 
             // TODO: add user to a new group, sync the group with users, and generate a new challenge. There should be an extenstion method for each one.
+            //Group Extension method to generate new random challenge (not in prev challenge), add current challenge if one exists to prev challenge list of group + all members
+            await auth.User.NewGroup(Database.Challenges);
 
             await Groups.AddToGroupAsync(Context.UserIdentifier, auth.User.GroupMember.Group.Id.ToString());
 
             await Database.Authenticators.AddAsync(auth);
+            await Database.Groups.AddAsync(auth.User.GroupMember.Group);
             return true;
         }
 
@@ -105,28 +108,34 @@ namespace Backend.Hub
             if (session == null)
                 return false;
 
-            Authenticator auth = await Database.Authenticators.FirstOrDefaultAsync(a => a.User.Id == session.User.Id);
+            Authenticator auth = await Database.Authenticators.SingleOrDefaultAsync(a => a.User.Id == session.User.Id);
             if (auth == null)
                 return false;
 
             auth.Password = CreatePasswordHash(password);
+            User user = session.User;
+            auth.Password = password;
             await Database.SaveChangesAsync();
             return true;
         }
 
-        public async Task<bool> ChangeEmail(string email, string password)
+        public async Task<bool> ChangeEmail(string email)
         {
             UserSession session = await Database.UserSessions.FromSignalRId(Context.UserIdentifier);
             if (session == null)
                 return false;
 
-            Authenticator auth = await Database.Authenticators.FirstOrDefaultAsync(a => a.User.Id == session.User.Id);
-            if (auth == null || !VerifyPasswordHash(password, auth.Password))
-                return false;
+            Authenticator auth = await Database.Authenticators.SingleOrDefaultAsync(a => a.User.Id == session.User.Id);
+            /*if (auth == null || !VerifyPasswordHash(password, auth.Password))
+                return false;*/
+
+            User user = session.User;
 
             auth.Email = email;
+            user.Email = email;
             await Database.SaveChangesAsync();
             return true;
+
         }
 
         // With insight from: http://csharptest.net/470/another-example-of-how-to-store-a-salted-password-hash/
@@ -160,6 +169,8 @@ namespace Backend.Hub
                     return false;
             }
             return true;
+
+
         }
     }
 }

@@ -13,7 +13,7 @@ namespace CommunicationModel
         Task<bool> Logout();
         Task<bool> ChangeUsername(string username);
         Task<bool> ChangePassword(string password);
-        Task<bool> ChangeEmail(string email, string password);
+        Task<bool> ChangeEmail(string email);
         Task<string> GetSessionToken();
         Task<bool> Register(string username, string password, string email);
         Task<UserData> GetUserData();

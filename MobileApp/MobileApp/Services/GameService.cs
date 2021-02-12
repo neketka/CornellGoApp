@@ -31,7 +31,7 @@ namespace MobileApp.Services
 
         public async Task<bool> LogoutWithSession()
         {
-            bool loggedOut = true;//await Client.Logout();
+            bool loggedOut = await Client.Logout();
             if (loggedOut)
                 SecureStorage.Remove("session");
             return loggedOut;

@@ -23,15 +23,18 @@ namespace MobileApp.ViewModels
             {
                 IsBusy = true;
                 LoginCommand.ChangeCanExecute();
+                BadText = "";
 
                 try
                 {
-                    await Task.Delay(3000);
-                    await NavigationService.PushGamePage();
+                    if (await GameService.LoginWithSession(Username, Password))
+                        await NavigationService.PushGamePage();
+                    else
+                        BadText = "Invalid username or password.";
                 }
-                catch
+                catch (Exception e)
                 {
-
+                    BadText = $"An error occured while contacting the server ({e.GetType()}).";
                 }
                 finally
                 {

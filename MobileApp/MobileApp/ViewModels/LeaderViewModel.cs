@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace MobileApp.ViewModels
@@ -16,6 +17,7 @@ namespace MobileApp.ViewModels
         private int yourRank;
         private int yourPoints;
         private string yourUsername;
+        private ImageSource pfp;
 
         public ObservableCollection<LeaderboardPlayer> Players { get; private set; }
         public Command<int> LoadMoreCommand { get; private set; }
@@ -27,24 +29,72 @@ namespace MobileApp.ViewModels
         public string YourUsername { get => yourUsername; set => SetProperty(ref yourUsername, value); }
         public LeaderViewModel()
         {
-            Players = new ObservableCollection<LeaderboardPlayer>(Enumerable.Range(1, 20)
-                .Select(i => new LeaderboardPlayer(i.ToString(), i, ImageSource.FromResource(i == 3 ? "MobileApp.Assets.Images.bsquare.jpg" :
-                    "MobileApp.Assets.Images.profile.png"), "User" + i, 1000 - i, i == 3)));
-            LoadMoreCommand = new Command<int>(async (i) =>
+            pfp = ImageSource.FromResource("MobileApp.Assets.Images.profile.png");
+
+            Players = new ObservableCollection<LeaderboardPlayer>();
+            LoadMoreCommand = new Command<int>((i) => LoadLeaderData(i));
+
+            ProfilePicture = pfp;
+            GameService.Client.ScorePositionsUpdated += RerankPlayer;
+            LoadData();
+        }
+
+        private async Task RerankPlayer(string userId, string username, int oldIndex, int newIndex, int score)
+        {
+            if (YourRank > oldIndex)
+                await LoadUserData();
+            Players.Skip(newIndex + 1).Select((p, i) => new LeaderboardPlayer(p.Id, p.Position, pfp, username, score, p.IsYou));
+            
+            Players.Move(oldIndex, newIndex);
+        }
+
+        public override void CleanupEvents()
+        {
+            GameService.Client.ScorePositionsUpdated -= RerankPlayer;
+        }
+
+        private async Task LoadData()
+        {
+            IsBusy = true;
+
+            try
             {
-                var service = DependencyService.Get<GameService>();
-                var data = service.Client.GetTopPlayers(Players.Count, i);
-                await foreach (var entry in data)
-                {
-                    Players.Add(new LeaderboardPlayer(entry.UserId, entry.Index + 1, ImageSource.FromResource("MobileApp.Assets.Images.profile.png"), 
-                        entry.Username, entry.Score, entry.UserId == service.UserId));
-                }
+                await LoadUserData();
+                await LoadLeaderData(20);
+            }
+            catch
+            {
+                await NavigationService.ShowServerError();
+                await NavigationService.GoBack();
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        private async Task LoadUserData()
+        {
+            var data = await GameService.Client.GetUserData();
+
+            await Device.InvokeOnMainThreadAsync(() =>
+            {
+                RankedPlayers = data.TotalUserCount;
+                YourRank = data.RankIndex + 1;
+                YourPoints = data.Points;
+                YourUsername = data.Username;
             });
-            ProfilePicture = ImageSource.FromResource("MobileApp.Assets.Images.profile.png");
-            RankedPlayers = 20;
-            YourRank = 4;
-            YourPoints = 997;
-            YourUsername = "User3";
+        }
+
+        private async Task LoadLeaderData(int count)
+        {
+            var data = GameService.Client.GetTopPlayers(Players.Count, count);
+            List<LeaderboardPlayer> tempPlayers = new List<LeaderboardPlayer>();
+            await foreach (var entry in data)
+            {
+                tempPlayers.Add(new(entry.UserId, entry.Index + 1, pfp, entry.Username, entry.Score, entry.UserId == GameService.UserId));
+            }
+            await Device.InvokeOnMainThreadAsync(() => tempPlayers.ForEach(p => Players.Add(p)));
         }
     }
 }

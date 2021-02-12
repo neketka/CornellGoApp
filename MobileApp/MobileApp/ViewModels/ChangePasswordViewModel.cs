@@ -58,7 +58,13 @@ namespace MobileApp.ViewModels
 
         public ChangePasswordViewModel()
         {
-            ChangePasswordCommand = new Command(() => { }, () => !IsBusy && FormValid);
+            ChangePasswordCommand = new Command(async () => 
+            {
+                if (await GameService.Client.ChangePassword(Password))
+                    await NavigationService.GoBack();
+                else
+                    BadText = "Failed to change password. Try logging out and back in.";
+            }, () => !IsBusy && FormValid);
         }
     }
 }

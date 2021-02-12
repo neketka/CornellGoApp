@@ -12,7 +12,7 @@ namespace System.Runtime.CompilerServices
 namespace CommunicationModel
 {
 
-    public record UserData(string Username, int Points, string GroupId, string UserId);
+    public record UserData(string Username, int Points, string GroupId, string UserId, int RankIndex, int TotalUserCount);
     public record LeaderboardData(string UserId, string Username, int Index, int Score);
     public record ChallengeData(string ChallengeId, string Description, int Points, string ImageUrl);
     public record ChallengeHistoryEntryData(string ChallengeId, string ImageUrl, string Name, string Description, string Points, DateTime UtcDateTime);
