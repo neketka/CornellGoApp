@@ -25,7 +25,7 @@ namespace MobileApp.ViewModels
 
         public SettingsViewModel()
         {
-            Avatar = ImageSource.FromResource("MobileApp.Assets.Images.bsquare.jpg");
+            Avatar = ImageSource.FromResource("MobileApp.Assets.Images.profile.png");
             Username = "Username";
             ChangeAvatarCommand = new Command(async () => 
             {
@@ -38,7 +38,7 @@ namespace MobileApp.ViewModels
             LogoutCommand = new Command(async () => 
             {
                 if (await GameService.LogoutWithSession())
-                    await NavigationService.PushLandingPage();
+                    await NavigationService.ToLandingPage();
             });
         }
     }

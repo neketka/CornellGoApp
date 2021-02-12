@@ -21,7 +21,7 @@ namespace MobileApp.ViewModels
         private async Task Load()
         {
             await Task.Delay(3000);
-            await NavigationService.PushLandingPage();
+            await NavigationService.ToLandingPage();
         }
     }
 }

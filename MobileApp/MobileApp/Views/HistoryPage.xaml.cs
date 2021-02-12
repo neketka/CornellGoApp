@@ -1,4 +1,5 @@
-﻿using MobileApp.ViewModels;
+﻿using MobileApp.Extensions;
+using MobileApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,12 @@ namespace MobileApp.Views
             EntryCollection.ItemsSource = string.IsNullOrWhiteSpace(query) ? entries :
                 entries.Select(e => (new F23.StringSimilarity.JaroWinkler().Distance(query, e.Name), e))
                        .Where(p => p.Item1 != 0).OrderBy(p => p.Item1).Select(p => p.e);
+        }
+
+        protected override void OnParentSet()
+        {
+            base.OnParentSet();
+            this.CleanupPage();
         }
     }
 }

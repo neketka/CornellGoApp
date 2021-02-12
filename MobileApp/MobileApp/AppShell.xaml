@@ -28,11 +28,6 @@
         </ResourceDictionary>
     </Shell.Resources>
 
-    <TabBar>
-        <ShellContent Route="LoadingPage" ContentTemplate="{DataTemplate views:LoadingPage}"
-                      Shell.FlyoutBehavior="Disabled"/>
-    </TabBar>
-
     <Shell.ItemTemplate>
         <DataTemplate>
             <Grid Style="{StaticResource FlyoutItemStyle}" Padding="5">
@@ -74,8 +69,11 @@
                    Grid.Row="1" Grid.Column="1" HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand"/>
         </Grid>
     </Shell.FlyoutFooter>
-    
-    <ShellContent Route="GamePage" ContentTemplate="{DataTemplate views:GamePage}" FlyoutItemIsVisible="False" Title="Play"/>
+
+    <TabBar>
+        <ShellContent Route="LoadingPage" ContentTemplate="{DataTemplate views:LoadingPage}"
+                      Shell.FlyoutBehavior="Disabled"/>
+    </TabBar>
 
     <MenuItem Text="Leaderboard" Clicked="Leaderboard_Clicked">
         <MenuItem.IconImageSource>

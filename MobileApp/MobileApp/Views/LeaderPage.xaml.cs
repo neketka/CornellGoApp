@@ -1,4 +1,5 @@
-﻿using MobileApp.Services;
+﻿using MobileApp.Extensions;
+using MobileApp.Services;
 using MobileApp.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,12 @@ namespace MobileApp.Views
         private void LeaderboardLine_Tapped(object sender, EventArgs e)
         {
             Leaderboard.ScrollTo(0, position: ScrollToPosition.Center);
+        }
+
+        protected override void OnParentSet()
+        {
+            base.OnParentSet();
+            this.CleanupPage();
         }
     }
 }

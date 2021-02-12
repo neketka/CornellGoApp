@@ -10,8 +10,17 @@ namespace MobileApp
 {
     public partial class AppShell : Xamarin.Forms.Shell
     {
+        public static BrowserLaunchOptions CustomTabsOptions { get; } = new BrowserLaunchOptions
+        {
+            LaunchMode = BrowserLaunchMode.SystemPreferred,
+            TitleMode = BrowserTitleMode.Show,
+            PreferredToolbarColor = Color.FromHex("2C2F33"),
+            PreferredControlColor = Color.FromHex("CB2424")
+        };
+
         public AppShell()
         {
+            Routing.RegisterRoute(nameof(GamePage), typeof(GamePage));
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
             Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
             Routing.RegisterRoute(nameof(ChangePasswordPage), typeof(ChangePasswordPage));
@@ -27,13 +36,13 @@ namespace MobileApp
 
         private async void Suggest_Clicked(object sender, EventArgs e)
         {
-            await Browser.OpenAsync("https://docs.google.com/forms/d/e/1FAIpQLSeUQFU8LI2LnHHSg7I4r-i10BNYr4zDiwp_la0v0nBT-fP4GA/viewform", BrowserLaunchMode.SystemPreferred);
+            await Browser.OpenAsync("https://docs.google.com/forms/d/e/1FAIpQLSeUQFU8LI2LnHHSg7I4r-i10BNYr4zDiwp_la0v0nBT-fP4GA/viewform", CustomTabsOptions);
             Current.FlyoutIsPresented = false;
         }
 
         private async void Feedback_Clicked(object sender, EventArgs e)
         {
-            await Browser.OpenAsync("https://docs.google.com/forms/d/e/1FAIpQLSfwl50y3ebjjsQrtoAxkXoYYoQntodpQhp9RFkYURv_vg94Ug/viewform", BrowserLaunchMode.SystemPreferred);
+            await Browser.OpenAsync("https://docs.google.com/forms/d/e/1FAIpQLSfwl50y3ebjjsQrtoAxkXoYYoQntodpQhp9RFkYURv_vg94Ug/viewform", CustomTabsOptions);
             Current.FlyoutIsPresented = false;
         }
 

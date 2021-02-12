@@ -12,8 +12,8 @@ namespace MobileApp.ViewModels
 
         public LandingViewModel()
         {
-            SigninCommand = new Command(async () => await NavigationService.PushLoginPage());
-            SignupCommand = new Command(async () => await NavigationService.PushRegistrationPage());
+            SigninCommand = new Command(async () => await NavigationService.ToLoginPage());
+            SignupCommand = new Command(async () => await NavigationService.ToRegistrationPage());
         }
     }
 }

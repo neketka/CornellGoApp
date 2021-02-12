@@ -27,22 +27,20 @@ namespace MobileApp.ViewModels
         public string YourUsername { get => yourUsername; set => SetProperty(ref yourUsername, value); }
         public LeaderViewModel()
         {
-            Console.WriteLine("LeaderViewModel");
-
             Players = new ObservableCollection<LeaderboardPlayer>(Enumerable.Range(1, 20)
                 .Select(i => new LeaderboardPlayer(i.ToString(), i, ImageSource.FromResource(i == 3 ? "MobileApp.Assets.Images.bsquare.jpg" :
-                    "MobileApp.Assets.Images.logo.png"), "User" + i, 1000 - i, i == 3)));
+                    "MobileApp.Assets.Images.profile.png"), "User" + i, 1000 - i, i == 3)));
             LoadMoreCommand = new Command<int>(async (i) =>
             {
                 var service = DependencyService.Get<GameService>();
                 var data = service.Client.GetTopPlayers(Players.Count, i);
                 await foreach (var entry in data)
                 {
-                    Players.Add(new LeaderboardPlayer(entry.UserId, entry.Index + 1, ImageSource.FromResource("MobileApp.Assets.Images.bsquare.jpg"), 
+                    Players.Add(new LeaderboardPlayer(entry.UserId, entry.Index + 1, ImageSource.FromResource("MobileApp.Assets.Images.profile.png"), 
                         entry.Username, entry.Score, entry.UserId == service.UserId));
                 }
             });
-            ProfilePicture = ImageSource.FromResource("MobileApp.Assets.Images.bsquare.jpg");
+            ProfilePicture = ImageSource.FromResource("MobileApp.Assets.Images.profile.png");
             RankedPlayers = 20;
             YourRank = 4;
             YourPoints = 997;

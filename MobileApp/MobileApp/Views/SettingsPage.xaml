@@ -13,7 +13,7 @@
     </ContentPage.BindingContext>
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout BackgroundColor="{StaticResource Secondary}" Padding="15, 0, 15, 0">
+            <StackLayout BackgroundColor="{StaticResource Secondary}" Padding="15, 0, 15, 30">
                 <Label Text="Account details" TextTransform="Uppercase" TextColor="{StaticResource SecondaryText}" FontSize="18" FontAttributes="Bold" Margin="0, 20, 0, 20"/>
                 <StackLayout Orientation="Horizontal" Margin="0, 0, 0, 15">
                     <local:AvatarView HeightRequest="84" WidthRequest="84" Image="{Binding Avatar}" HorizontalOptions="Start" Margin="15, 0, 0, 0">

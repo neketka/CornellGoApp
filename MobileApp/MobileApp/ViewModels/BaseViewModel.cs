@@ -22,6 +22,9 @@ namespace MobileApp.ViewModels
             get { return title; }
             set { SetProperty(ref title, value); }
         }
+        public Command BusyBackCommand { get; }
+
+        public virtual void CleanupEvents() { }
 
         protected bool SetProperty<T>(ref T backingStore, T value,
             [CallerMemberName] string propertyName = "",
@@ -43,6 +46,7 @@ namespace MobileApp.ViewModels
         {
             GameService = DependencyService.Get<GameService>();
             NavigationService = DependencyService.Get<NavigationService>();
+            BusyBackCommand = new Command(async () => { if (!IsBusy) await NavigationService.GoBack(); });
         }
 
         #region INotifyPropertyChanged

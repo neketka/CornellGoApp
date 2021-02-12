@@ -9,19 +9,19 @@ namespace MobileApp.Services
 {
     public class NavigationService
     {
-        public async Task ToGamePage()
+        public async Task PushGamePage()
         {
-            await Shell.Current.GoToAsync($"//{nameof(GamePage)}");
+            await Shell.Current.GoToAsync($"/{nameof(GamePage)}");
         }
 
-        public async Task PushLoginPage()
+        public async Task ToLoginPage()
         {
-            await Shell.Current.GoToAsync($"{nameof(LoginPage)}");
+            await Shell.Current.GoToAsync($"//{nameof(LoadingPage)}/{nameof(LandingPage)}/{nameof(LoginPage)}");
         }
 
-        public async Task PushRegistrationPage()
+        public async Task ToRegistrationPage()
         {
-            await Shell.Current.GoToAsync($"{nameof(RegistrationPage)}");
+            await Shell.Current.GoToAsync($"//{nameof(LoadingPage)}/{nameof(LandingPage)}/{nameof(RegistrationPage)}");
         }
 
         public async Task GoBack()
@@ -34,9 +34,9 @@ namespace MobileApp.Services
             await Shell.Current.GoToAsync($"//{nameof(LoadingPage)}");
         }
 
-        public async Task PushLandingPage()
+        public async Task ToLandingPage()
         {
-            await Shell.Current.GoToAsync($"{nameof(LandingPage)}");
+            await Shell.Current.GoToAsync($"//{nameof(LoadingPage)}/{nameof(LandingPage)}");
         }
 
         public async Task<string> ShowJoinGroup(bool invalid)
@@ -69,7 +69,7 @@ namespace MobileApp.Services
         public async Task<string> ShowChangeUsername(string oldName, bool invalid)
         {
             return await Shell.Current.DisplayPromptAsync("Change username", invalid ? "Invalid username! Must have letters, numbers, underscores, and 1-24 characters." : 
-                "Enter your desired username (letters, numbers, underscores, 1-24 characters).", "Change", "Cancel", "Username", 24, null, oldName);
+                "Enter your desired username (letters, numbers, underscores, 1-16 characters).", "Change", "Cancel", "Username", 24, null, oldName);
         }
 
         public async Task PushChangePasswordPage()

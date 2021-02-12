@@ -28,5 +28,10 @@ namespace MobileApp.Views
             viewModel.Email = "";
             viewModel.EmailVerification = "";
         }
+
+        protected override bool OnBackButtonPressed()
+        {
+            return ((BaseViewModel)BindingContext).IsBusy ? true : base.OnBackButtonPressed();
+        }
     }
 }

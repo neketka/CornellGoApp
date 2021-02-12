@@ -8,10 +8,14 @@
              x:Class="MobileApp.Views.LoginPage"
              BackgroundColor="{StaticResource Secondary}"
              Shell.FlyoutBehavior="Disabled"
+             IsBusy="{Binding IsBusy}"
              Title="Login">
     <ContentPage.BindingContext>
         <vm:LoginViewModel/>
     </ContentPage.BindingContext>
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior Command="{Binding BusyBackCommand}"/>
+    </Shell.BackButtonBehavior>
     <ContentPage.Content>
         <StackLayout>
             <Image Source="{ex:ImageResource MobileApp.Assets.Images.logo.png}" Aspect="AspectFill" HorizontalOptions="Center" HeightRequest="128" Margin="0, 64, 0, 0"/>

@@ -58,15 +58,16 @@ namespace MobileApp.ViewModels
 
         private void ValidateUsername()
         {
-            UsernameLengthValid = Username.Length is >= 1 and <= 24;
+            UsernameLengthValid = Username.Length is >= 1 and <= 16;
             UsernameFormatValid = Username.All(c => char.IsLetterOrDigit(c) || c == '_') && !string.IsNullOrWhiteSpace(Username);
             Validate();
         }
 
         private void ValidatePassword()
         {
-            PasswordLengthValid = Password.All(c => char.IsLetter(c) || char.IsNumber(c) || passwordSymbols.Contains(c)) 
-                && Password.Length is >= 8 and <= 128;
+            //PasswordLengthValid = Password.All(c => char.IsLetter(c) || char.IsNumber(c) || passwordSymbols.Contains(c)) 
+            //    && Password.Length is >= 8 and <= 128;
+            PasswordLengthValid = Password.Length is >= 8 and <= 128;
             PasswordLetterValid = Password.Any(char.IsLetter);
             PasswordNumberValid = Password.Any(char.IsNumber);
             PasswordSymbolValid = Password.Any(c => passwordSymbols.Contains(c));
@@ -114,7 +115,7 @@ namespace MobileApp.ViewModels
                 RegisterCommand.ChangeCanExecute();
                 await Task.Delay(2000);
                 IsBusy = false;
-                await NavigationService.ToGamePage();
+                await NavigationService.PushGamePage();
                 RegisterCommand.ChangeCanExecute();
             }, () => !IsBusy && FormValid);
         }

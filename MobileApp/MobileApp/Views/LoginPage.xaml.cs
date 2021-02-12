@@ -17,5 +17,10 @@ namespace MobileApp.Views
         {
             InitializeComponent();
         }
+
+        protected override bool OnBackButtonPressed()
+        {
+            return ((BaseViewModel)BindingContext).IsBusy ? true : base.OnBackButtonPressed();
+        }
     }
 }

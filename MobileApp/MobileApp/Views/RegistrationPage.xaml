@@ -12,12 +12,15 @@
     <ContentPage.BindingContext>
         <vm:RegistrationViewModel/>
     </ContentPage.BindingContext>
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior Command="{Binding BusyBackCommand}"/>
+    </Shell.BackButtonBehavior>
     <ContentPage.Content>
         <ScrollView>
 			<StackLayout Padding="20, 30, 20, 0">
 				<Entry Text="{Binding Username, Mode=TwoWay}" WidthRequest="2000" Placeholder="Username"
 					   PlaceholderColor="{StaticResource PrimaryAccent}" TextColor="{StaticResource SecondaryText}"/>
-				<Label Text="1-24 characters long" HeightRequest="16" FontSize="12" TextColor="Red" Margin="12, 0, 0, 0" FontAttributes="Bold">
+				<Label Text="1-16 characters long" HeightRequest="16" FontSize="12" TextColor="Red" Margin="12, 0, 0, 0" FontAttributes="Bold">
 					<Label.Triggers>
 						<DataTrigger TargetType="Label" Binding="{Binding UsernameLengthValid}" Value="True">
 							<Setter Property="TextColor" Value="Green"/>

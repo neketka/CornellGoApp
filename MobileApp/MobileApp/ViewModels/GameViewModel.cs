@@ -57,14 +57,14 @@ namespace MobileApp.ViewModels
         {
             GroupMembers = new ObservableCollection<GroupMember>
             {
-                new GroupMember("a", ImageSource.FromResource("MobileApp.Assets.Images.bsquare.jpg"), true, true, true, "Your username", 12),
-                new GroupMember("b", ImageSource.FromResource("MobileApp.Assets.Images.logo.png"), false, false, false, "Not ready person", 0),
-                new GroupMember("c", ImageSource.FromResource("MobileApp.Assets.Images.logo.png"), false, false, false, "Not ready person", 0),
-                new GroupMember("d", ImageSource.FromResource("MobileApp.Assets.Images.logo.png"), false, false, true, "Ready person", 0),
-                new GroupMember("e", ImageSource.FromResource("MobileApp.Assets.Images.logo.png"), false, false, true, "Ready person", 0),
-                new GroupMember("f", ImageSource.FromResource("MobileApp.Assets.Images.logo.png"), false, false, true, "Ready person", 0),
-                new GroupMember("g", ImageSource.FromResource("MobileApp.Assets.Images.logo.png"), false, false, false, "Not ready person", 0),
-                new GroupMember("h", ImageSource.FromResource("MobileApp.Assets.Images.logo.png"), false, false, false, "Not ready person", 0)
+                new GroupMember("a", ImageSource.FromResource("MobileApp.Assets.Images.bsquare.jpg"), true, true, true, "UsernameUsername", 12),
+                new GroupMember("b", ImageSource.FromResource("MobileApp.Assets.Images.profile.png"), false, false, false, "Not ready person", 0),
+                new GroupMember("c", ImageSource.FromResource("MobileApp.Assets.Images.profile.png"), false, false, false, "Not ready person", 0),
+                new GroupMember("d", ImageSource.FromResource("MobileApp.Assets.Images.profile.png"), false, false, true, "Ready person", 0),
+                new GroupMember("e", ImageSource.FromResource("MobileApp.Assets.Images.profile.png"), false, false, true, "Ready person", 0),
+                new GroupMember("f", ImageSource.FromResource("MobileApp.Assets.Images.profile.png"), false, false, true, "Ready person", 0),
+                new GroupMember("g", ImageSource.FromResource("MobileApp.Assets.Images.profile.png"), false, false, false, "Not ready person", 0),
+                new GroupMember("h", ImageSource.FromResource("MobileApp.Assets.Images.profile.png"), false, false, false, "Not ready person", 0)
             };
 
             ChallengeImage = ImageSource.FromResource("MobileApp.Assets.Images.grid.png");

@@ -1,4 +1,5 @@
-﻿using MobileApp.ViewModels;
+﻿using MobileApp.Extensions;
+using MobileApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,12 @@ namespace MobileApp.Views
         public SettingsPage()
         {
             InitializeComponent();
+        }
+
+        protected override void OnParentSet()
+        {
+            base.OnParentSet();
+            this.CleanupPage();
         }
     }
 }

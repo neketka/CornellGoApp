@@ -23,10 +23,21 @@ namespace MobileApp.ViewModels
             {
                 IsBusy = true;
                 LoginCommand.ChangeCanExecute();
-                await Task.Delay(2000);
-                IsBusy = false;
-                await NavigationService.ToGamePage();
-                LoginCommand.ChangeCanExecute();
+
+                try
+                {
+                    await Task.Delay(3000);
+                    await NavigationService.PushGamePage();
+                }
+                catch
+                {
+
+                }
+                finally
+                {
+                    IsBusy = false;
+                    LoginCommand.ChangeCanExecute();
+                }
             }, () => !IsBusy);
         }
     }

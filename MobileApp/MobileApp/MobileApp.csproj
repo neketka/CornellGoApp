@@ -27,6 +27,7 @@
     <None Remove="Assets\Images\logo_small.png" />
     <None Remove="Assets\Images\logo_smallest.png" />
     <None Remove="Assets\Images\logo_xlarge.png" />
+    <None Remove="Assets\Images\profile.png" />
   </ItemGroup>
   
   <ItemGroup>
@@ -40,6 +41,7 @@
     <EmbeddedResource Include="Assets\Images\grid.png" />
     <EmbeddedResource Include="Assets\Images\logo.png" />
     <EmbeddedResource Include="Assets\Images\logo_alt.png" />
+    <EmbeddedResource Include="Assets\Images\profile.png" />
   </ItemGroup>
 
   <ItemGroup>

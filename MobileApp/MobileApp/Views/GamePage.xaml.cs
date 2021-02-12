@@ -9,6 +9,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 using Xamarin.Forms.PlatformConfiguration;
+using MobileApp.Extensions;
 
 namespace MobileApp.Views
 {
@@ -23,12 +24,22 @@ namespace MobileApp.Views
 
             ((GameViewModel)BindingContext).PropertyChanged += GamePage_PropertyChanged;
             BottomSheet.PropertyChanged += BottomSheet_PropertyChanged;
+            Shell.Current.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(Shell.Current.FlyoutIsPresented))
+                    SnapToNearest(0);
+            };
         }
 
-        protected override void OnAppearing()
+        protected override bool OnBackButtonPressed()
         {
-            base.OnAppearing();
-            ContentPage_SizeChanged(null, null);
+            return true;
+        }
+
+        protected override void OnParentSet()
+        {
+            base.OnParentSet();
+            this.CleanupPage();
         }
 
         private void AdjustTemp(double value)
@@ -58,7 +69,7 @@ namespace MobileApp.Views
                     await VictoryView.FadeTo(0);
                     await OldImage.FadeTo(0, easing: Easing.CubicIn);
                     await Task.Delay(250);
-                    HamburgerButton.FadeTo(1);
+                    HamburgerButton.FadeTo(0.85);
                     await BottomSheet.TranslateTo(0, positions[1], 350u, Easing.CubicOut); 
                 }
             }
@@ -97,7 +108,7 @@ namespace MobileApp.Views
                 Description.Opacity = 1 - Math.Min(Math.Max(-middleDist / (positions[2] - positions[1]), 0), 0.7) / 0.7;
                 Darkener.Opacity = 0.75 * normalizedMiddleDist;
 
-                double bottomAlpha = BottomSheet.TranslationY < positions[1] ? 0.8 + 0.2 * normalizedMiddleDist : 0.8;
+                double bottomAlpha = BottomSheet.TranslationY < positions[1] ? 0.75 + 0.25 * normalizedMiddleDist : 0.75;
                 Color bgColor = BottomSheet.BackgroundColor;
                 BottomSheet.BackgroundColor = new Color(bgColor.R, bgColor.G, bgColor.B, bottomAlpha);
             }
@@ -126,6 +137,7 @@ namespace MobileApp.Views
                     lastChange = e.TotalY;
                     BottomSheet.TranslationY = Math.Min(Math.Max(BottomSheet.TranslationY + e.TotalY, positions[0]), positions[positions.Length - 1]);
                     break;
+                case GestureStatus.Canceled:
                 case GestureStatus.Completed:
                     SnapToNearest(lastChange);
                     break;

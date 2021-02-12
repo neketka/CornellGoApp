@@ -11,6 +11,7 @@ namespace MobileApp.Services
     {
         public CornellGoClient Client { get; }
         public string UserId { get; private set; }
+        public event Action LoggedIn = delegate { };
         public GameService()
         {
             Client = new CornellGoClient("localhost:5000/hub");
@@ -23,6 +24,7 @@ namespace MobileApp.Services
             {
                 UserId = (await Client.GetUserData()).UserId;
                 await SecureStorage.SetAsync("session", await Client.GetSessionToken());
+                LoggedIn();
             }
             return loggedIn;
         }
