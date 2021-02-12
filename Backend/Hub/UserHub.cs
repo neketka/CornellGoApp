@@ -18,21 +18,14 @@ namespace Backend.Hub
             return new UserData(user.Username, user.Score, user.GroupMember.Group.Id.ToString(), user.Id.ToString());
         }
 
-        public async IAsyncEnumerable<LeaderboardData> GetTopPlayers(int index, int count)
+        public IAsyncEnumerable<LeaderboardData> GetTopPlayers(int index, int count)
         {
             if (count > 100) count = 100;
-            ArrayList arlist = new ArrayList();
-            //Redo this effeciently later
-            IEnumerable<User> query = Database.Users.OrderBy(User => User.Score);
-            int num = 0;
-            var list = new List<LeaderboardData>();
-            foreach (User user in query)
-            {
-                if (num < index + count && num > index)
-                {
-                    yield return new LeaderboardData(user.Id.ToString(), user.Username, num, user.Score);
-                }
-            }
+            return Database.Users
+                .OrderBy(User => User.Score)
+                .Skip(index).Take(count)
+                .Select((u, i) => new LeaderboardData(u.Id.ToString(), u.Username, i + index, u.Score))
+                .AsAsyncEnumerable();
         }
 
         public async IAsyncEnumerable<ChallengeHistoryEntryData> GetHistoryData()
