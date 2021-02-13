@@ -21,7 +21,39 @@ namespace BackendModel
 
         public static void SyncPlacesWithUsers(this Group group)
         {
-            // TODO: implement
+            HashSet<PrevChallenge> places = new HashSet<PrevChallenge>();
+            group.PrevChallenges.Clear();
+            foreach (GroupMember gp in group.GroupMembers)
+            {
+                foreach (PrevChallenge pchal in gp.User.PrevChallenges)
+                {
+                    group.PrevChallenges.Add(pchal.Challenge);
+                }
+            }
+        }
+
+        public static async Task NewGroup(this User user, DbSet<Challenge> chals)
+        {
+            Group grp = new(user.GroupMember.Group.Challenge); //unsure here
+
+            grp.SyncPlacesWithUsers();
+            grp.GetNewChallenge(chals);
+            //make async
+            //add user to a new group, sync the group with users, and generate a new challenge.
+
+        }
+
+        public static async Task<Challenge> GetNewChallenge(this Group group, DbSet<Challenge> chals)
+        {
+            //Group Extension method to generate new random challenge (not in prev challenge), add current challenge if one exists to prev challenge list of group + all members
+            var query = chals.Where(p => group.PrevChallenges.All(p2 => p2.Id != p.Id));
+            var rnd = new Random();
+
+            Challenge Selected = await query.OrderBy(x => rnd.Next()).FirstOrDefaultAsync();
+
+            //assign new challenge
+
+            return Selected;
         }
 
         public static string GetFriendlyId(this Group group)
