@@ -84,10 +84,7 @@ namespace MobileApp.Views
 
         private void ContentPage_SizeChanged(object sender, EventArgs e)
         {
-            //Other: 65, X: 95
-            double bias = Device.RuntimePlatform == Device.iOS ? On<iOS>().SafeAreaInsets().Bottom > 10 ? 95 : 65 : 0;
-
-            double desc = Height - Divider.Bounds.Y - bias;
+            double desc = Height - Divider.Bounds.Y;
             double max = desc + Description.Height;
             double groups = desc - 250;
 

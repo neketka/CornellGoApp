@@ -40,9 +40,11 @@
                         Command="{Binding FindOutMoreCommand}"/>
             </StackLayout>
 
-            <Frame WidthRequest="42" HeightRequest="42" CornerRadius="21" HasShadow="True" Margin="12" VerticalOptions="Start"
+            <Frame WidthRequest="42" HeightRequest="42" CornerRadius="21" HasShadow="True" Margin="12,42,0,0" VerticalOptions="Start"
                    Padding="0" HorizontalOptions="Start" Opacity="0.85" BorderColor="Black" x:Name="HamburgerButton"
-                   IsEnabled="{Binding Path=VictoryMode, Converter={StaticResource invBool}}">
+                   IsEnabled="{Binding Path=VictoryMode, Converter={StaticResource invBool}}" BackgroundColor="{StaticResource Secondary}"
+                   IsClippedToBounds="True">
+                    
                 <Button FontFamily="FASolid" Text="{Static fa:FASolid.Bars}" TextColor="{StaticResource Primary}" FontSize="24" Padding="0"
                         BackgroundColor="{StaticResource Secondary}" Clicked="Hamburger_Tapped" VerticalOptions="Center" HorizontalOptions="Center"/>
             </Frame>

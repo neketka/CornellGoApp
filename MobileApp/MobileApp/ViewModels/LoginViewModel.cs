@@ -21,6 +21,11 @@ namespace MobileApp.ViewModels
         {
             LoginCommand = new Command(async () =>
             {
+                await NavigationService.PushGamePage();
+                if (true)
+                {
+                    return;
+                }
                 IsBusy = true;
                 LoginCommand.ChangeCanExecute();
                 BadText = "";
