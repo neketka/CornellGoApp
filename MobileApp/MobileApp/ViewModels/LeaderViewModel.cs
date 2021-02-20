@@ -43,9 +43,24 @@ namespace MobileApp.ViewModels
         {
             if (YourRank > oldIndex)
                 await LoadUserData();
-            Players.Skip(newIndex + 1).Select((p, i) => new LeaderboardPlayer(p.Id, p.Position, pfp, username, score, p.IsYou));
             
-            Players.Move(oldIndex, newIndex);
+            await Device.InvokeOnMainThreadAsync(() =>
+            {
+                int minModifyIndex = Math.Min(oldIndex, newIndex);
+
+                Players.Move(oldIndex, newIndex);
+                var transform = Players
+                    .Skip(minModifyIndex)
+                    .Select<LeaderboardPlayer, LeaderboardPlayer>((p, i) =>
+                        userId == p.Id ? new(p.Id, i + minModifyIndex + 1, pfp, username, score, p.IsYou)
+                                       : new(p.Id, i + minModifyIndex + 1, pfp, p.Username, p.Points, p.IsYou));
+
+                foreach (var newPlayer in transform)
+                {
+                    Players[minModifyIndex] = newPlayer;
+                    ++minModifyIndex;
+                }
+            });
         }
 
         public override void CleanupEvents()
