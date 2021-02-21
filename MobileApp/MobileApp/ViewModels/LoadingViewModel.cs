@@ -13,9 +13,16 @@ namespace MobileApp.ViewModels
             Load();
         }
 
+        public override void CleanupEvents()
+        {
+            base.CleanupEvents();
+            GameService.Client.ConnectionClosed -= Client_ConnectionClosed;
+        }
+
         private async Task Client_ConnectionClosed()
         {
             await NavigationService.ToLoadingPage();
+            await Load();
         }
 
         private async Task Load()

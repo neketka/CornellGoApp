@@ -89,7 +89,7 @@ namespace MobileApp.ViewModels
                     await NavigationService.ConfirmKick(gm.Username);
                 }
             });
-            JoinCommand = new Command(async () => 
+            JoinCommand = new Command(async () =>
             {
                 await NavigationService.ConfirmDisband(true);
                 await NavigationService.ShowJoinGroup(false);
