@@ -15,7 +15,11 @@ namespace Backend.Hub
         {
             UserSession session = await Database.UserSessions.FromSignalRId(Context.UserIdentifier);
             User user = session.User;
-            return new UserData(user.Username, user.Score, user.GroupMember.Group.Id.ToString(), user.Id.ToString());
+            int index = Database.Users.Select((c, i) => new { User = c, Index = i })
+                        .Where(x => x.User.Id == user.Id)
+                        .Select(x => x.Index).First();
+
+            return new UserData(user.Username, user.Score, user.GroupMember.Group.Id.ToString(), user.Id.ToString(), index, Database.Users.Count());
         }
 
         public IAsyncEnumerable<LeaderboardData> GetTopPlayers(int index, int count)
