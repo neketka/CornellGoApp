@@ -37,7 +37,7 @@ namespace BackendModel
             Group grp = new(user.GroupMember.Group.Challenge); //unsure here
 
             grp.SyncPlacesWithUsers();
-            grp.GetNewChallenge(chals);
+            await grp.GetNewChallenge(chals);
             //make async
             //add user to a new group, sync the group with users, and generate a new challenge.
 
@@ -46,12 +46,17 @@ namespace BackendModel
         public static async Task<Challenge> GetNewChallenge(this Group group, DbSet<Challenge> chals)
         {
             //Group Extension method to generate new random challenge (not in prev challenge), add current challenge if one exists to prev challenge list of group + all members
+
+            if(group.PrevChallenges.Count() > 0)
+            {
+                return chals.OrderBy(c => c.LongLat.Distance(group.PrevChallenges.Last().LongLat)).FirstOrDefault();
+
+            }
+
             var query = chals.Where(p => group.PrevChallenges.All(p2 => p2.Id != p.Id));
             var rnd = new Random();
 
             Challenge Selected = await query.OrderBy(x => rnd.Next()).FirstOrDefaultAsync();
-
-            //assign new challenge
 
             return Selected;
         }
