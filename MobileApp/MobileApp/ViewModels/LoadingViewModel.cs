@@ -27,7 +27,18 @@ namespace MobileApp.ViewModels
 
         private async Task Load()
         {
-            await Task.Delay(3000);
+            while (true)
+            {
+                try
+                {
+                    await GameService.Client.Connect();
+                    break;
+                }
+                catch
+                {
+                    await NavigationService.ShowConnectionError();
+                }
+            }
             await NavigationService.ToLandingPage();
         }
     }

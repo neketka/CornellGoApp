@@ -5,7 +5,7 @@
 //     Manual changes to this file may cause unexpected behavior in your application.
 //     Manual changes to this file will be overwritten if the code is regenerated.
 //
-//     Produced by Entity Framework Visual Editor v3.0.2.0
+//     Produced by Entity Framework Visual Editor v3.0.3.2
 //     Source:                    https://github.com/msawczyn/EFDesigner
 //     Visual Studio Marketplace: https://marketplace.visualstudio.com/items?itemName=michaelsawczyn.EFDesigner
 //     Documentation:             https://msawczyn.github.io/EFDesigner/
@@ -38,9 +38,9 @@ namespace BackendModel
       /// </summary>
       protected Group()
       {
+         MaxMembers = 8;
          PrevChallenges = new System.Collections.Generic.HashSet<global::BackendModel.Challenge>();
          GroupMembers = new System.Collections.Generic.HashSet<global::BackendModel.GroupMember>();
-         Challenge = global::BackendModel.Challenge.CreateChallengeUnsafe();
 
          Init();
       }
@@ -56,25 +56,28 @@ namespace BackendModel
       /// <summary>
       /// Public constructor with required data
       /// </summary>
+      /// <param name="maxmembers">Maximum number of members allowed</param>
       /// <param name="challenge"></param>
-      public Group(global::BackendModel.Challenge challenge)
+      public Group(global::BackendModel.Challenge challenge, int maxmembers = 8)
       {
+         this.MaxMembers = maxmembers;
+
          if (challenge == null) throw new ArgumentNullException(nameof(challenge));
          this.Challenge = challenge;
 
          this.PrevChallenges = new System.Collections.Generic.HashSet<global::BackendModel.Challenge>();
          this.GroupMembers = new System.Collections.Generic.HashSet<global::BackendModel.GroupMember>();
-
          Init();
       }
 
       /// <summary>
       /// Static create function (for use in LINQ queries, etc.)
       /// </summary>
+      /// <param name="maxmembers">Maximum number of members allowed</param>
       /// <param name="challenge"></param>
-      public static Group Create(global::BackendModel.Challenge challenge)
+      public static Group Create(global::BackendModel.Challenge challenge, int maxmembers = 8)
       {
-         return new Group(challenge);
+         return new Group(challenge, maxmembers);
       }
 
       /*************************************************************************
@@ -104,6 +107,14 @@ namespace BackendModel
       /// </summary>
       [System.ComponentModel.Description("SignalR group id associated with this group")]
       public string SignalRId { get; set; }
+
+      /// <summary>
+      /// Required, Default value = 8
+      /// Maximum number of members allowed
+      /// </summary>
+      [Required]
+      [System.ComponentModel.Description("Maximum number of members allowed")]
+      public int MaxMembers { get; set; }
 
       /*************************************************************************
        * Navigation properties

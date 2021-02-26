@@ -5,7 +5,7 @@
 //     Manual changes to this file may cause unexpected behavior in your application.
 //     Manual changes to this file will be overwritten if the code is regenerated.
 //
-//     Produced by Entity Framework Visual Editor v3.0.2.0
+//     Produced by Entity Framework Visual Editor v3.0.3.2
 //     Source:                    https://github.com/msawczyn/EFDesigner
 //     Visual Studio Marketplace: https://marketplace.visualstudio.com/items?itemName=michaelsawczyn.EFDesigner
 //     Documentation:             https://msawczyn.github.io/EFDesigner/
@@ -41,7 +41,6 @@ namespace BackendModel
          PrevChallenges = new System.Collections.Generic.HashSet<global::BackendModel.PrevChallenge>();
          Suggestions = new System.Collections.Generic.HashSet<global::BackendModel.Suggestion>();
          Feedbacks = new System.Collections.Generic.HashSet<global::BackendModel.Feedback>();
-         GroupMember = global::BackendModel.GroupMember.CreateGroupMemberUnsafe();
 
          Init();
       }
@@ -73,7 +72,6 @@ namespace BackendModel
          this.PrevChallenges = new System.Collections.Generic.HashSet<global::BackendModel.PrevChallenge>();
          this.Suggestions = new System.Collections.Generic.HashSet<global::BackendModel.Suggestion>();
          this.Feedbacks = new System.Collections.Generic.HashSet<global::BackendModel.Feedback>();
-
          Init();
       }
 

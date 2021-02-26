@@ -5,7 +5,7 @@
 //     Manual changes to this file may cause unexpected behavior in your application.
 //     Manual changes to this file will be overwritten if the code is regenerated.
 //
-//     Produced by Entity Framework Visual Editor v3.0.2.0
+//     Produced by Entity Framework Visual Editor v3.0.3.2
 //     Source:                    https://github.com/msawczyn/EFDesigner
 //     Visual Studio Marketplace: https://marketplace.visualstudio.com/items?itemName=michaelsawczyn.EFDesigner
 //     Documentation:             https://msawczyn.github.io/EFDesigner/
@@ -38,8 +38,6 @@ namespace BackendModel
       /// </summary>
       protected UserSession()
       {
-         User = global::BackendModel.User.CreateUserUnsafe();
-
          Init();
       }
 
@@ -62,7 +60,7 @@ namespace BackendModel
 
          if (user == null) throw new ArgumentNullException(nameof(user));
          this.User = user;
-
+         user.UserSession = this;
 
          Init();
       }

@@ -1,22 +1,36 @@
 ﻿using MobileApp.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace MobileApp.ViewModels
 {
     public class HistoryViewModel : BaseViewModel
     {
-        public ObservableCollection<HistoryEntry> HistoryEntries { get; private set; }
+        public ObservableCollection<HistoryEntry> HistoryEntries { get; }
+        public Command<string> ShowMoreCommand { get; }
         public HistoryViewModel()
         {
-            HistoryEntries = new ObservableCollection<HistoryEntry>()
+            HistoryEntries = new ObservableCollection<HistoryEntry>();
+            ShowMoreCommand = new(async (id) => { await NavigationService.ShowServerError(); });
+            Load().Wait();
+        }
+
+        private async Task Load()
+        {
+            await foreach (var entry in GameService.Client.GetHistoryData())
             {
-                new HistoryEntry("a", ImageSource.FromResource("MobileApp.Assets.Images.grid.png"), DateTime.UtcNow, "Testing unit 1", 3),
-                new HistoryEntry("b", ImageSource.FromResource("MobileApp.Assets.Images.grid.png"), DateTime.UtcNow, "Seconding unit for tests", 5),
-            };
+                ImageSource img = new UriImageSource
+                {
+                    Uri = new Uri(entry.ImageUrl),
+                    CachingEnabled = true
+                };
+                HistoryEntries.Add(new(entry.ChallengeId, img, entry.UtcDateTime.ToLocalTime(), entry.Name, entry.Points));
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ using MobileApp.ViewModels;
 using MobileApp.Views;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -10,6 +11,7 @@ namespace MobileApp
 {
     public partial class AppShell : Xamarin.Forms.Shell
     {
+        private GameService GameService { get; }
         public static BrowserLaunchOptions CustomTabsOptions { get; } = new BrowserLaunchOptions
         {
             LaunchMode = BrowserLaunchMode.SystemPreferred,
@@ -31,7 +33,31 @@ namespace MobileApp
             Routing.RegisterRoute(nameof(LeaderPage), typeof(LeaderPage));
             Routing.RegisterRoute(nameof(LandingPage), typeof(LandingPage));
 
+            GameService = DependencyService.Get<GameService>();
+
+            GameService.LoggedIn += GameService_LoggedIn;
+            GameService.Client.UserDataUpdated += Client_UserDataUpdated;
+
             InitializeComponent();
+        }
+
+        private async void GameService_LoggedIn()
+        {
+            var data = await GameService.Client.GetUserData();
+            await Device.InvokeOnMainThreadAsync(() =>
+            {
+                ProfileView.Username = data.Username;
+                ProfileView.Score = data.Points;
+            });
+        }
+
+        private async Task Client_UserDataUpdated(string username, int points)
+        {
+            await Device.InvokeOnMainThreadAsync(() =>
+            {
+                ProfileView.Username = username;
+                ProfileView.Score = points;
+            });
         }
 
         private async void Suggest_Clicked(object sender, EventArgs e)
