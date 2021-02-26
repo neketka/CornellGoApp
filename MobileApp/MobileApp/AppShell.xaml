@@ -56,7 +56,8 @@
 
     <Shell.FlyoutHeader>
         <StackLayout Padding="10, 12, 20, 12" Orientation="Horizontal" BackgroundColor="{StaticResource Secondary}">
-            <views:ScoreView Image="{ex:ImageResource MobileApp.Assets.Images.bsquare.jpg}" Name="Username" Score="0" HeightRequest="52" />
+            <views:ScoreView Image="{ex:ImageResource MobileApp.Assets.Images.profile.png}" 
+                             Username="Username" Score="0" HeightRequest="52" x:Name="ProfileView"/>
         </StackLayout>
     </Shell.FlyoutHeader>
 

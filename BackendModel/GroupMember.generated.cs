@@ -5,7 +5,7 @@
 //     Manual changes to this file may cause unexpected behavior in your application.
 //     Manual changes to this file will be overwritten if the code is regenerated.
 //
-//     Produced by Entity Framework Visual Editor v3.0.2.0
+//     Produced by Entity Framework Visual Editor v3.0.3.2
 //     Source:                    https://github.com/msawczyn/EFDesigner
 //     Visual Studio Marketplace: https://marketplace.visualstudio.com/items?itemName=michaelsawczyn.EFDesigner
 //     Documentation:             https://msawczyn.github.io/EFDesigner/
@@ -41,9 +41,6 @@ namespace BackendModel
          // NOTE: This class has one-to-one associations with GroupMember.
          // One-to-one associations are not validated in constructors since this causes a scenario where each one must be constructed before the other.
 
-         User = global::BackendModel.User.CreateUserUnsafe();
-         Group = global::BackendModel.Group.CreateGroupUnsafe();
-
          Init();
       }
 
@@ -72,7 +69,7 @@ namespace BackendModel
 
          if (group == null) throw new ArgumentNullException(nameof(group));
          this.Group = group;
-
+         group.GroupMembers.Add(this);
 
          Init();
       }

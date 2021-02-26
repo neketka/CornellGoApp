@@ -77,6 +77,11 @@ namespace MobileApp.Services
             await Shell.Current.DisplayAlert("Error!", "Server returned an error while processing your request!", "OK");
         }
 
+        public async Task ShowConnectionError()
+        {
+            await Shell.Current.DisplayAlert("Could not connect to server!", "Please check your wireless connection and hit retry.", "Retry");
+        }
+
         public async Task PushChangePasswordPage()
         {
             await Shell.Current.GoToAsync($"{nameof(ChangePasswordPage)}");

@@ -147,7 +147,7 @@
                                                     <Label FontFamily="FASolid" Text="{Static fa:FASolid.SearchLocation}" FontSize="16" 
                                                            TextColor="Gray" VerticalOptions="Center" Margin="5, 0, 0, 0" WidthRequest="16"
 													       IsVisible="{Binding Converter={StaticResource invBool}, Path=IsReady}"/>
-                                                    <local:ScoreView Image="{Binding Avatar}" Name="{Binding Username}" Score="{Binding Score}" 
+                                                    <local:ScoreView Image="{Binding Avatar}" Username="{Binding Username}" Score="{Binding Score}" 
                                                                      IsHighlighted="{Binding IsYou}" HeightRequest="32" Margin="4, 2, 0, 2"/>
                                                     <StackLayout VerticalOptions="Center" HorizontalOptions="EndAndExpand" Orientation="Horizontal">
                                                         <Label FontFamily="FASolid" Text="{Static fa:FASolid.Star}" FontSize="16" 
