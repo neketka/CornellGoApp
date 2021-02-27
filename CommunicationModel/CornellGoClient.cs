@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,9 +25,19 @@ namespace CommunicationModel
 
         public CornellGoClient(string url)
         {
-            Connection = new HubConnectionBuilder().WithAutomaticReconnect()
-                                                   .WithUrl(url)
-                                                   .Build();
+            Connection = new HubConnectionBuilder()
+                .WithAutomaticReconnect()
+                .WithUrl(url, opts => 
+                {
+                    opts.HttpMessageHandlerFactory = (message) =>
+                    {
+                        if (message is HttpClientHandler clientHandler)
+                            // bypass SSL certificate
+                            clientHandler.ServerCertificateCustomValidationCallback += (_, __, ___, ____) => true;
+                        return message;
+                    };
+                }).Build();
+
             Client = new ClientCalls(this);
             Connection.Closed += async (e) => await ConnectionClosed();
         }
@@ -52,22 +63,22 @@ namespace CommunicationModel
                 Client.Connection.On<string, string, int, int, int>("UpdateScorePositions", UpdateScorePositions);
             }
 
-            public async Task UpdateGroupData(string friendlyId, GroupMemberData[] members) 
+            public async Task UpdateGroupData(string friendlyId, GroupMemberData[] members)
                 => await Client.GroupDataUpdated(friendlyId, members);
 
-            public async Task UpdateGroupMember(GroupMemberData data) 
+            public async Task UpdateGroupMember(GroupMemberData data)
                 => await Client.GroupMemberUpdated(data);
 
-            public async Task LeaveGroupMember(string userId) 
+            public async Task LeaveGroupMember(string userId)
                 => await Client.GroupMemberLeft(userId);
 
-            public async Task UpdateUserData(string username, int points) 
+            public async Task UpdateUserData(string username, int points)
                 => await Client.UserDataUpdated(username, points);
 
-            public async Task UpdateChallenge(ChallengeData data) 
+            public async Task UpdateChallenge(ChallengeData data)
                 => await Client.ChallengeUpdated(data);
 
-            public async Task FinishChallenge() 
+            public async Task FinishChallenge()
                 => await Client.ChallengeFinished();
 
             public async Task UpdateScorePositions(string userId, string username, int oldIndex, int newIndex, int score)

@@ -40,7 +40,7 @@ namespace Backend.Hub
             foreach (PrevChallenge prev in query)
             {
                 Challenge chal = prev.Challenge;
-                yield return new ChallengeHistoryEntryData(chal.Id.ToString(), chal.ImageJPG.ToString(), chal.Name, chal.Description, chal.Points.ToString(), prev.Timestamp);
+                yield return new ChallengeHistoryEntryData(chal.Id.ToString(), chal.ImageJPG.ToString(), chal.Name, chal.Description, chal.Points, prev.Timestamp);
             }
 
             

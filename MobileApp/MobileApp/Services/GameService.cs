@@ -18,7 +18,7 @@ namespace MobileApp.Services
         private bool runTimer;
         public GameService()
         {
-            Client = new CornellGoClient("localhost:5000/hub");
+            Client = new CornellGoClient("https://10.0.2.2:44367/hub");
         }
 
         public async Task<bool> LoginWithSession(string username, string password)
