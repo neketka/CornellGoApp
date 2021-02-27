@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;    
 
 namespace BackendModel
 {
@@ -86,8 +86,6 @@ namespace BackendModel
       /// <inheritdoc />
       protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
       {
-         optionsBuilder.UseLazyLoadingProxies();
-
          CustomInit(optionsBuilder);
       }
 
@@ -276,8 +274,7 @@ namespace BackendModel
          modelBuilder.Entity<global::BackendModel.User>()
                      .HasMany<global::BackendModel.PrevChallenge>(p => p.PrevChallenges)
                      .WithOne()
-                     .HasForeignKey("UserPrevChallengesId")
-                     .OnDelete(DeleteBehavior.Cascade);
+                     .HasForeignKey("UserPrevChallengesId");
          modelBuilder.Entity<global::BackendModel.User>()
                      .HasMany<global::BackendModel.Suggestion>(p => p.Suggestions)
                      .WithOne(p => p.User)

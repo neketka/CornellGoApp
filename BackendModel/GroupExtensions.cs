@@ -74,7 +74,7 @@ namespace BackendModel
 
         public static ValueTask<Group> FromFriendlyId(this DbSet<Group> groups, string friendlyId)
         {
-            long id =
+            long id = 
                 mapToNums[friendlyId[0]]       | mapToNums[friendlyId[1]] << 5  | mapToNums[friendlyId[1]] << 10 |
                 mapToNums[friendlyId[2]] << 15 | mapToNums[friendlyId[3]] << 20 | mapToNums[friendlyId[4]] << 25 |
                 mapToNums[friendlyId[5]] << 30 | mapToNums[friendlyId[6]] << 35 | mapToNums[friendlyId[7]] << 40;

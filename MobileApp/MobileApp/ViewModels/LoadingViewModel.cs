@@ -34,9 +34,11 @@ namespace MobileApp.ViewModels
                     await GameService.Client.Connect();
                     break;
                 }
-                catch
+                catch (Exception e)
                 {
-                    await NavigationService.ShowConnectionError();
+                    await NavigationService.ShowConnectionError(
+                        e.InnerException?.InnerException?.Message ?? 
+                        e.InnerException?.Message ?? e.Message);
                 }
             }
             await NavigationService.ToLandingPage();
