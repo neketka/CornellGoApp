@@ -44,7 +44,7 @@ namespace MobileApp.ViewModels
                 }
                 catch (Exception e)
                 {
-                    await dialogService.ShowConnectionError();
+                    await dialogService.ShowConnectionError(e.Message);
                 }
             }
             await navigationService.NavigateTo<LandingViewModel>();

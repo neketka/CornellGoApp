@@ -12,7 +12,7 @@ namespace MobileApp.Services
         Task<bool> ConfirmKick(string user);
         Task<bool> ConfirmLeave(bool isJoining);
         Task<string> ShowChangeUsername(string oldName, bool invalid);
-        Task ShowConnectionError();
+        Task ShowConnectionError(string message);
         Task<string> ShowJoinGroup(bool invalid);
         Task ShowServerError();
     }
