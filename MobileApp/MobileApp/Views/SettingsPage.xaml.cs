@@ -18,11 +18,5 @@ namespace MobileApp.Views
         {
             InitializeComponent();
         }
-
-        protected override void OnParentSet()
-        {
-            base.OnParentSet();
-            this.CleanupPage();
-        }
     }
 }

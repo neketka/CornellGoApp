@@ -33,11 +33,5 @@ namespace MobileApp.Views
         {
             Leaderboard.ScrollTo(0, position: ScrollToPosition.Center);
         }
-
-        protected override void OnParentSet()
-        {
-            base.OnParentSet();
-            this.CleanupPage();
-        }
     }
 }

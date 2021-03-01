@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MobileApp.Services;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
@@ -10,10 +11,10 @@ namespace MobileApp.ViewModels
         public Command SigninCommand { get; }
         public Command SignupCommand { get; }
 
-        public LandingViewModel()
+        public LandingViewModel(INavigationService navigationService)
         {
-            SigninCommand = new Command(async () => await NavigationService.ToLoginPage());
-            SignupCommand = new Command(async () => await NavigationService.ToRegistrationPage());
+            SigninCommand = new Command(async () => await navigationService.NavigateTo<LoginViewModel>());
+            SignupCommand = new Command(async () => await navigationService.NavigateTo<RegistrationViewModel>());
         }
     }
 }

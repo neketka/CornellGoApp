@@ -72,7 +72,7 @@
     </Shell.FlyoutFooter>
 
     <TabBar>
-        <ShellContent Route="LoadingPage" ContentTemplate="{DataTemplate views:LoadingPage}"
+        <ShellContent Route="LoadingViewModel" ContentTemplate="{DataTemplate views:LoadingPage}"
                       Shell.FlyoutBehavior="Disabled"/>
     </TabBar>
 

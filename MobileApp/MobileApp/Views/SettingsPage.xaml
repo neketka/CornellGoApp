@@ -8,9 +8,6 @@
              x:Class="MobileApp.Views.SettingsPage"
              Shell.FlyoutBehavior="Disabled"
              Title="Settings">
-    <ContentPage.BindingContext>
-        <vm:SettingsViewModel/>
-    </ContentPage.BindingContext>
     <ContentPage.Content>
         <ScrollView>
             <StackLayout BackgroundColor="{StaticResource Secondary}" Padding="15, 0, 15, 30">

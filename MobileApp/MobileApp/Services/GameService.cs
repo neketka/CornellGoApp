@@ -8,7 +8,19 @@ using Xamarin.Forms;
 
 namespace MobileApp.Services
 {
-    public class GameService
+    public interface IGameService
+    {
+        CornellGoClient Client { get; }
+        string UserId { get; }
+
+        event Action LoggedIn;
+        event Action<ChallengeProgressData> ProgressUpdated;
+
+        Task<bool> LoginWithSession(string username, string password);
+        Task<bool> LogoutWithSession();
+    }
+
+    public class GameService : IGameService
     {
         public CornellGoClient Client { get; }
         public string UserId { get; private set; }
@@ -29,7 +41,7 @@ namespace MobileApp.Services
                 UserId = (await Client.GetUserData()).UserId;
                 await SecureStorage.SetAsync("session", await Client.GetSessionToken());
                 LoggedIn();
-                
+
                 BeginPollingLocation();
             }
             return loggedIn;
@@ -49,7 +61,7 @@ namespace MobileApp.Services
         private void BeginPollingLocation()
         {
             runTimer = true;
-            
+
             Device.StartTimer(TimeSpan.FromMilliseconds(500), () =>
             {
                 PollLocation().Wait();

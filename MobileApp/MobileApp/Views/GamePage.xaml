@@ -11,9 +11,6 @@
              SizeChanged="ContentPage_SizeChanged"
              Shell.FlyoutBehavior="Flyout"
              Shell.NavBarIsVisible="False">
-    <ContentPage.BindingContext>
-        <vm:GameViewModel/>
-    </ContentPage.BindingContext>
     <ContentPage.Resources>
         <ResourceDictionary>
             <ex:InverseBoolConverter x:Key="invBool"/>

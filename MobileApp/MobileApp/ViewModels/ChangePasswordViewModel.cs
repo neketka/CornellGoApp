@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MobileApp.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -55,13 +56,12 @@ namespace MobileApp.ViewModels
             PasswordMatches = !string.IsNullOrWhiteSpace(Password) && Password == PasswordVerification;
             Validate();
         }
-
-        public ChangePasswordViewModel()
+        public ChangePasswordViewModel(IGameService gameService, INavigationService navigationService)
         {
             ChangePasswordCommand = new Command(async () => 
             {
-                if (await GameService.Client.ChangePassword(Password))
-                    await NavigationService.GoBack();
+                if (await gameService.Client.ChangePassword(Password))
+                    await navigationService.NavigateBack();
                 else
                     BadText = "Failed to change password. Try logging out and back in.";
             }, () => !IsBusy && FormValid);
