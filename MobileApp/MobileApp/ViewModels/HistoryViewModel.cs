@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using MobileApp.Services;
 
 namespace MobileApp.ViewModels
 {
@@ -13,16 +14,20 @@ namespace MobileApp.ViewModels
     {
         public ObservableCollection<HistoryEntry> HistoryEntries { get; }
         public Command<string> ShowMoreCommand { get; }
-        public HistoryViewModel()
+
+        private IGameService gameService;
+        public HistoryViewModel(IGameService gameService, IDialogService dialogService)
         {
+            this.gameService = gameService;
+
             HistoryEntries = new ObservableCollection<HistoryEntry>();
-            ShowMoreCommand = new(async (id) => { await NavigationService.ShowServerError(); });
+            ShowMoreCommand = new(async (id) => { await dialogService.ShowServerError(); });
             Load().Wait();
         }
 
         private async Task Load()
         {
-            await foreach (var entry in GameService.Client.GetHistoryData())
+            await foreach (var entry in gameService.Client.GetHistoryData())
             {
                 ImageSource img = new UriImageSource
                 {

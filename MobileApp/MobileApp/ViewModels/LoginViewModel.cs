@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MobileApp.Services;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace MobileApp.ViewModels
         public string BadText { get => badText; set => SetProperty(ref badText, value); }
         public Command LoginCommand { get; }
 
-        public LoginViewModel()
+        public LoginViewModel(INavigationService navigationService, IGameService gameService)
         {
             LoginCommand = new Command(async () =>
             {
@@ -27,8 +28,8 @@ namespace MobileApp.ViewModels
 
                 try
                 {
-                    if (await GameService.LoginWithSession(Username, Password))
-                        await NavigationService.PushGamePage();
+                    if (await gameService.LoginWithSession(Username, Password))
+                        await navigationService.NavigateTo<GameViewModel>();
                     else
                         BadText = "Invalid username or password.";
                 }

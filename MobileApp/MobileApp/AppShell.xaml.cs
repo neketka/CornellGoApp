@@ -11,7 +11,7 @@ namespace MobileApp
 {
     public partial class AppShell : Xamarin.Forms.Shell
     {
-        private GameService GameService { get; }
+        private IGameService GameService { get; }
         public static BrowserLaunchOptions CustomTabsOptions { get; } = new BrowserLaunchOptions
         {
             LaunchMode = BrowserLaunchMode.SystemPreferred,
@@ -20,20 +20,17 @@ namespace MobileApp
             PreferredControlColor = Color.FromHex("CB2424")
         };
 
+        private ViewModelContainer vmContainer;
+
         public AppShell()
         {
-            Routing.RegisterRoute(nameof(GamePage), typeof(GamePage));
-            Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
-            Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
-            Routing.RegisterRoute(nameof(ChangePasswordPage), typeof(ChangePasswordPage));
-            Routing.RegisterRoute(nameof(ChangeEmailPage), typeof(ChangeEmailPage));
-            Routing.RegisterRoute(nameof(CloseAccountPage), typeof(CloseAccountPage));
-            Routing.RegisterRoute(nameof(RegistrationPage), typeof(RegistrationPage));
-            Routing.RegisterRoute(nameof(HistoryPage), typeof(HistoryPage));
-            Routing.RegisterRoute(nameof(LeaderPage), typeof(LeaderPage));
-            Routing.RegisterRoute(nameof(LandingPage), typeof(LandingPage));
+            vmContainer = new ViewModelContainer();
 
-            GameService = DependencyService.Get<GameService>();
+            vmContainer.RegisterService<IGameService, GameService>();
+            vmContainer.RegisterService<IDialogService, DialogService>();
+            vmContainer.NavigationService.InitializeFirst<LoadingViewModel>();
+
+            GameService = vmContainer.GetService<IGameService>();
 
             GameService.LoggedIn += GameService_LoggedIn;
             GameService.Client.UserDataUpdated += Client_UserDataUpdated;
@@ -77,7 +74,7 @@ namespace MobileApp
             bool wasPresented = Current.FlyoutIsPresented;
             Current.FlyoutIsPresented = false;
             if (wasPresented)
-                await Current.GoToAsync(nameof(SettingsPage));
+                await vmContainer.NavigationService.NavigateTo<SettingsViewModel>();
         }
 
         private async void Leaderboard_Clicked(object sender, EventArgs e)
@@ -85,7 +82,7 @@ namespace MobileApp
             bool wasPresented = Current.FlyoutIsPresented;
             Current.FlyoutIsPresented = false;
             if (wasPresented)
-                await Current.GoToAsync(nameof(LeaderPage));
+                await vmContainer.NavigationService.NavigateTo<LeaderViewModel>();
         }
 
         private async void History_Clicked(object sender, EventArgs e)
@@ -93,7 +90,7 @@ namespace MobileApp
             bool wasPresented = Current.FlyoutIsPresented;
             Current.FlyoutIsPresented = false;
             if (wasPresented)
-                await Current.GoToAsync(nameof(HistoryPage));
+                await vmContainer.NavigationService.NavigateTo<HistoryViewModel>();
         }
     }
 }

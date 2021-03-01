@@ -9,9 +9,6 @@
              BackgroundColor="{StaticResource Secondary}"
              Shell.FlyoutBehavior="Disabled"
              Title="Create an account">
-    <ContentPage.BindingContext>
-        <vm:RegistrationViewModel/>
-    </ContentPage.BindingContext>
     <Shell.BackButtonBehavior>
         <BackButtonBehavior Command="{Binding BusyBackCommand}"/>
     </Shell.BackButtonBehavior>

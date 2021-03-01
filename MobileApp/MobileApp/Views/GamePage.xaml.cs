@@ -36,12 +36,6 @@ namespace MobileApp.Views
             return true;
         }
 
-        protected override void OnParentSet()
-        {
-            base.OnParentSet();
-            this.CleanupPage();
-        }
-
         private void AdjustTemp(double value)
         {
             TempBar.TranslateTo((Width - 12.0) * value + 12.0, 0);

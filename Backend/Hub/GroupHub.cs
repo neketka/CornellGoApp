@@ -57,7 +57,6 @@ namespace Backend.Hub
 
             await Database.SaveChangesAsync();
             return true;
-            
         }
 
         public async Task<ChallengeData> GetChallengeData()

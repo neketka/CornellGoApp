@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MobileApp.Services;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,21 +8,28 @@ namespace MobileApp.ViewModels
 {
     public class LoadingViewModel : BaseViewModel
     {
-        public LoadingViewModel()
+        private readonly IGameService gameService;
+        private readonly INavigationService navigationService;
+        private readonly IDialogService dialogService;
+
+        public LoadingViewModel(IGameService gameService, INavigationService navigationService, IDialogService dialogService)
         {
-            GameService.Client.ConnectionClosed += Client_ConnectionClosed;
+            this.gameService = gameService;
+            this.navigationService = navigationService;
+            this.dialogService = dialogService;
+
+            gameService.Client.ConnectionClosed += Client_ConnectionClosed;
             Load();
         }
 
-        public override void CleanupEvents()
+        public override void OnDestroying()
         {
-            base.CleanupEvents();
-            GameService.Client.ConnectionClosed -= Client_ConnectionClosed;
+            gameService.Client.ConnectionClosed -= Client_ConnectionClosed;
         }
 
         private async Task Client_ConnectionClosed()
         {
-            await NavigationService.ToLoadingPage();
+            await navigationService.NavigateBackTo<LoadingViewModel>();
             await Load();
         }
 
@@ -31,17 +39,15 @@ namespace MobileApp.ViewModels
             {
                 try
                 {
-                    await GameService.Client.Connect();
+                    await gameService.Client.Connect();
                     break;
                 }
                 catch (Exception e)
                 {
-                    await NavigationService.ShowConnectionError(
-                        e.InnerException?.InnerException?.Message ?? 
-                        e.InnerException?.Message ?? e.Message);
+                    await dialogService.ShowConnectionError();
                 }
             }
-            await NavigationService.ToLandingPage();
+            await navigationService.NavigateTo<LandingViewModel>();
         }
     }
 }

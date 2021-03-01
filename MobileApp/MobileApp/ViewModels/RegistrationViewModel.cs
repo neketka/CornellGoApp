@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MobileApp.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -107,7 +108,7 @@ namespace MobileApp.ViewModels
             }
         }
 
-        public RegistrationViewModel()
+        public RegistrationViewModel(IGameService gameService, INavigationService navigationService)
         {
             RegisterCommand = new Command(async () => 
             {
@@ -116,12 +117,15 @@ namespace MobileApp.ViewModels
                 BadText = "";
                 try
                 {
-                    if (await GameService.Client.Register(Username, Password, Email))
+                    if (await gameService.Client.Register(Username, Password, Email))
                     {
-                        if (await GameService.LoginWithSession(Username, Password))
-                            await NavigationService.PushGamePage();
+                        if (await gameService.LoginWithSession(Username, Password))
+                            await navigationService.NavigateTo<GameViewModel>();
                         else
-                            await NavigationService.ToLoginPage();
+                        {
+                            await navigationService.NavigateBack();
+                            await navigationService.NavigateTo<LoginViewModel>();
+                        }
                     }
                     else
                     {

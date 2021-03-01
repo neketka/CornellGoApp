@@ -8,9 +8,6 @@
              x:Class="MobileApp.Views.LeaderPage"
              Title="Leaderboard"
              Shell.FlyoutBehavior="Disabled">
-    <ContentPage.BindingContext>
-        <vm:LeaderViewModel/>
-    </ContentPage.BindingContext>
     <ContentPage.Resources>
         <ex:NumLengthConverter x:Key="numLen"/>
         <ex:PluralConverter x:Key="plural"/>

@@ -11,9 +11,6 @@
              SizeChanged="ContentPage_SizeChanged"
              Shell.FlyoutBehavior="Flyout"
              Shell.NavBarIsVisible="False">
-    <ContentPage.BindingContext>
-        <vm:GameViewModel/>
-    </ContentPage.BindingContext>
     <ContentPage.Resources>
         <ResourceDictionary>
             <ex:InverseBoolConverter x:Key="invBool"/>
@@ -55,11 +52,7 @@
                 </Frame.GestureRecognizers>
                 <StackLayout>
                     <StackLayout Padding="24, 0, 24, 0">
-                        <BoxView HeightRequest="5" CornerRadius="2" WidthRequest="48" BackgroundColor="Gray" HorizontalOptions="Center">
-                            <BoxView.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding DoVictoryCommand}"/>
-                            </BoxView.GestureRecognizers>
-                        </BoxView>
+                        <BoxView HeightRequest="5" CornerRadius="2" WidthRequest="48" BackgroundColor="Gray" HorizontalOptions="Center"/>
                         <StackLayout Orientation="Horizontal" Margin="0, -4, 0, -4">
                             <Label HorizontalOptions="StartAndExpand" TextColor="{StaticResource PrimaryAccent}">
                                 <Label.FormattedText>

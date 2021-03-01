@@ -9,9 +9,6 @@
              Title="Visited Places"
              BackgroundColor="{StaticResource Secondary}"
              Shell.FlyoutBehavior="Disabled">
-    <ContentPage.BindingContext>
-        <vm:HistoryViewModel/>
-    </ContentPage.BindingContext>
     <ContentPage.Resources>
         <ResourceDictionary>
             <ex:PluralConverter x:Key="plural"/>

@@ -6,6 +6,7 @@ using System.Text;
 using System.Linq;
 using Xamarin.Forms;
 using System.Threading.Tasks;
+using MobileApp.Services;
 
 namespace MobileApp.ViewModels
 {
@@ -58,31 +59,35 @@ namespace MobileApp.ViewModels
 
         private ImageSource pfp;
 
-        public GameViewModel()
+        private IGameService gameService;
+
+        public GameViewModel(IGameService gameService, INavigationService navigationService, IDialogService dialogService)
         {
+            this.gameService = gameService;
+
             pfp = ImageSource.FromResource("MobileApp.Assets.Images.profile.png");
             GroupMembers = new ObservableCollection<GroupMember>();
 
             LeaveCommand = new Command<string>(async (s) =>
             {
                 GroupMember gm = GroupMembers.First(e => e.Id == s);
-                if (gm.IsYou ? (gm.IsHost ? await NavigationService.ConfirmDisband(false)
-                                          : await NavigationService.ConfirmLeave(false))
-                             : await NavigationService.ConfirmKick(gm.Username))
+                if (gm.IsYou ? (gm.IsHost ? await dialogService.ConfirmDisband(false)
+                                          : await dialogService.ConfirmLeave(false))
+                             : await dialogService.ConfirmKick(gm.Username))
                 {
-                    await GameService.Client.Kick(gm.Id);
+                    await gameService.Client.Kick(gm.Id);
                 }
             });
             JoinCommand = new Command(async () =>
             {
-                if (await NavigationService.ConfirmDisband(true))
+                if (await dialogService.ConfirmDisband(true))
                 {
-                    string id = await NavigationService.ShowJoinGroup(false);
+                    string id = await dialogService.ShowJoinGroup(false);
                     if (id != null)
-                        await GameService.Client.JoinGroup(id);
+                        await gameService.Client.JoinGroup(id);
                 }
             });
-            FindOutMoreCommand = new Command(async () => { await NavigationService.ShowServerError(); });
+            FindOutMoreCommand = new Command(async () => { await dialogService.ShowServerError(); });
             NextChallengeCommand = new Command(() => VictoryMode = false );
 
             DoVictoryCommand = new Command(() =>
@@ -95,19 +100,19 @@ namespace MobileApp.ViewModels
                 ChallengeDescription = "New challenge description";
             });
 
-            GameService.Client.ChallengeFinished += Client_ChallengeFinished;
-            GameService.Client.ChallengeUpdated += Client_ChallengeUpdated;
-            GameService.Client.GroupDataUpdated += Client_GroupDataUpdated;
-            GameService.Client.GroupMemberLeft += Client_GroupMemberLeft;
-            GameService.Client.GroupMemberUpdated += Client_GroupMemberUpdated;
-            GameService.ProgressUpdated += GameService_ProgressUpdated;
+            gameService.Client.ChallengeFinished += Client_ChallengeFinished;
+            gameService.Client.ChallengeUpdated += Client_ChallengeUpdated;
+            gameService.Client.GroupDataUpdated += Client_GroupDataUpdated;
+            gameService.Client.GroupMemberLeft += Client_GroupMemberLeft;
+            gameService.Client.GroupMemberUpdated += Client_GroupMemberUpdated;
+            gameService.ProgressUpdated += GameService_ProgressUpdated;
 
             LoadInitialData().Wait();
         }
 
         private async Task LoadInitialData()
         {
-            var challenge = await GameService.Client.GetChallengeData();
+            var challenge = await gameService.Client.GetChallengeData();
             ChallengeImage = new UriImageSource
             {
                 Uri = new(challenge.ImageUrl),
@@ -116,9 +121,9 @@ namespace MobileApp.ViewModels
             ChallengeDescription = challenge.Description;
             Points = challenge.Points;
 
-            GroupCode = await GameService.Client.GetFriendlyGroupId();
+            GroupCode = await gameService.Client.GetFriendlyGroupId();
 
-            var members = await GameService.Client.GetGroupMembers();
+            var members = await gameService.Client.GetGroupMembers();
             AddMembers(members);
             UpdateGroupDataFromList();
         }
@@ -156,7 +161,7 @@ namespace MobileApp.ViewModels
                 CachingEnabled = true
             };
 
-            string oldName = await GameService.Client.GetPrevChallengeName();
+            string oldName = await gameService.Client.GetPrevChallengeName();
 
             await Device.InvokeOnMainThreadAsync(() =>
             {
@@ -186,9 +191,9 @@ namespace MobileApp.ViewModels
         private void AddMembers(CommunicationModel.GroupMemberData[] members)
         {
             GroupMembers.Clear();
-            foreach (var data in members.OrderByDescending(d => d.UserId == GameService.UserId ? 2 : d.IsHost ? 1 : 0))
+            foreach (var data in members.OrderByDescending(d => d.UserId == gameService.UserId ? 2 : d.IsHost ? 1 : 0))
             {
-                GroupMembers.Add(new(data.UserId, pfp, data.UserId == GameService.UserId, data.IsHost,
+                GroupMembers.Add(new(data.UserId, pfp, data.UserId == gameService.UserId, data.IsHost,
                     data.IsDone, data.Username, data.Points));
             }
         }
@@ -220,16 +225,14 @@ namespace MobileApp.ViewModels
             MaxMembers = 8;
         }
 
-        public override void CleanupEvents()
+        public override void OnDestroying()
         {
-            base.CleanupEvents();
-
-            GameService.Client.ChallengeFinished -= Client_ChallengeFinished;
-            GameService.Client.ChallengeUpdated -= Client_ChallengeUpdated;
-            GameService.Client.GroupDataUpdated -= Client_GroupDataUpdated;
-            GameService.Client.GroupMemberLeft -= Client_GroupMemberLeft;
-            GameService.Client.GroupMemberUpdated -= Client_GroupMemberUpdated;
-            GameService.ProgressUpdated -= GameService_ProgressUpdated;
+            gameService.Client.ChallengeFinished -= Client_ChallengeFinished;
+            gameService.Client.ChallengeUpdated -= Client_ChallengeUpdated;
+            gameService.Client.GroupDataUpdated -= Client_GroupDataUpdated;
+            gameService.Client.GroupMemberLeft -= Client_GroupMemberLeft;
+            gameService.Client.GroupMemberUpdated -= Client_GroupMemberUpdated;
+            gameService.ProgressUpdated -= GameService_ProgressUpdated;
         }
     }
 }
