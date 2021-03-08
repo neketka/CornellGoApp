@@ -26,16 +26,6 @@ namespace Backend.Hub
             grp.SyncPlacesWithUsers();
             await Database.SaveChangesAsync();
 
-            /*
-            List<GroupMemberData> list = new List<GroupMemberData>();
-            foreach (GroupMember gmember in grp.GroupMembers)
-            {
-                GroupMemberData gmd = new GroupMemberData(gmember.User.Id.ToString(), gmember.User.Username, gmember.IsHost, gmember.IsDone, gmember.User.Score);
-                list.Add(gmd);
-                
-            }
-            */
-
             await Clients.Group(query.GroupMember.Group.SignalRId).UpdateGroupData(grp.GetFriendlyId(), await GetGroupMembers());
             
 
@@ -104,8 +94,14 @@ namespace Backend.Hub
             User user = session.User;
             Group grp = Database.Groups.Single(b => b.Id == long.Parse(groupId));
 
+            //Make sure group isnt null
             if (grp == null)
                 return false;
+
+            //Remove user from old group
+            await Kick(user.Id.ToString());
+
+            //Add user to new group
             grp.GroupMembers.Add(user.GroupMember);
             Database.GroupMembers.Add(user.GroupMember);
             await Database.SaveChangesAsync();
@@ -138,6 +134,12 @@ namespace Backend.Hub
             }
 
             return new ChallengeProgressData(nPoint.Distance(fPoint).ToString(), scaled);
+        }
+
+        public async Task<int> GetMaxPlayers()
+        {
+            int current_max = 8;
+            return current_max;
         }
     }
 }

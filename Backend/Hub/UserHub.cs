@@ -41,9 +41,11 @@ namespace Backend.Hub
             {
                 Challenge chal = prev.Challenge;
                 yield return new ChallengeHistoryEntryData(chal.Id.ToString(), chal.ImageJPG.ToString(), chal.Name, chal.Description, chal.Points.ToString(), prev.Timestamp);
+                //ImamgJPG cant be byte[]
+                //points should be int
             }
 
-            
+
         }
 
         public async Task<string> GetPrevChallengeName()
