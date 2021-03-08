@@ -65,5 +65,8 @@ namespace CommunicationModel
 
         public async Task<bool> ChangeEmail(string email)
             => await Connection.InvokeAsync<bool>("ChangeEmail", email);
+
+        public async Task<int> GetMaxPlayers()
+            => await Connection.InvokeAsync<int>("GetMaxPlayers");
     }
 }

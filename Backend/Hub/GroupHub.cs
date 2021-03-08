@@ -19,22 +19,14 @@ namespace Backend.Hub
             if (session == null) return false;
             
             User query = Database.Users.Single(b => b.Id == long.Parse(userId));
+            if (query.GroupMember.Group == null) return false; //Is default null?
+
             GroupMember gmem = query.GroupMember;
             Group grp = query.GroupMember.Group;
             grp.GroupMembers.Remove(gmem);
             Database.GroupMembers.Remove(gmem);
             grp.SyncPlacesWithUsers();
             await Database.SaveChangesAsync();
-
-            /*
-            List<GroupMemberData> list = new List<GroupMemberData>();
-            foreach (GroupMember gmember in grp.GroupMembers)
-            {
-                GroupMemberData gmd = new GroupMemberData(gmember.User.Id.ToString(), gmember.User.Username, gmember.IsHost, gmember.IsDone, gmember.User.Score);
-                list.Add(gmd);
-                
-            }
-            */
 
             await Clients.Group(query.GroupMember.Group.SignalRId).UpdateGroupData(grp.GetFriendlyId(), await GetGroupMembers());
             
@@ -57,6 +49,7 @@ namespace Backend.Hub
 
             await Database.SaveChangesAsync();
             return true;
+            
         }
 
         public async Task<ChallengeData> GetChallengeData()
@@ -71,9 +64,11 @@ namespace Backend.Hub
         {
             UserSession session = await Database.UserSessions.FromSignalRId(Context.UserIdentifier);
             User user = session.User;
-            Group grp = user.GroupMember.Group;
+
+            var gmems = Database.GroupMembers.AsQueryable().Where(b => b.Group.Id == user.GroupMember.Group.Id);
             List<GroupMemberData> list = new List<GroupMemberData>();
-            foreach (GroupMember gmem in grp.GroupMembers)
+
+            foreach (GroupMember gmem in gmems)
             {
                 GroupMemberData res = await GetGroupMember(gmem.User.Id.ToString());
                 list.Add(res);
@@ -103,8 +98,14 @@ namespace Backend.Hub
             User user = session.User;
             Group grp = Database.Groups.Single(b => b.Id == long.Parse(groupId));
 
+            //Make sure group isnt null
             if (grp == null)
                 return false;
+
+            //Remove user from old group
+            await Kick(user.Id.ToString());
+
+            //Add user to new group
             grp.GroupMembers.Add(user.GroupMember);
             Database.GroupMembers.Add(user.GroupMember);
             await Database.SaveChangesAsync();
@@ -137,6 +138,12 @@ namespace Backend.Hub
             }
 
             return new ChallengeProgressData(nPoint.Distance(fPoint).ToString(), scaled);
+        }
+
+        public async Task<int> GetMaxPlayers()
+        {
+            int current_max = 8;
+            return current_max;
         }
     }
 }

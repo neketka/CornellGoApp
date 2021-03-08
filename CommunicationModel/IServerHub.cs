@@ -27,5 +27,6 @@ namespace CommunicationModel
         Task<string> GetFriendlyGroupId();
         Task<bool> JoinGroup(string groupId);
         Task<ChallengeProgressData> CheckProgress(double lat, double @long);
+        Task<int> GetMaxPlayers();
     }
 }
