@@ -5,6 +5,8 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Linq;
 using Xamarin.Forms;
+using System.Threading.Tasks;
+using MobileApp.Services;
 
 namespace MobileApp.ViewModels
 {
@@ -41,10 +43,12 @@ namespace MobileApp.ViewModels
         public ImageSource OldChallengeImage { get => oldChallengeImage; set => SetProperty(ref oldChallengeImage, value); }
         public string OldChallengeName { get => oldChallengeName; set => SetProperty(ref oldChallengeName, value); }
         public int OldChallengePoints { get => oldChallengePoints; set => SetProperty(ref oldChallengePoints, value); }
-        public bool VictoryMode 
-        { 
+        public bool VictoryMode
+        {
             get => victoryMode;
-            set => SetProperty(ref victoryMode, value, onChanged: () => { if (value) (OldChallengeImage, OldChallengePoints) = (ChallengeImage, Points); });
+            set => SetProperty(ref victoryMode, value, onChanged: () => { 
+                if (value) (OldChallengeImage, OldChallengePoints) = (ChallengeImage, Points); 
+            });
         }
         public Command FindOutMoreCommand { get; }
         public Command NextChallengeCommand { get; }
@@ -53,49 +57,38 @@ namespace MobileApp.ViewModels
         public Command<string> LeaveCommand { get; }
         public Command JoinCommand { get; }
 
-        public GameViewModel()
+        private ImageSource pfp;
+
+        private IGameService gameService;
+
+        public GameViewModel(IGameService gameService, INavigationService navigationService, IDialogService dialogService)
         {
-            GroupMembers = new ObservableCollection<GroupMember>
-            {
-                new GroupMember("a", ImageSource.FromResource("MobileApp.Assets.Images.bsquare.jpg"), true, true, true, "UsernameUsername", 12),
-                new GroupMember("b", ImageSource.FromResource("MobileApp.Assets.Images.profile.png"), false, false, false, "Not ready person", 0),
-                new GroupMember("c", ImageSource.FromResource("MobileApp.Assets.Images.profile.png"), false, false, false, "Not ready person", 0),
-                new GroupMember("d", ImageSource.FromResource("MobileApp.Assets.Images.profile.png"), false, false, true, "Ready person", 0),
-                new GroupMember("e", ImageSource.FromResource("MobileApp.Assets.Images.profile.png"), false, false, true, "Ready person", 0),
-                new GroupMember("f", ImageSource.FromResource("MobileApp.Assets.Images.profile.png"), false, false, true, "Ready person", 0),
-                new GroupMember("g", ImageSource.FromResource("MobileApp.Assets.Images.profile.png"), false, false, false, "Not ready person", 0),
-                new GroupMember("h", ImageSource.FromResource("MobileApp.Assets.Images.profile.png"), false, false, false, "Not ready person", 0)
-            };
+            this.gameService = gameService;
 
-            ChallengeImage = ImageSource.FromResource("MobileApp.Assets.Images.grid.png");
-            ChallengeDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt";
+            pfp = ImageSource.FromResource("MobileApp.Assets.Images.profile.png");
+            GroupMembers = new ObservableCollection<GroupMember>();
 
-            LeaveCommand = new Command<string>(async (s) => 
+            LeaveCommand = new Command<string>(async (s) =>
             {
                 GroupMember gm = GroupMembers.First(e => e.Id == s);
-                if (gm.IsYou)
+                if (gm.IsYou ? (gm.IsHost ? await dialogService.ConfirmDisband(false)
+                                          : await dialogService.ConfirmLeave(false))
+                             : await dialogService.ConfirmKick(gm.Username))
                 {
-                    if (gm.IsHost)
-                    {
-                        await NavigationService.ConfirmDisband(false);
-                    }
-                    else
-                    {
-                        await NavigationService.ConfirmLeave(false);
-                    }
-                }
-                else
-                {
-                    await NavigationService.ConfirmKick(gm.Username);
+                    await gameService.Client.Kick(gm.Id);
                 }
             });
-            JoinCommand = new Command(async () => 
+            JoinCommand = new Command(async () =>
             {
-                await NavigationService.ConfirmDisband(true);
-                await NavigationService.ShowJoinGroup(false);
+                if (await dialogService.ConfirmDisband(true))
+                {
+                    string id = await dialogService.ShowJoinGroup(false);
+                    if (id != null)
+                        await gameService.Client.JoinGroup(id);
+                }
             });
-            FindOutMoreCommand = new Command(() => { });
-            NextChallengeCommand = new Command(() => { VictoryMode = false; });
+            FindOutMoreCommand = new Command(async () => { await dialogService.ShowServerError(); });
+            NextChallengeCommand = new Command(() => VictoryMode = false );
 
             DoVictoryCommand = new Command(() =>
             {
@@ -106,6 +99,140 @@ namespace MobileApp.ViewModels
                 Points = 100;
                 ChallengeDescription = "New challenge description";
             });
+
+            gameService.Client.ChallengeFinished += Client_ChallengeFinished;
+            gameService.Client.ChallengeUpdated += Client_ChallengeUpdated;
+            gameService.Client.GroupDataUpdated += Client_GroupDataUpdated;
+            gameService.Client.GroupMemberLeft += Client_GroupMemberLeft;
+            gameService.Client.GroupMemberUpdated += Client_GroupMemberUpdated;
+            gameService.ProgressUpdated += GameService_ProgressUpdated;
+
+            LoadInitialData();
+        }
+
+        private async Task LoadInitialData()
+        {
+            var challenge = await gameService.Client.GetChallengeData();
+            ChallengeImage = new UriImageSource
+            {
+                Uri = new(challenge.ImageUrl),
+                CachingEnabled = true
+            };
+            ChallengeDescription = challenge.Description;
+            Points = challenge.Points;
+
+            GroupCode = await gameService.Client.GetFriendlyGroupId();
+
+            var members = await gameService.Client.GetGroupMembers();
+            AddMembers(members);
+            UpdateGroupDataFromList();
+        }
+
+        private async Task Client_GroupMemberUpdated(CommunicationModel.GroupMemberData data)
+        {
+            int index = GetGroupMemberIndex(data.UserId);
+            var newMember = GroupMembers[index] with {
+                IsHost = data.IsHost, IsReady = data.IsDone, Username = data.Username, Score = data.Points
+            };
+
+            await Device.InvokeOnMainThreadAsync(() => GroupMembers[index] = newMember);
+        }
+
+        private async Task Client_GroupMemberLeft(string userId)
+        {
+            int index = GetGroupMemberIndex(userId);
+            await Device.InvokeOnMainThreadAsync(() => GroupMembers.RemoveAt(index));
+        }
+
+        private async Task Client_GroupDataUpdated(string friendlyId, CommunicationModel.GroupMemberData[] members)
+        {
+            await Device.InvokeOnMainThreadAsync(() =>
+            {
+                AddMembers(members);
+                UpdateGroupDataFromList();
+            });
+        }
+
+        private async Task Client_ChallengeUpdated(CommunicationModel.ChallengeData data)
+        {
+            ImageSource img = new UriImageSource
+            {
+                Uri = new(data.ImageUrl),
+                CachingEnabled = true
+            };
+
+            string oldName = await gameService.Client.GetPrevChallengeName();
+
+            await Device.InvokeOnMainThreadAsync(() =>
+            {
+                OldChallengeName = oldName;
+                VictoryMode = true;
+                ChallengeImage = img;
+                Points = data.Points;
+            });
+        }
+
+        private async Task Client_ChallengeFinished()
+        {
+            await Device.InvokeOnMainThreadAsync(() => IsDone = true);
+        }
+
+        private int GetGroupMemberIndex(string id)
+        {
+            int index = 0;
+            for (; index < GroupMembers.Count; ++index)
+            {
+                if (GroupMembers[index].Id == id)
+                    return index;
+            }
+            return -1;
+        }
+
+        private void AddMembers(CommunicationModel.GroupMemberData[] members)
+        {
+            GroupMembers.Clear();
+            foreach (var data in members.OrderByDescending(d => d.UserId == gameService.UserId ? 2 : d.IsHost ? 1 : 0))
+            {
+                GroupMembers.Add(new(data.UserId, pfp, data.UserId == gameService.UserId, data.IsHost,
+                    data.IsDone, data.Username, data.Points));
+            }
+        }
+
+        private void GameService_ProgressUpdated(CommunicationModel.ChallengeProgressData obj)
+        {
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                Progress = obj.Progress;
+                ProgressString = obj.WalkDistance;
+            });
+        }
+
+        private void UpdateGroupDataFromList()
+        {
+            int membersDone = 0;
+            foreach (var member in GroupMembers)
+            {
+                if (member.IsReady)
+                    ++membersDone;
+
+                if (member.IsYou)
+                {
+                    IsHost = member.IsHost;
+                    IsDone = member.IsReady;
+                }
+            }
+            MembersReady = membersDone;
+            MaxMembers = 8;
+        }
+
+        public override void OnDestroying()
+        {
+            gameService.Client.ChallengeFinished -= Client_ChallengeFinished;
+            gameService.Client.ChallengeUpdated -= Client_ChallengeUpdated;
+            gameService.Client.GroupDataUpdated -= Client_GroupDataUpdated;
+            gameService.Client.GroupMemberLeft -= Client_GroupMemberLeft;
+            gameService.Client.GroupMemberUpdated -= Client_GroupMemberUpdated;
+            gameService.ProgressUpdated -= GameService_ProgressUpdated;
         }
     }
 }

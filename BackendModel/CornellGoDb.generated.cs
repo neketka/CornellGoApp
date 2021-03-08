@@ -5,7 +5,7 @@
 //     Manual changes to this file may cause unexpected behavior in your application.
 //     Manual changes to this file will be overwritten if the code is regenerated.
 //
-//     Produced by Entity Framework Visual Editor v3.0.2.0
+//     Produced by Entity Framework Visual Editor v3.0.3.2
 //     Source:                    https://github.com/msawczyn/EFDesigner
 //     Visual Studio Marketplace: https://marketplace.visualstudio.com/items?itemName=michaelsawczyn.EFDesigner
 //     Documentation:             https://msawczyn.github.io/EFDesigner/
@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;    
 
 namespace BackendModel
 {
@@ -116,12 +116,12 @@ namespace BackendModel
          modelBuilder.Entity<global::BackendModel.Authenticator>()
                      .Property(t => t.Timestamp)
                      .IsRequired();
-         modelBuilder.Entity<global::BackendModel.Authenticator>().Navigation(e => e.User).IsRequired();
          modelBuilder.Entity<global::BackendModel.Authenticator>()
                      .HasOne<global::BackendModel.User>(p => p.User)
                      .WithOne()
                      .HasForeignKey("Authenticator", "UserId")
                      .OnDelete(DeleteBehavior.NoAction);
+         modelBuilder.Entity<global::BackendModel.Authenticator>().Navigation(e => e.User).IsRequired();
 
          modelBuilder.Entity<global::BackendModel.Challenge>()
                      .ToTable("Challenges")
@@ -177,12 +177,16 @@ namespace BackendModel
                      .Property(t => t.Version)
                      .IsRowVersion()
                      .IsRequired();
-         modelBuilder.Entity<global::BackendModel.Group>().Navigation(e => e.Challenge).IsRequired();
+         modelBuilder.Entity<global::BackendModel.Group>()
+                     .Property(t => t.MaxMembers)
+                     .IsRequired()
+                     .HasDefaultValue(8);
          modelBuilder.Entity<global::BackendModel.Group>()
                      .HasOne<global::BackendModel.Challenge>(p => p.Challenge)
                      .WithOne()
                      .HasForeignKey("Group", "ChallengeId")
                      .OnDelete(DeleteBehavior.NoAction);
+         modelBuilder.Entity<global::BackendModel.Group>().Navigation(e => e.Challenge).IsRequired();
          modelBuilder.Entity<global::BackendModel.Group>()
                      .HasMany<global::BackendModel.Challenge>(p => p.PrevChallenges)
                      .WithOne()
@@ -218,12 +222,12 @@ namespace BackendModel
          modelBuilder.Entity<global::BackendModel.PrevChallenge>()
                      .Property(t => t.Timestamp)
                      .IsRequired();
-         modelBuilder.Entity<global::BackendModel.PrevChallenge>().Navigation(e => e.Challenge).IsRequired();
          modelBuilder.Entity<global::BackendModel.PrevChallenge>()
                      .HasOne<global::BackendModel.Challenge>(p => p.Challenge)
                      .WithOne()
                      .HasForeignKey("PrevChallenge", "ChallengeId")
                      .OnDelete(DeleteBehavior.NoAction);
+         modelBuilder.Entity<global::BackendModel.PrevChallenge>().Navigation(e => e.Challenge).IsRequired();
 
          modelBuilder.Entity<global::BackendModel.Suggestion>()
                      .ToTable("Suggestions")
@@ -270,8 +274,7 @@ namespace BackendModel
          modelBuilder.Entity<global::BackendModel.User>()
                      .HasMany<global::BackendModel.PrevChallenge>(p => p.PrevChallenges)
                      .WithOne()
-                     .HasForeignKey("UserPrevChallengesId")
-                     .OnDelete(DeleteBehavior.Cascade);
+                     .HasForeignKey("UserPrevChallengesId");
          modelBuilder.Entity<global::BackendModel.User>()
                      .HasMany<global::BackendModel.Suggestion>(p => p.Suggestions)
                      .WithOne(p => p.User)

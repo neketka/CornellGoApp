@@ -7,9 +7,6 @@
              BackgroundColor="{StaticResource Secondary}"
              Shell.FlyoutBehavior="Disabled"
              Shell.NavBarIsVisible="False">
-    <ContentPage.BindingContext>
-        <vm:LoadingViewModel/>
-    </ContentPage.BindingContext>
     <ContentPage.Content>
         <StackLayout>
             <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">

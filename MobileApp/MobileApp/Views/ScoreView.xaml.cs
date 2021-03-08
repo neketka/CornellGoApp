@@ -18,8 +18,8 @@ namespace MobileApp.Views
             declaringType: typeof(AvatarView),
             defaultValue: null);
 
-        public static readonly BindableProperty NameProperty = BindableProperty.Create(
-            propertyName: "Name",
+        public static readonly BindableProperty UsernameProperty = BindableProperty.Create(
+            propertyName: "Username",
             returnType: typeof(string),
             declaringType: typeof(AvatarView),
             defaultValue: "Avatar name");
@@ -42,10 +42,10 @@ namespace MobileApp.Views
             set => SetValue(ImageProperty, value);
         }
 
-        public string Name
+        public string Username
         {
-            get => (string)GetValue(NameProperty);
-            set => SetValue(NameProperty, value);
+            get => (string)GetValue(UsernameProperty);
+            set => SetValue(UsernameProperty, value);
         }
 
         public int Score

@@ -22,7 +22,7 @@ namespace MobileApp.Views
         {
             InitializeComponent();
 
-            ((GameViewModel)BindingContext).PropertyChanged += GamePage_PropertyChanged;
+            BindingContextChanged += GamePage_BindingContextChanged;
             BottomSheet.PropertyChanged += BottomSheet_PropertyChanged;
             Shell.Current.PropertyChanged += (s, e) =>
             {
@@ -31,15 +31,14 @@ namespace MobileApp.Views
             };
         }
 
+        private void GamePage_BindingContextChanged(object sender, EventArgs e)
+        {
+            ((GameViewModel)BindingContext).PropertyChanged += GamePage_PropertyChanged;
+        }
+
         protected override bool OnBackButtonPressed()
         {
             return true;
-        }
-
-        protected override void OnParentSet()
-        {
-            base.OnParentSet();
-            this.CleanupPage();
         }
 
         private void AdjustTemp(double value)
@@ -90,7 +89,8 @@ namespace MobileApp.Views
 
             positions = new[] { groups, desc, max };
 
-            AdjustTemp(((GameViewModel)BindingContext).Progress);
+            if (BindingContext != null)
+                AdjustTemp(((GameViewModel)BindingContext).Progress);
             BottomSheet.TranslationY = positions[1];
         }
 

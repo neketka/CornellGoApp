@@ -24,7 +24,7 @@ namespace MobileApp.ViewModels
         public Command CloseAccountCommand { get; }
         public Command LogoutCommand { get; }
 
-        public SettingsViewModel()
+        public SettingsViewModel(IGameService gameService, INavigationService navigationService, IDialogService dialogService)
         {
             Avatar = ImageSource.FromResource("MobileApp.Assets.Images.profile.png");
             Username = "Username";
@@ -39,7 +39,7 @@ namespace MobileApp.ViewModels
                 string newName = Username;
                 do
                 {
-                    newName = await NavigationService.ShowChangeUsername(newName, isValid);
+                    newName = await dialogService.ShowChangeUsername(newName, isValid);
 
                     bool lenValid = newName.Length is >= 1 and <= 16;
                     bool formatValid = newName.All(c => char.IsLetterOrDigit(c) || c == '_') && !string.IsNullOrWhiteSpace(newName);
@@ -51,18 +51,18 @@ namespace MobileApp.ViewModels
                 if (newName == null)
                     return;
 
-                if (await GameService.Client.ChangeUsername(newName))
+                if (await gameService.Client.ChangeUsername(newName))
                     Username = newName;
                 else
-                    await NavigationService.ShowServerError();
+                    await dialogService.ShowServerError();
             });
-            ChangePasswordCommand = new Command(async () => await NavigationService.PushChangePasswordPage());
-            ChangeEmailCommand = new Command(async () => await NavigationService.PushChangeEmailPage());
-            CloseAccountCommand = new Command(async () => await NavigationService.PushCloseAccountPage());
+            ChangePasswordCommand = new Command(async () => await navigationService.NavigateTo<ChangePasswordViewModel>());
+            ChangeEmailCommand = new Command(async () => await navigationService.NavigateTo<ChangeEmailViewModel>());
+            CloseAccountCommand = new Command(async () => await navigationService.NavigateTo<CloseAccountViewModel>());
             LogoutCommand = new Command(async () => 
             {
-                if (await GameService.LogoutWithSession())
-                    await NavigationService.ToLandingPage();
+                if (await gameService.LogoutWithSession())
+                    await navigationService.NavigateBackTo<LandingViewModel>();
             });
         }
     }

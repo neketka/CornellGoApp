@@ -5,7 +5,7 @@
 //     Manual changes to this file may cause unexpected behavior in your application.
 //     Manual changes to this file will be overwritten if the code is regenerated.
 //
-//     Produced by Entity Framework Visual Editor v3.0.2.0
+//     Produced by Entity Framework Visual Editor v3.0.3.2
 //     Source:                    https://github.com/msawczyn/EFDesigner
 //     Visual Studio Marketplace: https://marketplace.visualstudio.com/items?itemName=michaelsawczyn.EFDesigner
 //     Documentation:             https://msawczyn.github.io/EFDesigner/
@@ -38,8 +38,6 @@ namespace BackendModel
       /// </summary>
       protected PrevChallenge()
       {
-         Challenge = global::BackendModel.Challenge.CreateChallengeUnsafe();
-
          Init();
       }
 
@@ -56,17 +54,12 @@ namespace BackendModel
       /// </summary>
       /// <param name="timestamp">Creation timestamp</param>
       /// <param name="challenge"></param>
-      /// <param name="_user0"></param>
-      public PrevChallenge(DateTime timestamp, global::BackendModel.Challenge challenge, global::BackendModel.User _user0)
+      public PrevChallenge(DateTime timestamp, global::BackendModel.Challenge challenge)
       {
          this.Timestamp = timestamp;
 
          if (challenge == null) throw new ArgumentNullException(nameof(challenge));
          this.Challenge = challenge;
-
-         if (_user0 == null) throw new ArgumentNullException(nameof(_user0));
-         _user0.PrevChallenges.Add(this);
-
 
          Init();
       }
@@ -76,10 +69,9 @@ namespace BackendModel
       /// </summary>
       /// <param name="timestamp">Creation timestamp</param>
       /// <param name="challenge"></param>
-      /// <param name="_user0"></param>
-      public static PrevChallenge Create(DateTime timestamp, global::BackendModel.Challenge challenge, global::BackendModel.User _user0)
+      public static PrevChallenge Create(DateTime timestamp, global::BackendModel.Challenge challenge)
       {
-         return new PrevChallenge(timestamp, challenge, _user0);
+         return new PrevChallenge(timestamp, challenge);
       }
 
       /*************************************************************************

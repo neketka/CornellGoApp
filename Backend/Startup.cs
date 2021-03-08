@@ -22,7 +22,8 @@ namespace Backend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<BackendModel.CornellGoDb>(o => o.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), e => e.UseNetTopologySuite()));
+            services.AddDbContext<BackendModel.CornellGoDb>(o => 
+                o.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), e => e.UseNetTopologySuite()));
             services.AddSignalR();
             //services.AddControllers();
             /*services.AddSwaggerGen(c =>

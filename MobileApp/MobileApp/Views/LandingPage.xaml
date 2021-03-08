@@ -7,9 +7,6 @@
              BackgroundColor="{StaticResource Secondary}"
              Shell.FlyoutBehavior="Disabled"
              Shell.NavBarIsVisible="False">
-    <ContentPage.BindingContext>
-        <vm:LandingViewModel/>
-    </ContentPage.BindingContext>
     <ContentPage.Content>
         <StackLayout Padding="40, 32, 40, 64">
             <Image Source="{ex:ImageResource MobileApp.Assets.Images.logo.png}" Aspect="AspectFill" HorizontalOptions="Center" HeightRequest="192" WidthRequest="192" Margin="0, 0, 0, -24"/>

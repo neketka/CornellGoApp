@@ -9,9 +9,6 @@
              BackgroundColor="{StaticResource Secondary}"
              Shell.FlyoutBehavior="Disabled"
              Title="Change email address">
-    <ContentPage.BindingContext>
-        <vm:ChangeEmailViewModel/>
-    </ContentPage.BindingContext>
     <ContentPage.Content>
         <StackLayout Padding="20, 20, 20, 0">
             <Entry Text="{Binding Email, Mode=TwoWay}" WidthRequest="2000" Placeholder="Email address"

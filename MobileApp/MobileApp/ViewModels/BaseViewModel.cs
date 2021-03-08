@@ -24,7 +24,9 @@ namespace MobileApp.ViewModels
         }
         public Command BusyBackCommand { get; }
 
-        public virtual void CleanupEvents() { }
+        public virtual void OnEntering(object parameter) { }
+        public virtual void OnReturning(object parameter) { }
+        public virtual void OnDestroying() { }
 
         protected bool SetProperty<T>(ref T backingStore, T value,
             [CallerMemberName] string propertyName = "",
@@ -39,14 +41,9 @@ namespace MobileApp.ViewModels
             return true;
         }
 
-        protected GameService GameService { get; }
-        protected NavigationService NavigationService { get; }
-
         public BaseViewModel()
         {
-            GameService = DependencyService.Get<GameService>();
-            NavigationService = DependencyService.Get<NavigationService>();
-            BusyBackCommand = new Command(async () => { if (!IsBusy) await NavigationService.GoBack(); });
+            BusyBackCommand = new Command(async () => { if (!IsBusy) await Shell.Current.GoToAsync(".."); });
         }
 
         #region INotifyPropertyChanged

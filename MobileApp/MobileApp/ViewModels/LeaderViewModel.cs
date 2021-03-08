@@ -27,15 +27,23 @@ namespace MobileApp.ViewModels
         public int YourRank { get => yourRank; set => SetProperty(ref yourRank, value); }
         public int YourPoints { get => yourPoints; set => SetProperty(ref yourPoints, value); }
         public string YourUsername { get => yourUsername; set => SetProperty(ref yourUsername, value); }
-        public LeaderViewModel()
+
+        private IGameService gameService;
+        private IDialogService dialogService;
+        private INavigationService navigationService;
+        public LeaderViewModel(IGameService gameService, IDialogService dialogService, INavigationService navigationService)
         {
+            this.gameService = gameService;
+            this.dialogService = dialogService;
+            this.navigationService = navigationService;
+
             pfp = ImageSource.FromResource("MobileApp.Assets.Images.profile.png");
 
             Players = new ObservableCollection<LeaderboardPlayer>();
             LoadMoreCommand = new Command<int>((i) => LoadLeaderData(i));
 
             ProfilePicture = pfp;
-            GameService.Client.ScorePositionsUpdated += RerankPlayer;
+            gameService.Client.ScorePositionsUpdated += RerankPlayer;
             LoadData();
         }
 
@@ -43,14 +51,29 @@ namespace MobileApp.ViewModels
         {
             if (YourRank > oldIndex)
                 await LoadUserData();
-            Players.Skip(newIndex + 1).Select((p, i) => new LeaderboardPlayer(p.Id, p.Position, pfp, username, score, p.IsYou));
             
-            Players.Move(oldIndex, newIndex);
+            await Device.InvokeOnMainThreadAsync(() =>
+            {
+                int minModifyIndex = Math.Min(oldIndex, newIndex);
+
+                Players.Move(oldIndex, newIndex);
+                var transform = Players
+                    .Skip(minModifyIndex)
+                    .Select<LeaderboardPlayer, LeaderboardPlayer>((p, i) =>
+                        userId == p.Id ? new(p.Id, i + minModifyIndex + 1, pfp, username, score, p.IsYou)
+                                       : new(p.Id, i + minModifyIndex + 1, pfp, p.Username, p.Points, p.IsYou));
+
+                foreach (var newPlayer in transform)
+                {
+                    Players[minModifyIndex] = newPlayer;
+                    ++minModifyIndex;
+                }
+            });
         }
 
-        public override void CleanupEvents()
+        public override void OnDestroying()
         {
-            GameService.Client.ScorePositionsUpdated -= RerankPlayer;
+            gameService.Client.ScorePositionsUpdated -= RerankPlayer;
         }
 
         private async Task LoadData()
@@ -64,8 +87,8 @@ namespace MobileApp.ViewModels
             }
             catch
             {
-                await NavigationService.ShowServerError();
-                await NavigationService.GoBack();
+                await dialogService.ShowServerError();
+                await navigationService.NavigateBack();
             }
             finally
             {
@@ -75,7 +98,7 @@ namespace MobileApp.ViewModels
 
         private async Task LoadUserData()
         {
-            var data = await GameService.Client.GetUserData();
+            var data = await gameService.Client.GetUserData();
 
             await Device.InvokeOnMainThreadAsync(() =>
             {
@@ -88,11 +111,11 @@ namespace MobileApp.ViewModels
 
         private async Task LoadLeaderData(int count)
         {
-            var data = GameService.Client.GetTopPlayers(Players.Count, count);
+            var data = gameService.Client.GetTopPlayers(Players.Count, count);
             List<LeaderboardPlayer> tempPlayers = new List<LeaderboardPlayer>();
             await foreach (var entry in data)
             {
-                tempPlayers.Add(new(entry.UserId, entry.Index + 1, pfp, entry.Username, entry.Score, entry.UserId == GameService.UserId));
+                tempPlayers.Add(new(entry.UserId, entry.Index + 1, pfp, entry.Username, entry.Score, entry.UserId == gameService.UserId));
             }
             await Device.InvokeOnMainThreadAsync(() => tempPlayers.ForEach(p => Players.Add(p)));
         }

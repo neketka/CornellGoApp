@@ -9,9 +9,6 @@
              Title="Visited Places"
              BackgroundColor="{StaticResource Secondary}"
              Shell.FlyoutBehavior="Disabled">
-    <ContentPage.BindingContext>
-        <vm:HistoryViewModel/>
-    </ContentPage.BindingContext>
     <ContentPage.Resources>
         <ResourceDictionary>
             <ex:PluralConverter x:Key="plural"/>
@@ -38,6 +35,9 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Orientation="Horizontal" Padding="45, 10, 15, 0">
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ShowMoreCommand}" CommandParameter="{Binding Id}"/>
+                            </StackLayout.GestureRecognizers>
                             <Grid HorizontalOptions="FillAndExpand">
                                 <Image Source="{Binding Preview}" Aspect="AspectFill" HeightRequest="120"/>
                                 <BoxView CornerRadius="0" Margin="0" BackgroundColor="Black" Opacity="0.55"/>

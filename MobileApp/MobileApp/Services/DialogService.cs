@@ -1,5 +1,4 @@
-﻿using MobileApp.Views;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,41 +6,22 @@ using Xamarin.Forms;
 
 namespace MobileApp.Services
 {
-    public class NavigationService
+    public interface IDialogService
     {
-        public async Task PushGamePage()
-        {
-            await Shell.Current.GoToAsync($"/{nameof(GamePage)}");
-        }
+        Task<bool> ConfirmDisband(bool isJoining);
+        Task<bool> ConfirmKick(string user);
+        Task<bool> ConfirmLeave(bool isJoining);
+        Task<string> ShowChangeUsername(string oldName, bool invalid);
+        Task ShowConnectionError(string message);
+        Task<string> ShowJoinGroup(bool invalid);
+        Task ShowServerError();
+    }
 
-        public async Task ToLoginPage()
-        {
-            await Shell.Current.GoToAsync($"//{nameof(LoadingPage)}/{nameof(LandingPage)}/{nameof(LoginPage)}");
-        }
-
-        public async Task ToRegistrationPage()
-        {
-            await Shell.Current.GoToAsync($"//{nameof(LoadingPage)}/{nameof(LandingPage)}/{nameof(RegistrationPage)}");
-        }
-
-        public async Task GoBack()
-        {
-            await Shell.Current.GoToAsync("..");
-        }
-
-        public async Task ToLoadingPage()
-        {
-            await Shell.Current.GoToAsync($"//{nameof(LoadingPage)}");
-        }
-
-        public async Task ToLandingPage()
-        {
-            await Shell.Current.GoToAsync($"//{nameof(LoadingPage)}/{nameof(LandingPage)}");
-        }
-
+    public class DialogService : IDialogService
+    {
         public async Task<string> ShowJoinGroup(bool invalid)
         {
-            return await Shell.Current.DisplayPromptAsync("Join Group", invalid ? "Could not join this group! Make sure you are entering the correct code." 
+            return await Shell.Current.DisplayPromptAsync("Join Group", invalid ? "Could not join this group! Make sure you are entering the correct code."
                 : "Enter the code between the brackets from a group member's screen.");
         }
 
@@ -68,7 +48,7 @@ namespace MobileApp.Services
 
         public async Task<string> ShowChangeUsername(string oldName, bool invalid)
         {
-            return await Shell.Current.DisplayPromptAsync("Change username", invalid ? "Invalid username! Must have letters, numbers, underscores, and 1-24 characters." : 
+            return await Shell.Current.DisplayPromptAsync("Change username", invalid ? "Invalid username! Must have letters, numbers, underscores, and 1-24 characters." :
                 "Enter your desired username (letters, numbers, underscores, 1-16 characters).", "Change", "Cancel", "Username", 16, null, oldName);
         }
 
@@ -77,19 +57,9 @@ namespace MobileApp.Services
             await Shell.Current.DisplayAlert("Error!", "Server returned an error while processing your request!", "OK");
         }
 
-        public async Task PushChangePasswordPage()
+        public async Task ShowConnectionError(string message)
         {
-            await Shell.Current.GoToAsync($"{nameof(ChangePasswordPage)}");
-        }
-
-        public async Task PushChangeEmailPage()
-        {
-            await Shell.Current.GoToAsync($"{nameof(ChangeEmailPage)}");
-        }
-
-        public async Task PushCloseAccountPage()
-        {
-            await Shell.Current.GoToAsync($"{nameof(CloseAccountPage)}");
+            await Shell.Current.DisplayAlert("Could not connect to server!", $"Please check your wireless connection and hit retry. Error: {message}", "Retry");
         }
     }
 }

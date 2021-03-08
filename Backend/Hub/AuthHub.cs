@@ -38,7 +38,7 @@ namespace Backend.Hub
 
         public async Task<bool> Login(string email, string password)
         {
-            Authenticator authenticator = await Database.Authenticators.FirstOrDefaultAsync(e => e.Email == email);
+            Authenticator authenticator = await Database.Authenticators.AsQueryable().FirstOrDefaultAsync(e => e.Email == email);
             if (authenticator == null || !VerifyPasswordHash(password, authenticator.Password))
                 return false;
 
@@ -71,7 +71,7 @@ namespace Backend.Hub
 
         public async Task<bool> Register(string username, string password, string email)
         {
-            if (await Database.Authenticators.AnyAsync(e => e.Email == email))
+            if (await Database.Authenticators.AsQueryable().AnyAsync(e => e.Email == email))
                 return false;
 
             Authenticator auth = new(email, CreatePasswordHash(password), DateTime.UtcNow, new(0, username, email));
@@ -108,7 +108,7 @@ namespace Backend.Hub
             if (session == null)
                 return false;
 
-            Authenticator auth = await Database.Authenticators.SingleOrDefaultAsync(a => a.User.Id == session.User.Id);
+            Authenticator auth = await Database.Authenticators.AsQueryable().SingleOrDefaultAsync(a => a.User.Id == session.User.Id);
             if (auth == null)
                 return false;
 
@@ -125,7 +125,7 @@ namespace Backend.Hub
             if (session == null)
                 return false;
 
-            Authenticator auth = await Database.Authenticators.SingleOrDefaultAsync(a => a.User.Id == session.User.Id);
+            Authenticator auth = await Database.Authenticators.AsQueryable().SingleOrDefaultAsync(a => a.User.Id == session.User.Id);
             /*if (auth == null || !VerifyPasswordHash(password, auth.Password))
                 return false;*/
 

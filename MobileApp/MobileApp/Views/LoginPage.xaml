@@ -10,9 +10,6 @@
              Shell.FlyoutBehavior="Disabled"
              IsBusy="{Binding IsBusy}"
              Title="Login">
-    <ContentPage.BindingContext>
-        <vm:LoginViewModel/>
-    </ContentPage.BindingContext>
     <Shell.BackButtonBehavior>
         <BackButtonBehavior Command="{Binding BusyBackCommand}"/>
     </Shell.BackButtonBehavior>

@@ -56,22 +56,23 @@
 
     <Shell.FlyoutHeader>
         <StackLayout Padding="10, 12, 20, 12" Orientation="Horizontal" BackgroundColor="{StaticResource Secondary}">
-            <views:ScoreView Image="{ex:ImageResource MobileApp.Assets.Images.bsquare.jpg}" Name="Username" Score="0" HeightRequest="52" />
+            <views:ScoreView Image="{ex:ImageResource MobileApp.Assets.Images.profile.png}" 
+                             Username="Username" Score="0" HeightRequest="52" x:Name="ProfileView"/>
         </StackLayout>
     </Shell.FlyoutHeader>
 
     <Shell.FlyoutFooter>
         <Grid RowDefinitions="1, *" ColumnDefinitions="*, *">
             <BoxView CornerRadius="0" Color="{StaticResource SecondaryAccent}" Grid.Row="0" Grid.ColumnSpan="2"/>
-            <Label Text="CornellGO!" Margin="16, 8, 0, 24" FontSize="16" TextColor="{StaticResource SecondaryText}" Grid.Row="1"
+            <Label Text="CornellGO!" Margin="24, 16, 0, 24" FontSize="16" TextColor="{StaticResource SecondaryText}" Grid.Row="1"
                    VerticalOptions="CenterAndExpand"/>
-            <Label Text="Beta Test v0.1.0" Margin="0, 8, 16, 24" FontSize="16" TextColor="{StaticResource PrimaryAccent}" 
+            <Label Text="Beta Test v0.1.0" Margin="0, 16, 24, 24" FontSize="16" TextColor="{StaticResource PrimaryAccent}" 
                    Grid.Row="1" Grid.Column="1" HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand"/>
         </Grid>
     </Shell.FlyoutFooter>
 
     <TabBar>
-        <ShellContent Route="LoadingPage" ContentTemplate="{DataTemplate views:LoadingPage}"
+        <ShellContent Route="LoadingViewModel" ContentTemplate="{DataTemplate views:LoadingPage}"
                       Shell.FlyoutBehavior="Disabled"/>
     </TabBar>
 

@@ -19,6 +19,8 @@ namespace Backend.Hub
             if (session == null) return false;
             
             User query = Database.Users.Single(b => b.Id == long.Parse(userId));
+            if (query.GroupMember.Group == null) return false; //Is default null?
+
             GroupMember gmem = query.GroupMember;
             Group grp = query.GroupMember.Group;
             grp.GroupMembers.Remove(gmem);
@@ -62,9 +64,11 @@ namespace Backend.Hub
         {
             UserSession session = await Database.UserSessions.FromSignalRId(Context.UserIdentifier);
             User user = session.User;
-            Group grp = user.GroupMember.Group;
+
+            var gmems = Database.GroupMembers.AsQueryable().Where(b => b.Group.Id == user.GroupMember.Group.Id);
             List<GroupMemberData> list = new List<GroupMemberData>();
-            foreach (GroupMember gmem in grp.GroupMembers)
+
+            foreach (GroupMember gmem in gmems)
             {
                 GroupMemberData res = await GetGroupMember(gmem.User.Id.ToString());
                 list.Add(res);

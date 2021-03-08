@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MobileApp.Services;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
@@ -57,12 +58,12 @@ namespace MobileApp.ViewModels
             }
         }
 
-        public ChangeEmailViewModel()
+        public ChangeEmailViewModel(IGameService gameService, INavigationService navigationService)
         {
             ChangeEmailCommand = new Command(async () => 
             {
-                if (await GameService.Client.ChangeEmail(Email))
-                    await NavigationService.GoBack();
+                if (await gameService.Client.ChangeEmail(Email))
+                    await navigationService.NavigateBack();
                 else
                     BadText = "Either this email is in use, or it is not a valid email.";
             }, () => !IsBusy && FormValid);
