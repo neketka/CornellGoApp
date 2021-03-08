@@ -107,7 +107,7 @@ namespace MobileApp.ViewModels
             gameService.Client.GroupMemberUpdated += Client_GroupMemberUpdated;
             gameService.ProgressUpdated += GameService_ProgressUpdated;
 
-            LoadInitialData().Wait();
+            LoadInitialData();
         }
 
         private async Task LoadInitialData()
