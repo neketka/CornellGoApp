@@ -22,13 +22,18 @@ namespace MobileApp.Views
         {
             InitializeComponent();
 
-            ((GameViewModel)BindingContext).PropertyChanged += GamePage_PropertyChanged;
+            BindingContextChanged += GamePage_BindingContextChanged;
             BottomSheet.PropertyChanged += BottomSheet_PropertyChanged;
             Shell.Current.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName == nameof(Shell.Current.FlyoutIsPresented))
                     SnapToNearest(0);
             };
+        }
+
+        private void GamePage_BindingContextChanged(object sender, EventArgs e)
+        {
+            ((GameViewModel)BindingContext).PropertyChanged += GamePage_PropertyChanged;
         }
 
         protected override bool OnBackButtonPressed()
@@ -84,7 +89,8 @@ namespace MobileApp.Views
 
             positions = new[] { groups, desc, max };
 
-            AdjustTemp(((GameViewModel)BindingContext).Progress);
+            if (BindingContext != null)
+                AdjustTemp(((GameViewModel)BindingContext).Progress);
             BottomSheet.TranslationY = positions[1];
         }
 

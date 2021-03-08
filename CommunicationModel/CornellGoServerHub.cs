@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 
 namespace CommunicationModel
 {
-    public partial class CornellGoClient : IServerHub
+    public partial class CornellGoClient
     {
         public async Task<bool> AttemptRelog(string session)
             => await Connection.InvokeAsync<bool>("AttemptRelog", session);

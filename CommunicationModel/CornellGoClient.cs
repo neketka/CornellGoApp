@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 
 namespace CommunicationModel
 {
-    public partial class CornellGoClient
+    public partial class CornellGoClient : IGameClient
     {
         public event UpdateGroupData GroupDataUpdated;
         public event UpdateGroupMember GroupMemberUpdated;
@@ -27,7 +27,7 @@ namespace CommunicationModel
         {
             Connection = new HubConnectionBuilder()
                 .WithAutomaticReconnect()
-                .WithUrl(url, opts => 
+                .WithUrl(url, opts =>
                 {
                     opts.HttpMessageHandlerFactory = (message) =>
                     {

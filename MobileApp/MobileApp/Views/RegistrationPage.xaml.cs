@@ -18,17 +18,6 @@ namespace MobileApp.Views
             InitializeComponent();
         }
 
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-            RegistrationViewModel viewModel = (RegistrationViewModel)BindingContext;
-            viewModel.Username = "";
-            viewModel.Password = "";
-            viewModel.PasswordVerification = "";
-            viewModel.Email = "";
-            viewModel.EmailVerification = "";
-        }
-
         protected override bool OnBackButtonPressed()
         {
             return ((BaseViewModel)BindingContext).IsBusy ? true : base.OnBackButtonPressed();

@@ -10,7 +10,7 @@ namespace MobileApp.Services
 {
     public interface IGameService
     {
-        CornellGoClient Client { get; }
+        IGameClient Client { get; }
         string UserId { get; }
 
         event Action LoggedIn;
@@ -22,7 +22,7 @@ namespace MobileApp.Services
 
     public class GameService : IGameService
     {
-        public CornellGoClient Client { get; }
+        public IGameClient Client { get; }
         public string UserId { get; private set; }
         public event Action LoggedIn = delegate { };
         public event Action<ChallengeProgressData> ProgressUpdated = delegate { };
@@ -31,6 +31,11 @@ namespace MobileApp.Services
         public GameService()
         {
             Client = new CornellGoClient("https://10.0.2.2:44367/hub");
+        }
+
+        public GameService(IGameClient client)
+        {
+            Client = client;
         }
 
         public async Task<bool> LoginWithSession(string username, string password)
@@ -62,9 +67,9 @@ namespace MobileApp.Services
         {
             runTimer = true;
 
-            Device.StartTimer(TimeSpan.FromMilliseconds(500), () =>
+            Device.StartTimer(TimeSpan.FromMilliseconds(2), () =>
             {
-                PollLocation().Wait();
+                PollLocation();
                 return runTimer;
             });
         }
@@ -76,7 +81,7 @@ namespace MobileApp.Services
 
         private async Task PollLocation()
         {
-            var location = await Geolocation.GetLocationAsync(new(GeolocationAccuracy.Best, TimeSpan.FromMilliseconds(500)));
+            var location = await Geolocation.GetLocationAsync(new(GeolocationAccuracy.Best, TimeSpan.FromSeconds(1)));
             var progress = await Client.CheckProgress(location.Latitude, location.Longitude);
             await Device.InvokeOnMainThreadAsync(() => ProgressUpdated(progress));
         }
