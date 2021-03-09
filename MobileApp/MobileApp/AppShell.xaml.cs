@@ -26,7 +26,7 @@ namespace MobileApp
         {
             vmContainer = new ViewModelContainer();
 
-            vmContainer.RegisterService<IGameService, MockGameService>();
+            vmContainer.RegisterService<IGameService, GameService>();
             vmContainer.RegisterService<IDialogService, DialogService>();
             vmContainer.NavigationService.InitializeFirst<LoadingViewModel>();
 

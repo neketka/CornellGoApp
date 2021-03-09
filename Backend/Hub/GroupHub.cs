@@ -57,7 +57,7 @@ namespace Backend.Hub
             UserSession session = await Database.UserSessions.FromSignalRId(Context.UserIdentifier);
             User user = session.User;
             Challenge chal = user.GroupMember.Group.Challenge;
-            return new ChallengeData(chal.Id.ToString(), chal.Description, chal.Points, chal.ImageJPG.ToString());
+            return new ChallengeData(chal.Id.ToString(), chal.Description, chal.Points, chal.ImageUrl);
         }
 
         public async Task<GroupMemberData[]> GetGroupMembers()
@@ -131,7 +131,7 @@ namespace Backend.Hub
                 if(user.GroupMember.Group.GroupMembers.All(b => b.IsDone))
                 {
                     Challenge newChal = await user.GroupMember.Group.GetNewChallenge(Database.Challenges);
-                    ChallengeData cData = new ChallengeData(newChal.Id.ToString(), newChal.Description, newChal.Points, newChal.ImageJPG.ToString());
+                    ChallengeData cData = new ChallengeData(newChal.Id.ToString(), newChal.Description, newChal.Points, newChal.ImageUrl);
                     await Clients.Group(user.GroupMember.Group.SignalRId).UpdateChallenge(cData);  
                 }
 

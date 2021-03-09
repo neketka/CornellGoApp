@@ -52,15 +52,15 @@ namespace BackendModel
       /// <summary>
       /// Public constructor with required data
       /// </summary>
-      /// <param name="imagejpg">JPEG Binary for this challenge suggestion</param>
+      /// <param name="imageurl">Url for this image</param>
       /// <param name="longlat">Suggested position</param>
       /// <param name="name">Name of this suggested challenge</param>
       /// <param name="desc">Description of the suggested challenge</param>
       /// <param name="timestamp">Creation timestamp</param>
       /// <param name="user"></param>
-      public Suggestion(byte[] imagejpg, Point longlat, string name, string desc, DateTime timestamp, global::BackendModel.User user)
+      public Suggestion(byte[] imageurl, Point longlat, string name, string desc, DateTime timestamp, global::BackendModel.User user)
       {
-         this.ImageJPG = imagejpg;
+         this.ImageUrl = imageurl;
 
          this.LongLat = longlat;
 
@@ -82,15 +82,15 @@ namespace BackendModel
       /// <summary>
       /// Static create function (for use in LINQ queries, etc.)
       /// </summary>
-      /// <param name="imagejpg">JPEG Binary for this challenge suggestion</param>
+      /// <param name="imageurl">Url for this image</param>
       /// <param name="longlat">Suggested position</param>
       /// <param name="name">Name of this suggested challenge</param>
       /// <param name="desc">Description of the suggested challenge</param>
       /// <param name="timestamp">Creation timestamp</param>
       /// <param name="user"></param>
-      public static Suggestion Create(byte[] imagejpg, Point longlat, string name, string desc, DateTime timestamp, global::BackendModel.User user)
+      public static Suggestion Create(byte[] imageurl, Point longlat, string name, string desc, DateTime timestamp, global::BackendModel.User user)
       {
-         return new Suggestion(imagejpg, longlat, name, desc, timestamp, user);
+         return new Suggestion(imageurl, longlat, name, desc, timestamp, user);
       }
 
       /*************************************************************************
@@ -108,11 +108,11 @@ namespace BackendModel
 
       /// <summary>
       /// Required
-      /// JPEG Binary for this challenge suggestion
+      /// Url for this image
       /// </summary>
       [Required]
-      [System.ComponentModel.Description("JPEG Binary for this challenge suggestion")]
-      public byte[] ImageJPG { get; set; }
+      [System.ComponentModel.Description("Url for this image")]
+      public byte[] ImageUrl { get; set; }
 
       /// <summary>
       /// Required

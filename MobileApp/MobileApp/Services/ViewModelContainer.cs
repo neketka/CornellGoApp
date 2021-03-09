@@ -95,10 +95,12 @@ namespace MobileApp.Services
             public async Task NavigateBack(object parameter = null)
             {
                 Console.WriteLine("Navigating back");
-                ((BaseViewModel)Shell.Current.BindingContext).OnDestroying();
+                ((BaseViewModel)LastPage.BindingContext).OnDestroying();
 
                 await Shell.Current.GoToAsync("..");
-                vmStack.Pop().OnReturning(parameter);
+                BaseViewModel vm = vmStack.Pop();
+                LastPage.BindingContext = vm;
+                vm.OnReturning(parameter);
             }
 
             public async Task NavigateTo<TViewModel>(object parameter = null) where TViewModel : BaseViewModel
@@ -132,7 +134,7 @@ namespace MobileApp.Services
             {
                 Console.WriteLine("Navigating to root");
 
-                ((BaseViewModel)Shell.Current.BindingContext).OnDestroying();
+                ((BaseViewModel)LastPage.BindingContext).OnDestroying();
                 while (vmStack.Count > 1)
                     vmStack.Pop().OnDestroying();
                 vmStack.Pop().OnReturning(parameter);
