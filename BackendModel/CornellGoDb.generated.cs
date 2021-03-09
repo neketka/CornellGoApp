@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;    
+using Microsoft.EntityFrameworkCore;
 
 namespace BackendModel
 {
@@ -57,6 +57,11 @@ namespace BackendModel
       /// Repository for global::BackendModel.PrevChallenge - A user&apos;s previous challenge
       /// </summary>
       public virtual Microsoft.EntityFrameworkCore.DbSet<global::BackendModel.PrevChallenge> PrevChallenges { get; set; }
+
+      /// <summary>
+      /// Repository for global::BackendModel.SessonLogEntry - Entry for the user&apos;s log
+      /// </summary>
+      public virtual Microsoft.EntityFrameworkCore.DbSet<global::BackendModel.SessonLogEntry> SessonLogEntries { get; set; }
 
       /// <summary>
       /// Repository for global::BackendModel.Suggestion - Place suggestion created by the
@@ -148,7 +153,7 @@ namespace BackendModel
                      .Property(t => t.Radius)
                      .IsRequired();
          modelBuilder.Entity<global::BackendModel.Challenge>()
-                     .Property(t => t.ImageJPG)
+                     .Property(t => t.ImageUrl)
                      .IsRequired();
 
          modelBuilder.Entity<global::BackendModel.Feedback>()
@@ -229,6 +234,23 @@ namespace BackendModel
                      .OnDelete(DeleteBehavior.NoAction);
          modelBuilder.Entity<global::BackendModel.PrevChallenge>().Navigation(e => e.Challenge).IsRequired();
 
+         modelBuilder.Entity<global::BackendModel.SessonLogEntry>()
+                     .ToTable("SessonLogEntries")
+                     .HasKey(t => t.Id);
+         modelBuilder.Entity<global::BackendModel.SessonLogEntry>()
+                     .Property(t => t.Id)
+                     .ValueGeneratedOnAdd()
+                     .IsRequired();
+         modelBuilder.Entity<global::BackendModel.SessonLogEntry>()
+                     .Property(t => t.EntryType)
+                     .IsRequired();
+         modelBuilder.Entity<global::BackendModel.SessonLogEntry>()
+                     .Property(t => t.EntryData)
+                     .IsRequired();
+         modelBuilder.Entity<global::BackendModel.SessonLogEntry>()
+                     .Property(t => t.Timestamp)
+                     .IsRequired();
+
          modelBuilder.Entity<global::BackendModel.Suggestion>()
                      .ToTable("Suggestions")
                      .HasKey(t => t.Id);
@@ -237,7 +259,7 @@ namespace BackendModel
                      .ValueGeneratedOnAdd()
                      .IsRequired();
          modelBuilder.Entity<global::BackendModel.Suggestion>()
-                     .Property(t => t.ImageJPG)
+                     .Property(t => t.ImageUrl)
                      .IsRequired();
          modelBuilder.Entity<global::BackendModel.Suggestion>()
                      .Property(t => t.LongLat)
@@ -275,6 +297,10 @@ namespace BackendModel
                      .HasMany<global::BackendModel.PrevChallenge>(p => p.PrevChallenges)
                      .WithOne()
                      .HasForeignKey("UserPrevChallengesId");
+         modelBuilder.Entity<global::BackendModel.User>()
+                     .HasMany<global::BackendModel.SessonLogEntry>(p => p.SessonLogEntries)
+                     .WithOne()
+                     .HasForeignKey("UserSessonLogEntriesId");
          modelBuilder.Entity<global::BackendModel.User>()
                      .HasMany<global::BackendModel.Suggestion>(p => p.Suggestions)
                      .WithOne(p => p.User)

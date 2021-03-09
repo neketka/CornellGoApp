@@ -26,17 +26,17 @@ using NetTopologySuite.Geometries;
 namespace BackendModel
 {
    /// <summary>
-   /// A user&apos;s previous challenge
+   /// Entry for the user&apos;s log
    /// </summary>
-   [System.ComponentModel.Description("A user's previous challenge")]
-   public partial class PrevChallenge
+   [System.ComponentModel.Description("Entry for the user's log")]
+   public partial class SessonLogEntry
    {
       partial void Init();
 
       /// <summary>
       /// Default constructor. Protected due to required properties, but present because EF needs it.
       /// </summary>
-      protected PrevChallenge()
+      protected SessonLogEntry()
       {
          Init();
       }
@@ -44,26 +44,29 @@ namespace BackendModel
       /// <summary>
       /// Replaces default constructor, since it's protected. Caller assumes responsibility for setting all required values before saving.
       /// </summary>
-      public static PrevChallenge CreatePrevChallengeUnsafe()
+      public static SessonLogEntry CreateSessonLogEntryUnsafe()
       {
-         return new PrevChallenge();
+         return new SessonLogEntry();
       }
 
       /// <summary>
       /// Public constructor with required data
       /// </summary>
-      /// <param name="timestamp">Creation timestamp</param>
-      /// <param name="challenge"></param>
+      /// <param name="entrytype">Type of entry</param>
+      /// <param name="entrydata">If applicable, semicolon separated list of strings/numbers relating to this entry (no spaces other than those required by the strings themselves).</param>
+      /// <param name="timestamp">Time that this entry was created</param>
       /// <param name="_user0"></param>
-      public PrevChallenge(DateTime timestamp, global::BackendModel.Challenge challenge, global::BackendModel.User _user0)
+      public SessonLogEntry(global::BackendModel.SessionLogEntryType entrytype, string entrydata, DateTime timestamp, global::BackendModel.User _user0)
       {
+         this.EntryType = entrytype;
+
+         if (string.IsNullOrEmpty(entrydata)) throw new ArgumentNullException(nameof(entrydata));
+         this.EntryData = entrydata;
+
          this.Timestamp = timestamp;
 
-         if (challenge == null) throw new ArgumentNullException(nameof(challenge));
-         this.Challenge = challenge;
-
          if (_user0 == null) throw new ArgumentNullException(nameof(_user0));
-         _user0.PrevChallenges.Add(this);
+         _user0.SessonLogEntries.Add(this);
 
          Init();
       }
@@ -71,12 +74,13 @@ namespace BackendModel
       /// <summary>
       /// Static create function (for use in LINQ queries, etc.)
       /// </summary>
-      /// <param name="timestamp">Creation timestamp</param>
-      /// <param name="challenge"></param>
+      /// <param name="entrytype">Type of entry</param>
+      /// <param name="entrydata">If applicable, semicolon separated list of strings/numbers relating to this entry (no spaces other than those required by the strings themselves).</param>
+      /// <param name="timestamp">Time that this entry was created</param>
       /// <param name="_user0"></param>
-      public static PrevChallenge Create(DateTime timestamp, global::BackendModel.Challenge challenge, global::BackendModel.User _user0)
+      public static SessonLogEntry Create(global::BackendModel.SessionLogEntryType entrytype, string entrydata, DateTime timestamp, global::BackendModel.User _user0)
       {
-         return new PrevChallenge(timestamp, challenge, _user0);
+         return new SessonLogEntry(entrytype, entrydata, timestamp, _user0);
       }
 
       /*************************************************************************
@@ -94,22 +98,32 @@ namespace BackendModel
 
       /// <summary>
       /// Required
-      /// Creation timestamp
+      /// Type of entry
       /// </summary>
       [Required]
-      [System.ComponentModel.Description("Creation timestamp")]
+      [System.ComponentModel.Description("Type of entry")]
+      public global::BackendModel.SessionLogEntryType EntryType { get; set; }
+
+      /// <summary>
+      /// Required
+      /// If applicable, semicolon separated list of strings/numbers relating to this entry
+      /// (no spaces other than those required by the strings themselves).
+      /// </summary>
+      [Required]
+      [System.ComponentModel.Description("If applicable, semicolon separated list of strings/numbers relating to this entry (no spaces other than those required by the strings themselves).")]
+      public string EntryData { get; set; }
+
+      /// <summary>
+      /// Required
+      /// Time that this entry was created
+      /// </summary>
+      [Required]
+      [System.ComponentModel.Description("Time that this entry was created")]
       public DateTime Timestamp { get; set; }
 
       /*************************************************************************
        * Navigation properties
        *************************************************************************/
-
-      /// <summary>
-      /// Required&lt;br/&gt;
-      /// Challenge associated with this previous challenge
-      /// </summary>
-      [Description("Challenge associated with this previous challenge")]
-      public virtual global::BackendModel.Challenge Challenge { get; set; }
 
    }
 }

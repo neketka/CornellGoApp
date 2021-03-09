@@ -57,8 +57,8 @@ namespace BackendModel
       /// <param name="points">Point value of the challenge</param>
       /// <param name="longlat">Position of the challenge</param>
       /// <param name="radius">Furthest radius at which the user is considered far</param>
-      /// <param name="imagejpg">JPEG Binary of the image for this challenge</param>
-      public Challenge(string name, string description, int points, Point longlat, double radius, byte[] imagejpg)
+      /// <param name="imageurl">Url to this image</param>
+      public Challenge(string name, string description, int points, Point longlat, double radius, string imageurl)
       {
          if (string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
          this.Name = name;
@@ -72,7 +72,8 @@ namespace BackendModel
 
          this.Radius = radius;
 
-         this.ImageJPG = imagejpg;
+         if (string.IsNullOrEmpty(imageurl)) throw new ArgumentNullException(nameof(imageurl));
+         this.ImageUrl = imageurl;
 
          Init();
       }
@@ -85,10 +86,10 @@ namespace BackendModel
       /// <param name="points">Point value of the challenge</param>
       /// <param name="longlat">Position of the challenge</param>
       /// <param name="radius">Furthest radius at which the user is considered far</param>
-      /// <param name="imagejpg">JPEG Binary of the image for this challenge</param>
-      public static Challenge Create(string name, string description, int points, Point longlat, double radius, byte[] imagejpg)
+      /// <param name="imageurl">Url to this image</param>
+      public static Challenge Create(string name, string description, int points, Point longlat, double radius, string imageurl)
       {
-         return new Challenge(name, description, points, longlat, radius, imagejpg);
+         return new Challenge(name, description, points, longlat, radius, imageurl);
       }
 
       /*************************************************************************
@@ -152,11 +153,11 @@ namespace BackendModel
 
       /// <summary>
       /// Required
-      /// JPEG Binary of the image for this challenge
+      /// Url to this image
       /// </summary>
       [Required]
-      [System.ComponentModel.Description("JPEG Binary of the image for this challenge")]
-      public byte[] ImageJPG { get; set; }
+      [System.ComponentModel.Description("Url to this image")]
+      public string ImageUrl { get; set; }
 
       /*************************************************************************
        * Navigation properties
