@@ -98,9 +98,7 @@ namespace MobileApp.Services
                 ((BaseViewModel)LastPage.BindingContext).OnDestroying();
 
                 await Shell.Current.GoToAsync("..");
-                BaseViewModel vm = vmStack.Pop();
-                LastPage.BindingContext = vm;
-                vm.OnReturning(parameter);
+                vmStack.Pop().OnReturning(parameter);
             }
 
             public async Task NavigateTo<TViewModel>(object parameter = null) where TViewModel : BaseViewModel
@@ -123,11 +121,15 @@ namespace MobileApp.Services
                 string vmName = typeof(TViewModel).Name;
                 Console.WriteLine("Navigating back to " + vmName);
 
+                string backRoute = "..";
                 while (vmStack.Peek() is not TViewModel)
+                {
                     vmStack.Pop().OnDestroying();
+                    backRoute += "/..";
+                }
                 vmStack.Peek().OnReturning(parameter);
 
-                await Shell.Current.GoToAsync($"/{vmName}");
+                await Shell.Current.GoToAsync(backRoute);
             }
 
             public async Task ToRoot(object parameter = null)
