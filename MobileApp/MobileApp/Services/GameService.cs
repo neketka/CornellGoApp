@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using CommunicationModel;
+using Plugin.Geolocator;
+using Plugin.Geolocator.Abstractions;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -27,7 +29,6 @@ namespace MobileApp.Services
         public event Action LoggedIn = delegate { };
         public event Action<ChallengeProgressData> ProgressUpdated = delegate { };
 
-        private bool runTimer;
         public GameService()
         {
             Client = new CornellGoClient("https://10.0.2.2:44367/hub");
@@ -36,6 +37,8 @@ namespace MobileApp.Services
         public GameService(IGameClient client)
         {
             Client = client;
+            CrossGeolocator.Current.PositionChanged += (s, e) => PollLocation(e.Position);
+            CrossGeolocator.Current.DesiredAccuracy = 1;
         }
 
         public async Task<bool> LoginWithSession(string username, string password)
@@ -47,7 +50,7 @@ namespace MobileApp.Services
                 await SecureStorage.SetAsync("session", await Client.GetSessionToken());
                 LoggedIn();
 
-                BeginPollingLocation();
+                while (!await CrossGeolocator.Current.StartListeningAsync(TimeSpan.FromSeconds(2), 5));
             }
             return loggedIn;
         }
@@ -57,32 +60,15 @@ namespace MobileApp.Services
             bool loggedOut = await Client.Logout();
             if (loggedOut)
             {
-                StopPollingLocation();
+                await CrossGeolocator.Current.StopListeningAsync();
                 SecureStorage.Remove("session");
             }
             return loggedOut;
         }
 
-        private void BeginPollingLocation()
+        private async Task PollLocation(Position pos)
         {
-            runTimer = true;
-
-            Device.StartTimer(TimeSpan.FromMilliseconds(2), () =>
-            {
-                PollLocation();
-                return runTimer;
-            });
-        }
-
-        private void StopPollingLocation()
-        {
-            runTimer = false;
-        }
-
-        private async Task PollLocation()
-        {
-            var location = await Geolocation.GetLocationAsync(new(GeolocationAccuracy.Best, TimeSpan.FromSeconds(1)));
-            var progress = await Client.CheckProgress(location.Latitude, location.Longitude);
+            var progress = await Client.CheckProgress(pos.Latitude, pos.Longitude);
             await Device.InvokeOnMainThreadAsync(() => ProgressUpdated(progress));
         }
     }
