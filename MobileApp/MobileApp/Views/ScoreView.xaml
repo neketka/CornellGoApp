@@ -4,7 +4,8 @@
              xmlns:local="clr-namespace:MobileApp.Views"
              xmlns:ex="clr-namespace:MobileApp.Extensions"
              x:Name="this"
-             x:Class="MobileApp.Views.ScoreView">
+             x:Class="MobileApp.Views.ScoreView"
+             >
     <ContentView.Resources>
         <ResourceDictionary>
             <ex:MultiplyPositiveDoubleConverter x:Key="mult"/>
@@ -12,19 +13,32 @@
     </ContentView.Resources>
     <ContentView.Content>
         <StackLayout Orientation="Horizontal" BindingContext="{x:Reference this}">
-            <local:AvatarView Image="{Binding Image}" WidthRequest="{Binding Source={x:Reference this}, Path=HeightRequest}" 
+            <local:AvatarView Image="{Binding Image}" 
+                              WidthRequest="{Binding Source={x:Reference this}, Path=HeightRequest}" 
                               HeightRequest="{Binding Source={x:Reference this}, Path=HeightRequest}"/>
-            <StackLayout Orientation="Vertical" Spacing="0" Margin="4, 0, 0, 0" VerticalOptions="Center">
-                <Label Text="{Binding Username}" TextColor="{StaticResource SecondaryText}" 
-                       FontSize="{Binding Source={x:Reference this}, Converter={x:StaticResource mult}, ConverterParameter=0.389, Path=HeightRequest}">
+            <StackLayout Orientation="Vertical" 
+                         Spacing="0" 
+                         Margin="4, 0, 0, 0" 
+                         VerticalOptions="Center">
+                <Label Text="{Binding Username}" 
+                       TextColor="{StaticResource SecondaryText}" 
+                       FontSize="{Binding Source={x:Reference this}, Converter={x:StaticResource mult}, 
+                                  ConverterParameter=0.389, Path=HeightRequest}"
+                       >
                     <Label.Triggers>
-                        <DataTrigger TargetType="Label" Binding="{Binding IsHighlighted}" Value="True">
+                        <DataTrigger TargetType="Label" 
+                                     Binding="{Binding IsHighlighted}"
+                                     Value="True"
+                                     >
                             <Setter Property="TextColor" Value="{StaticResource Primary}"/>
                         </DataTrigger>
                     </Label.Triggers>
                 </Label>
-                <Label Text="{Binding Path='Score', StringFormat='Score: {0}'}" TextColor="{StaticResource TertiaryText}" 
-                       FontSize="{Binding Source={x:Reference this}, Converter={x:StaticResource mult}, ConverterParameter=0.333, Path=HeightRequest}"/>
+                <Label Text="{Binding Path='Score', StringFormat='Score: {0}'}" 
+                       TextColor="{StaticResource TertiaryText}" 
+                       FontSize="{Binding Source={x:Reference this}, Converter={x:StaticResource mult}, 
+                                  ConverterParameter=0.333, Path=HeightRequest}"
+                       />
             </StackLayout>
         </StackLayout>
     </ContentView.Content>

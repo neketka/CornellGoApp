@@ -7,21 +7,32 @@
              xmlns:fa="clr-namespace:MobileApp.Constants"
              x:Class="MobileApp.Views.LeaderPage"
              Title="Leaderboard"
-             Shell.FlyoutBehavior="Disabled">
+             Shell.FlyoutBehavior="Disabled"
+             >
     <ContentPage.Resources>
         <ex:NumLengthConverter x:Key="numLen"/>
         <ex:PluralConverter x:Key="plural"/>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout Orientation="Vertical" BackgroundColor="{StaticResource TertiaryAccent}" Spacing="0">
-            <BoxView CornerRadius="0" HeightRequest="64" BackgroundColor="{StaticResource Secondary}" Margin="0">
+        <StackLayout Orientation="Vertical" 
+                     BackgroundColor="{StaticResource TertiaryAccent}" 
+                     Spacing="0"
+                     >
+            <BoxView CornerRadius="0" 
+                     HeightRequest="64" 
+                     BackgroundColor="{StaticResource Secondary}" 
+                     Margin="0"
+                     >
                 <BoxView.GestureRecognizers>
                     <TapGestureRecognizer Tapped="LeaderboardLine_Tapped"/>
                 </BoxView.GestureRecognizers>
             </BoxView>
             <Grid HeightRequest="72">
-                <StackLayout Orientation="Horizontal" VerticalOptions="Center"
-                             BackgroundColor="{StaticResource TertiaryAccent}" Padding="24, 0, 16, 0">
+                <StackLayout Orientation="Horizontal" 
+                             VerticalOptions="Center"
+                             BackgroundColor="{StaticResource TertiaryAccent}" 
+                             Padding="24, 0, 16, 0"
+                             >
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Tapped="UserLine_Tapped"/>
                     </StackLayout.GestureRecognizers>
@@ -32,36 +43,83 @@
                                 <Span Text="/" FontSize="18"/>
                                 <Span Text="{Binding RankedPlayers}" FontSize="18"/>
                                 <Span Text=" "/>
-                                <Span Text="{Static fa:FASolid.CaretRight}" FontFamily="FASolid" FontSize="24"/>
+                                <Span Text="{Static fa:FASolid.CaretRight}" 
+                                      FontFamily="FASolid" 
+                                      FontSize="24"
+                                      />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Label FontSize="18" TextColor="{StaticResource SecondaryText}" VerticalOptions="Center" HorizontalOptions="EndAndExpand"
-                               Text="{Binding Path=YourPoints, StringFormat='{}{0:#,#.}', Converter={StaticResource plural}, ConverterParameter=Pt}"/>
+                    <Label FontSize="18" 
+                           TextColor="{StaticResource SecondaryText}" 
+                           VerticalOptions="Center"
+                           HorizontalOptions="EndAndExpand"
+                           Text="{Binding Path=YourPoints, StringFormat='{}{0:#,#.}', Converter={StaticResource plural}, ConverterParameter=Pt}"
+                           />
                 </StackLayout>
-                <AbsoluteLayout HeightRequest="0" HorizontalOptions="Center" TranslationX="4" TranslationY="-52">
+                <AbsoluteLayout HeightRequest="0"
+                                HorizontalOptions="Center" 
+                                TranslationX="4" 
+                                TranslationY="-52"
+                                >
                     <StackLayout Spacing="0">
-                        <Frame HeightRequest="64" WidthRequest="64" HorizontalOptions="Center" Padding="4" VerticalOptions="FillAndExpand"
-                               CornerRadius="46" BackgroundColor="{StaticResource TertiaryAccent}" BorderColor="#0000" Margin="0, 0, 0, -6">
-                            <local:AvatarView Image="{Binding ProfilePicture}" WidthRequest="56" HeightRequest="56"/>
+                        <Frame HeightRequest="64"
+                               WidthRequest="64"
+                               HorizontalOptions="Center"
+                               Padding="4" 
+                               VerticalOptions="FillAndExpand"
+                               CornerRadius="46" 
+                               BackgroundColor="{StaticResource TertiaryAccent}"
+                               BorderColor="#0000"
+                               Margin="0, 0, 0, -6"
+                               >
+                            <local:AvatarView Image="{Binding ProfilePicture}"
+                                              WidthRequest="56"
+                                              HeightRequest="56"
+                                              />
                         </Frame>
-                        <Label FontSize="18" TextColor="{StaticResource SecondaryText}" VerticalOptions="Center" HorizontalOptions="CenterAndExpand" 
-                               Text="{Binding YourUsername}"/>
+                        <Label FontSize="18" 
+                               TextColor="{StaticResource SecondaryText}" 
+                               VerticalOptions="Center" 
+                               HorizontalOptions="CenterAndExpand" 
+                               Text="{Binding YourUsername}"
+                               />
                     </StackLayout>
                 </AbsoluteLayout>
             </Grid>
-            <BoxView HeightRequest="0.5" HorizontalOptions="FillAndExpand" CornerRadius="0" Color="{StaticResource PrimaryAccent}"/>
-            <CollectionView ItemsSource="{Binding Players}" RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}" x:Name="Leaderboard"
-                            RemainingItemsThresholdReachedCommandParameter="15" RemainingItemsThreshold="4" Margin="0" BackgroundColor="{StaticResource Tertiary}">
+            <BoxView HeightRequest="0.5" 
+                     HorizontalOptions="FillAndExpand" 
+                     CornerRadius="0"
+                     Color="{StaticResource PrimaryAccent}"
+                     />
+            <CollectionView x:Name="Leaderboard"
+                            ItemsSource="{Binding Players}" 
+                            RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}"
+                            RemainingItemsThresholdReachedCommandParameter="15" 
+                            RemainingItemsThreshold="4" 
+                            Margin="0" 
+                            BackgroundColor="{StaticResource Tertiary}"
+                            >
                 <CollectionView.Triggers>
-                    <DataTrigger TargetType="CollectionView" Binding="{Binding IsBusy}" Value="True">
+                    <DataTrigger TargetType="CollectionView" 
+                                 Binding="{Binding IsBusy}" 
+                                 Value="True"
+                                 >
                         <Setter Property="Footer" Value=""/>
                     </DataTrigger>
                 </CollectionView.Triggers>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <StackLayout Orientation="Vertical" BackgroundColor="{StaticResource Tertiary}" Spacing="0">
-                            <BoxView HeightRequest="0.3" HorizontalOptions="FillAndExpand" CornerRadius="0" Color="{StaticResource PrimaryAccent}" Margin="0">
+                        <StackLayout Orientation="Vertical" 
+                                     BackgroundColor="{StaticResource Tertiary}" 
+                                     Spacing="0"
+                                     >
+                            <BoxView HeightRequest="0.3"
+                                     HorizontalOptions="FillAndExpand" 
+                                     CornerRadius="0"
+                                     Color="{StaticResource PrimaryAccent}"
+                                     Margin="0"
+                                     >
                                 <BoxView.Triggers>
                                     <DataTrigger TargetType="BoxView" Binding="{Binding Position}" Value="1">
                                         <Setter Property="IsVisible" Value="False"/>
@@ -69,44 +127,91 @@
                                 </BoxView.Triggers>
                             </BoxView>
                             <StackLayout Orientation="Horizontal" Padding="5, 5, 0, 5">
-                                <Label Text="{Binding Path=Position, StringFormat='{}{0:#,#.}'}" FontSize="36" FontAttributes="Bold" TextColor="{StaticResource SecondaryText}"
-                                       WidthRequest="48" VerticalOptions="Center" HorizontalTextAlignment="End">
+                                <Label Text="{Binding Path=Position, StringFormat='{}{0:#,#.}'}" 
+                                       FontSize="36"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource SecondaryText}"
+                                       WidthRequest="48" 
+                                       VerticalOptions="Center"
+                                       HorizontalTextAlignment="End"
+                                       >
                                     <Label.Triggers>
-                                        <DataTrigger TargetType="Label" Binding="{Binding IsYou}" Value="True">
+                                        <DataTrigger TargetType="Label" 
+                                                     Binding="{Binding IsYou}" 
+                                                     Value="True"
+                                                     >
                                             <Setter Property="TextColor" Value="{StaticResource Primary}"/>
                                         </DataTrigger>
-                                        <DataTrigger TargetType="Label" Binding="{Binding Path=Position, Converter={StaticResource numLen}}" Value="3">
+                                        <DataTrigger TargetType="Label" 
+                                                     Binding="{Binding Path=Position, Converter={StaticResource numLen}}"
+                                                     Value="3"
+                                                     >
                                             <Setter Property="FontSize" Value="24"/>
                                         </DataTrigger>
-                                        <DataTrigger TargetType="Label" Binding="{Binding Path=Position, Converter={StaticResource numLen}}" Value="4">
+                                        <DataTrigger TargetType="Label" 
+                                                     Binding="{Binding Path=Position, Converter={StaticResource numLen}}"
+                                                     Value="4"
+                                                     >
                                             <Setter Property="FontSize" Value="17"/>
                                         </DataTrigger>
-                                        <DataTrigger TargetType="Label" Binding="{Binding Path=Position, Converter={StaticResource numLen}}" Value="5">
+                                        <DataTrigger TargetType="Label" 
+                                                     Binding="{Binding Path=Position, Converter={StaticResource numLen}}" 
+                                                     Value="5"
+                                                     >
                                             <Setter Property="FontSize" Value="14"/>
                                         </DataTrigger>
-                                        <DataTrigger TargetType="Label" Binding="{Binding Path=Position, Converter={StaticResource numLen}}" Value="6">
+                                        <DataTrigger TargetType="Label" 
+                                                     Binding="{Binding Path=Position, Converter={StaticResource numLen}}"
+                                                     Value="6"
+                                                     >
                                             <Setter Property="FontSize" Value="12"/>
                                         </DataTrigger>
-                                        <DataTrigger TargetType="Label" Binding="{Binding Path=Position, Converter={StaticResource numLen}}" Value="7">
+                                        <DataTrigger TargetType="Label" 
+                                                     Binding="{Binding Path=Position, Converter={StaticResource numLen}}"
+                                                     Value="7"
+                                                     >
                                             <Setter Property="FontSize" Value="10"/>
                                         </DataTrigger>
-                                        <DataTrigger TargetType="Label" Binding="{Binding Path=Position, Converter={StaticResource numLen}}" Value="8">
+                                        <DataTrigger TargetType="Label" 
+                                                     Binding="{Binding Path=Position, Converter={StaticResource numLen}}"
+                                                     Value="8"
+                                                     >
                                             <Setter Property="FontSize" Value="9"/>
                                         </DataTrigger>
                                     </Label.Triggers>
                                 </Label>
-                                <local:AvatarView Image="{Binding ProfilePicture}" HeightRequest="42" Margin="8, 4, 0, 4" VerticalOptions="Center"/>
-                                <Label Text="{Binding Username}" FontSize="18" TextColor="{StaticResource SecondaryText}" Margin="8, 0, 0, 0" VerticalOptions="Center">
+                                <local:AvatarView Image="{Binding ProfilePicture}" 
+                                                  HeightRequest="42"
+                                                  Margin="8, 4, 0, 4" 
+                                                  VerticalOptions="Center"
+                                                  />
+                                <Label Text="{Binding Username}"
+                                       FontSize="18"
+                                       TextColor="{StaticResource SecondaryText}"
+                                       Margin="8, 0, 0, 0"
+                                       VerticalOptions="Center"
+                                       >
                                     <Label.Triggers>
-                                        <DataTrigger TargetType="Label" Binding="{Binding IsYou}" Value="True">
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding IsYou}" 
+                                                     Value="True"
+                                                     >
                                             <Setter Property="TextColor" Value="{StaticResource Primary}"/>
                                         </DataTrigger>
                                     </Label.Triggers>
                                 </Label>
-                                <Label Text="{Binding Path=Points, StringFormat='{}{0:#,#.}'}" FontSize="18" TextColor="{StaticResource SecondaryText}" 
-                                       HorizontalOptions="EndAndExpand" VerticalOptions="Center" Margin="0, 0, 24, 0">
+                                <Label Text="{Binding Path=Points, StringFormat='{}{0:#,#.}'}"
+                                       FontSize="18" 
+                                       TextColor="{StaticResource SecondaryText}" 
+                                       HorizontalOptions="EndAndExpand"
+                                       VerticalOptions="Center"
+                                       Margin="0, 0, 24, 0"
+                                       >
                                     <Label.Triggers>
-                                        <DataTrigger TargetType="Label" Binding="{Binding IsYou}" Value="True">
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding IsYou}" 
+                                                     Value="True"
+                                                     >
                                             <Setter Property="TextColor" Value="{StaticResource Primary}"/>
                                         </DataTrigger>
                                     </Label.Triggers>
@@ -118,7 +223,10 @@
                 <CollectionView.FooterTemplate>
                     <DataTemplate>
                         <StackLayout>
-                            <ActivityIndicator Color="{StaticResource SecondaryText}" IsRunning="True" HorizontalOptions="Center" />
+                            <ActivityIndicator Color="{StaticResource SecondaryText}"
+                                               IsRunning="True" 
+                                               HorizontalOptions="Center"
+                                               />
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.FooterTemplate>

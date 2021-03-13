@@ -53,6 +53,7 @@ namespace MobileApp.ViewModels
         public Command FindOutMoreCommand { get; }
         public Command NextChallengeCommand { get; }
         public Command DoVictoryCommand { get; }
+        public Command<bool> GroupMenuVisibilityCommand { get; }
 
         public Command<string> LeaveCommand { get; }
         public Command JoinCommand { get; }
@@ -80,8 +81,9 @@ namespace MobileApp.ViewModels
             });
             JoinCommand = new Command(async () =>
             {
-                if (await dialogService.ConfirmDisband(true))
+                if (GroupMembers.Count == 1 || (IsHost ? await dialogService.ConfirmLeave(true) : await dialogService.ConfirmDisband(true)))
                 {
+                    gameService.Client.SendMetric(CommunicationModel.FrontendMetric.OpenJoinGroupMenu, "");
                     string id = await dialogService.ShowJoinGroup(false);
                     if (id != null)
                         await gameService.Client.JoinGroup(id);
@@ -100,14 +102,30 @@ namespace MobileApp.ViewModels
                 ChallengeDescription = "New challenge description";
             });
 
+            GroupMenuVisibilityCommand = new Command<bool>(open =>
+            {
+                gameService.Client.SendMetric(open ? CommunicationModel.FrontendMetric.OpenGroupMenu
+                    : CommunicationModel.FrontendMetric.OpenGameMenu, "");
+            });
+
             gameService.Client.ChallengeFinished += Client_ChallengeFinished;
             gameService.Client.ChallengeUpdated += Client_ChallengeUpdated;
             gameService.Client.GroupDataUpdated += Client_GroupDataUpdated;
             gameService.Client.GroupMemberLeft += Client_GroupMemberLeft;
             gameService.Client.GroupMemberUpdated += Client_GroupMemberUpdated;
             gameService.ProgressUpdated += GameService_ProgressUpdated;
+        }
 
-            LoadInitialData();
+        public override Task OnEntering(object parameter)
+        {
+            gameService.Client.SendMetric(CommunicationModel.FrontendMetric.OpenGameMenu, "");
+            return LoadInitialData();
+        }
+
+        public override Task OnReturning(object parameter)
+        {
+            gameService.Client.SendMetric(CommunicationModel.FrontendMetric.OpenGameMenu, "");
+            return Task.CompletedTask;
         }
 
         private async Task LoadInitialData()

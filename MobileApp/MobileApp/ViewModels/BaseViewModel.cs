@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace MobileApp.ViewModels
@@ -24,8 +25,8 @@ namespace MobileApp.ViewModels
         }
         public Command BusyBackCommand { get; }
 
-        public virtual void OnEntering(object parameter) { }
-        public virtual void OnReturning(object parameter) { }
+        public virtual async Task OnEntering(object parameter) { }
+        public virtual async Task OnReturning(object parameter) { }
         public virtual void OnDestroying() { }
 
         protected bool SetProperty<T>(ref T backingStore, T value,

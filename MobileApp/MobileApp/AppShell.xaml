@@ -12,7 +12,8 @@
        Shell.ForegroundColor="{StaticResource Primary}"
        Shell.TitleColor="{StaticResource SecondaryText}"
        Shell.DisabledColor="{StaticResource PrimaryAccent}"
-       Shell.UnselectedColor="{StaticResource Secondary}">
+       Shell.UnselectedColor="{StaticResource Secondary}"
+       >
 
     <Shell.Resources>
         <ResourceDictionary>

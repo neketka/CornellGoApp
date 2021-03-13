@@ -19,7 +19,7 @@ namespace CommunicationModel
     public record ChallengeProgressData(string WalkDistance, double Progress);
     public enum FrontendMetric
     {
-        ClosedApp = 0, AppSuspended = 1, OpenLeaderboard = 2, OpenHistory = 3, OpenLearnMode = 4, 
-        OpenGroupMenu = 5, OpenJoinGroupMenu = 6, OpenGameMenu = 7
+        ClosedApp = 0, AppSuspended = 1, OpenLeaderboard = 2, OpenHistory = 3, OpenLearnMore = 4,
+        OpenGroupMenu = 5, OpenJoinGroupMenu = 6, OpenGameMenu = 7, OpenSettings = 8, AppResumed = 9
     }
 }

@@ -6,12 +6,19 @@
              Shell.PresentationMode="ModalNotAnimated" 
              BackgroundColor="{StaticResource Secondary}"
              Shell.FlyoutBehavior="Disabled"
-             Shell.NavBarIsVisible="False">
+             Shell.NavBarIsVisible="False"
+             >
     <ContentPage.Content>
         <StackLayout>
             <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
-                <Label Text="Connecting to Online Service" TextColor="{StaticResource SecondaryText}" FontSize="16" />
-                <ActivityIndicator IsRunning="True" Color="{StaticResource SecondaryText}" HeightRequest="48"/>
+                <Label Text="Connecting to Online Service" 
+                       TextColor="{StaticResource SecondaryText}" 
+                       FontSize="16" 
+                       />
+                <ActivityIndicator IsRunning="True" 
+                                   Color="{StaticResource SecondaryText}" 
+                                   HeightRequest="48"
+                                   />
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MobileApp.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,7 @@ namespace MobileApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ChangePasswordPage : ContentPage
     {
-        public ChangePasswordPage()
+        public ChangePasswordPage(ChangePasswordViewModel vm)
         {
             InitializeComponent();
         }

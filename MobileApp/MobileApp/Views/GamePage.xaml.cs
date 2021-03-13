@@ -18,6 +18,7 @@ namespace MobileApp.Views
     {
         private double[] positions;
         private double lastChange = 0;
+        private bool groupMenuOpen = false;
         public GamePage()
         {
             InitializeComponent();
@@ -33,7 +34,7 @@ namespace MobileApp.Views
 
         private void GamePage_BindingContextChanged(object sender, EventArgs e)
         {
-            ((GameViewModel)BindingContext).PropertyChanged += GamePage_PropertyChanged;
+            ((BaseViewModel)BindingContext).PropertyChanged += GamePage_PropertyChanged;
         }
 
         protected override bool OnBackButtonPressed()
@@ -108,6 +109,20 @@ namespace MobileApp.Views
                 double bottomAlpha = BottomSheet.TranslationY < positions[1] ? 0.75 + 0.25 * normalizedMiddleDist : 0.75;
                 Color bgColor = BottomSheet.BackgroundColor;
                 BottomSheet.BackgroundColor = new Color(bgColor.R, bgColor.G, bgColor.B, bottomAlpha);
+
+                if (normalizedMiddleDist >= 0.999)
+                {
+                    if (!groupMenuOpen)
+                        ((GameViewModel)BindingContext).GroupMenuVisibilityCommand.Execute(true);
+                    groupMenuOpen = true;
+                }
+                else if (normalizedMiddleDist <= 0.001)
+                {
+                    if (groupMenuOpen)
+                        ((GameViewModel)BindingContext).GroupMenuVisibilityCommand.Execute(false);
+                    groupMenuOpen = false;
+                }
+
             }
         }
 

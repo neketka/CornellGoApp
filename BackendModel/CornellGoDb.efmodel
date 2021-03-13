@@ -73,6 +73,12 @@
           <modelEnumHasValues Id="f8a955c1-a847-4f86-a410-4ca930bebd3f">
             <modelEnumValue Id="abce2cbd-9fdc-4141-a53f-fdc003a66ae4" name="KickedByHost" summary="User was kicked by host" />
           </modelEnumHasValues>
+          <modelEnumHasValues Id="69c1be24-d211-4e4a-ad37-0b65521a2b65">
+            <modelEnumValue Id="5a56d03b-054e-4838-aac5-18ed81a2d8b2" name="OpenSettings" summary="Occurs when user accesses settings button." />
+          </modelEnumHasValues>
+          <modelEnumHasValues Id="537c0a2d-5984-4c80-ab5b-7157a2723b38">
+            <modelEnumValue Id="d6dfd711-9f67-4c22-a034-51e06cd52993" name="AppResumed" summary="Occurs when app is restored from the background." />
+          </modelEnumHasValues>
         </values>
       </modelEnum>
     </modelRootHasEnums>

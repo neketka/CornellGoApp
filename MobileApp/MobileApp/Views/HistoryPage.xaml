@@ -8,7 +8,8 @@
              x:Class="MobileApp.Views.HistoryPage"
              Title="Visited Places"
              BackgroundColor="{StaticResource Secondary}"
-             Shell.FlyoutBehavior="Disabled">
+             Shell.FlyoutBehavior="Disabled"
+             >
     <ContentPage.Resources>
         <ResourceDictionary>
             <ex:PluralConverter x:Key="plural"/>
@@ -16,39 +17,76 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout Orientation="Vertical">
-            <CollectionView Margin="0" ItemsSource="{Binding HistoryEntries}" x:Name="EntryCollection">
+            <CollectionView Margin="0"
+                            ItemsSource="{Binding HistoryEntries}"
+                            x:Name="EntryCollection"
+                            >
                 <CollectionView.Header>
-                    <SearchBar TextChanged="SearchBar_TextChanged" SearchButtonPressed="SearchBar_SearchButtonPressed" TextColor="{StaticResource SecondaryText}" 
-                       BackgroundColor="{StaticResource Secondary}" PlaceholderColor="{StaticResource PrimaryAccent}" Placeholder="Search"
-                       Margin="15, 0, 15, 0"/>
+                    <SearchBar TextChanged="SearchBar_TextChanged"
+                               SearchButtonPressed="SearchBar_SearchButtonPressed" 
+                               TextColor="{StaticResource SecondaryText}" 
+                               BackgroundColor="{StaticResource Secondary}" 
+                               PlaceholderColor="{StaticResource PrimaryAccent}" 
+                               Placeholder="Search"
+                               Margin="15, 0, 15, 0"
+                               />
                 </CollectionView.Header>
                 <CollectionView.Triggers>
-                    <DataTrigger TargetType="CollectionView" Binding="{Binding IsBusy}" Value="True">
+                    <DataTrigger TargetType="CollectionView" 
+                                 Binding="{Binding IsBusy}" 
+                                 Value="True"
+                                 >
                         <Setter Property="Footer" Value=""/>
                     </DataTrigger>
                 </CollectionView.Triggers>
                 <CollectionView.EmptyViewTemplate>
                     <DataTemplate>
-                        <Label Text="There seems to be nothing here...go out and search!" TextColor="{StaticResource SecondaryText}" FontSize="24"/>
+                        <Label Text="There seems to be nothing here...go out and search!" 
+                               TextColor="{StaticResource SecondaryText}"
+                               FontSize="24"
+                               />
                     </DataTemplate>
                 </CollectionView.EmptyViewTemplate>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Orientation="Horizontal" Padding="45, 10, 15, 0">
                             <StackLayout.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding ShowMoreCommand}" CommandParameter="{Binding Id}"/>
+                                <TapGestureRecognizer Command="{Binding ShowMoreCommand, Source={RelativeSource AncestorType={x:Type vm:HistoryViewModel}}}" CommandParameter="{Binding Id}"/>
                             </StackLayout.GestureRecognizers>
                             <Grid HorizontalOptions="FillAndExpand">
-                                <Image Source="{Binding Preview}" Aspect="AspectFill" HeightRequest="120"/>
-                                <BoxView CornerRadius="0" Margin="0" BackgroundColor="Black" Opacity="0.55"/>
+                                <Image Source="{Binding Preview}" 
+                                       Aspect="AspectFill" 
+                                       HeightRequest="120"
+                                       />
+                                <BoxView CornerRadius="0" 
+                                         Margin="0" 
+                                         BackgroundColor="Black" 
+                                         Opacity="0.55"
+                                         />
                                 <StackLayout Margin="8, 5, 0, 0">
-                                    <Label Text="{Binding Path=Name}" VerticalOptions="Start" HorizontalOptions="Start" TextColor="White" FontSize="18"
-                                           FontAttributes="Bold"/>
+                                    <Label Text="{Binding Path=Name}" 
+                                           VerticalOptions="Start"
+                                           HorizontalOptions="Start" 
+                                           TextColor="White"
+                                           FontSize="18"
+                                           FontAttributes="Bold"
+                                           />
                                     <Label Text="{Binding Path=Points, Converter={StaticResource plural}, ConverterParameter=Point}" 
-                                           VerticalOptions="End" HorizontalOptions="Start" TextColor="White" FontSize="16" FontAttributes="Italic"/>
+                                           VerticalOptions="End" 
+                                           HorizontalOptions="Start"
+                                           TextColor="White"
+                                           FontSize="16" 
+                                           FontAttributes="Italic"
+                                           />
                                 </StackLayout>
-                                <Label Text="{Binding Date, StringFormat='{0:d}'}" VerticalOptions="Center" HorizontalOptions="Start" 
-                                       Rotation="-90" TranslationX="-46" TextColor="{StaticResource SecondaryText}" FontAttributes="Bold"/>
+                                <Label Text="{Binding Date, StringFormat='{0:d}'}"
+                                       VerticalOptions="Center"
+                                       HorizontalOptions="Start" 
+                                       Rotation="-90"
+                                       TranslationX="-46" 
+                                       TextColor="{StaticResource SecondaryText}"
+                                       FontAttributes="Bold"
+                                       />
                             </Grid>
                         </StackLayout>
                     </DataTemplate>
@@ -56,7 +94,10 @@
                 <CollectionView.FooterTemplate>
                     <DataTemplate>
                         <StackLayout>
-                            <ActivityIndicator Color="{StaticResource SecondaryText}" IsRunning="True" HorizontalOptions="Center" />
+                            <ActivityIndicator Color="{StaticResource SecondaryText}" 
+                                               IsRunning="True" 
+                                               HorizontalOptions="Center" 
+                                               />
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.FooterTemplate>

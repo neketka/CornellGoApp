@@ -137,6 +137,16 @@ namespace BackendModel
       /// User was kicked by host
       /// </summary>
       [System.ComponentModel.Description("User was kicked by host")]
-      KickedByHost
+      KickedByHost,
+      /// <summary>
+      /// Occurs when user accesses settings button.
+      /// </summary>
+      [System.ComponentModel.Description("Occurs when user accesses settings button.")]
+      OpenSettings,
+      /// <summary>
+      /// Occurs when app is restored from the background.
+      /// </summary>
+      [System.ComponentModel.Description("Occurs when app is restored from the background.")]
+      AppResumed
    }
 }

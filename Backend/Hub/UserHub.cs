@@ -52,7 +52,7 @@ namespace Backend.Hub
             User user = session.User;
             return user.PrevChallenges.LastOrDefault().ToString();
         }
-
+      
         public Task SendMetric(FrontendMetric metric, string data)
         {
             throw new NotImplementedException();
