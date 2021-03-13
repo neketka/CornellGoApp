@@ -10,7 +10,8 @@
              Shell.PresentationMode="Animated"
              SizeChanged="ContentPage_SizeChanged"
              Shell.FlyoutBehavior="Flyout"
-             Shell.NavBarIsVisible="False">
+             Shell.NavBarIsVisible="False"
+             >
     <ContentPage.Resources>
         <ResourceDictionary>
             <ex:InverseBoolConverter x:Key="invBool"/>
@@ -20,39 +21,110 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <Grid>
-            <Image Source="{Binding ChallengeImage}" x:Name="PlaceImage" Aspect="AspectFill" SizeChanged="PlaceImage_SizeChanged"/>
-            <Image Source="{Binding OldChallengeImage}" x:Name="OldImage" Aspect="AspectFill" Opacity="0"/>
+            <Image Source="{Binding ChallengeImage}" 
+                   x:Name="PlaceImage" 
+                   Aspect="AspectFill" 
+                   SizeChanged="PlaceImage_SizeChanged"
+                   />
+            <Image Source="{Binding OldChallengeImage}"
+                   x:Name="OldImage"
+                   Aspect="AspectFill"
+                   Opacity="0"
+                   />
 
-            <BoxView CornerRadius="0" x:Name="Darkener" BackgroundColor="Black"/>
+            <BoxView CornerRadius="0" 
+                     x:Name="Darkener" 
+                     BackgroundColor="Black"
+                     />
 
-            <StackLayout VerticalOptions="CenterAndExpand" x:Name="VictoryView" IsEnabled="{Binding VictoryMode}" Opacity="0">
-                <Label Text="Congrats!" FontSize="64" TextColor="White" HorizontalOptions="Center"/>
-                <Label FontSize="120" TextColor="White" HorizontalOptions="Center" Margin="-20">&#x2605;</Label>
-                <Label Text="You have found" Margin="0, 18, 0, 0" FontSize="36" TextColor="White" HorizontalOptions="Center"/>
-                <Label Text="{Binding OldChallengeName}" FontSize="36" TextColor="White" HorizontalOptions="Center" FontAttributes="Bold"/>
-                <Label Text="{Binding Path=OldChallengePoints, StringFormat='+{0}!'}" FontSize="64" TextColor="White" HorizontalOptions="Center"/>
-                <Button Text="Keep searching..." HorizontalOptions="Center" Padding="0" Margin="0, 16, 0, 0" WidthRequest="250" 
-                        HeightRequest="40" Command="{Binding NextChallengeCommand}"/>
-                <Button Text="Find out more" HorizontalOptions="Center" Padding="0" Margin="0, 8, 0, 0" WidthRequest="250" HeightRequest="40" 
-                        Command="{Binding FindOutMoreCommand}"/>
+            <StackLayout VerticalOptions="CenterAndExpand" 
+                         x:Name="VictoryView" 
+                         IsEnabled="{Binding VictoryMode}"
+                         Opacity="0"
+                         >
+                <Label Text="Congrats!" 
+                       FontSize="64" 
+                       TextColor="White"
+                       HorizontalOptions="Center"
+                       />
+                <Label FontSize="120"
+                       TextColor="White"
+                       HorizontalOptions="Center"
+                       Margin="-20"
+                       >
+                    &#x2605;
+                </Label>
+                <Label Text="You have found"
+                       Margin="0, 18, 0, 0"
+                       FontSize="36" 
+                       TextColor="White" 
+                       HorizontalOptions="Center"
+                       />
+                <Label Text="{Binding OldChallengeName}" 
+                       FontSize="36"
+                       TextColor="White"
+                       HorizontalOptions="Center"
+                       FontAttributes="Bold"
+                       />
+                <Label Text="{Binding Path=OldChallengePoints, StringFormat='+{0}!'}"
+                       FontSize="64" 
+                       TextColor="White" 
+                       HorizontalOptions="Center"
+                       />
+                <Button Text="Keep searching..."
+                        HorizontalOptions="Center"
+                        Padding="0"
+                        Margin="0, 16, 0, 0"
+                        WidthRequest="250" 
+                        HeightRequest="40"
+                        Command="{Binding NextChallengeCommand}"
+                        />
+                <Button Text="Find out more"
+                        HorizontalOptions="Center"
+                        Padding="0" 
+                        Margin="0, 8, 0, 0"
+                        WidthRequest="250"
+                        HeightRequest="40" 
+                        Command="{Binding FindOutMoreCommand}"
+                        />
             </StackLayout>
 
-            <Frame WidthRequest="42" HeightRequest="42" CornerRadius="21" HasShadow="True" Margin="12,42,0,0" VerticalOptions="Start"
-                   Padding="0" HorizontalOptions="Start" Opacity="0.85" BorderColor="Black" x:Name="HamburgerButton"
-                   IsEnabled="{Binding Path=VictoryMode, Converter={StaticResource invBool}}" BackgroundColor="{StaticResource Secondary}"
-                   IsClippedToBounds="True">
-                    
+            <Frame WidthRequest="42" 
+                   HeightRequest="42"
+                   CornerRadius="21"
+                   HasShadow="True" 
+                   Margin="12,42,0,0" 
+                   VerticalOptions="Start"
+                   Padding="0" 
+                   HorizontalOptions="Start" 
+                   Opacity="0.85" 
+                   BorderColor="Black"
+                   x:Name="HamburgerButton"
+                   IsEnabled="{Binding Path=VictoryMode, Converter={StaticResource invBool}}" 
+                   BackgroundColor="{StaticResource Secondary}"
+                   IsClippedToBounds="True"
+                   >
                 <Button FontFamily="FASolid" Text="{Static fa:FASolid.Bars}" TextColor="{StaticResource Primary}" FontSize="24" Padding="0"
                         BackgroundColor="{StaticResource Secondary}" Clicked="Hamburger_Tapped" VerticalOptions="Center" HorizontalOptions="Center"/>
             </Frame>
 
-            <Frame x:Name="BottomSheet" BackgroundColor="{StaticResource Tertiary}" Padding="0, 8, 0, 0" CornerRadius="12" HasShadow="true">
+            <Frame x:Name="BottomSheet" 
+                   BackgroundColor="{StaticResource Tertiary}" 
+                   Padding="0, 8, 0, 0" 
+                   CornerRadius="12" 
+                   HasShadow="true"
+                   >
                 <Frame.GestureRecognizers>
                     <PanGestureRecognizer PanUpdated="PanGestureRecognizer_PanUpdated"/>
                 </Frame.GestureRecognizers>
                 <StackLayout>
                     <StackLayout Padding="24, 0, 24, 0">
-                        <BoxView HeightRequest="5" CornerRadius="2" WidthRequest="48" BackgroundColor="Gray" HorizontalOptions="Center"/>
+                        <BoxView HeightRequest="5"
+                                 CornerRadius="2" 
+                                 WidthRequest="48"
+                                 BackgroundColor="Gray" 
+                                 HorizontalOptions="Center"
+                                 />
                         <StackLayout Orientation="Horizontal" Margin="0, -4, 0, -4">
                             <Label HorizontalOptions="StartAndExpand" TextColor="{StaticResource PrimaryAccent}">
                                 <Label.FormattedText>
@@ -83,11 +155,23 @@
                             </Label>
                         </StackLayout>
 
-                        <StackLayout HeightRequest="75" Margin="0, 0, 0, 4" x:Name="Description">
-                            <Label Text="{Binding ChallengeDescription}" TextColor="{StaticResource SecondaryText}" FontSize="20"/>
+                        <StackLayout HeightRequest="75" 
+                                     Margin="0, 0, 0, 4"
+                                     x:Name="Description"
+                                     >
+                            <Label Text="{Binding ChallengeDescription}"
+                                   TextColor="{StaticResource SecondaryText}" 
+                                   FontSize="20"
+                                   />
                         </StackLayout>
 
-                        <Frame CornerRadius="16" HasShadow="False" Padding="0" Margin="0, 0, 0, 15" IsClippedToBounds="True" x:Name="Therm">
+                        <Frame CornerRadius="16"
+                               HasShadow="False" 
+                               Padding="0" 
+                               Margin="0, 0, 0, 15" 
+                               IsClippedToBounds="True" 
+                               x:Name="Therm"
+                               >
                             <Frame.Background>
                                 <LinearGradientBrush StartPoint="0, 0" EndPoint="1, 0">
                                     <GradientStop Color="Blue" Offset="0.0" />
@@ -95,23 +179,41 @@
                                 </LinearGradientBrush>
                             </Frame.Background>
                             <Grid>
-                                <BoxView x:Name="TempBar" BackgroundColor="White" Opacity="0.6"/>
+                                <BoxView x:Name="TempBar" 
+                                         BackgroundColor="White"
+                                         Opacity="0.6"
+                                         />
                                 <StackLayout Orientation="Horizontal" Padding="15, 10, 15, 0">
-                                    <Label Text="Cold" HorizontalOptions="StartAndExpand" TextColor="{StaticResource PrimaryText}"/>
+                                    <Label Text="Cold" 
+                                           HorizontalOptions="StartAndExpand" 
+                                           TextColor="{StaticResource PrimaryText}"
+                                           />
                                     <Label Text="Hot" TextColor="{StaticResource PrimaryText}"/>
                                 </StackLayout>
-                                <StackLayout BackgroundColor="LightGreen" x:Name="TempFinisher" Opacity="0">
-                                    <Label Text="Waiting on group to finish..." TextColor="{StaticResource PrimaryText}" 
-                                           HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+                                <StackLayout BackgroundColor="LightGreen"
+                                             x:Name="TempFinisher" 
+                                             Opacity="0"
+                                             >
+                                    <Label Text="Waiting on group to finish..."
+                                           TextColor="{StaticResource PrimaryText}" 
+                                           HorizontalOptions="CenterAndExpand" 
+                                           VerticalOptions="CenterAndExpand"
+                                           />
                                 </StackLayout>
                             </Grid>
                         </Frame>
                     </StackLayout>
-                    <StackLayout Padding="24, 12, 24, 0" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource Secondary}"
-                                 x:Name="Divider">
+                    <StackLayout Padding="24, 12, 24, 0" 
+                                 HorizontalOptions="FillAndExpand"
+                                 BackgroundColor="{StaticResource Secondary}"
+                                 x:Name="Divider"
+                                 >
                         <StackLayout Orientation="Horizontal">
-                            <Label FontSize="16" TextColor="{StaticResource SecondaryText}" VerticalOptions="Center" 
-                                   HorizontalOptions="StartAndExpand">
+                            <Label FontSize="16" 
+                                   TextColor="{StaticResource SecondaryText}"
+                                   VerticalOptions="Center" 
+                                   HorizontalOptions="StartAndExpand"
+                                   >
                                 <Label.Text>
                                     <MultiBinding StringFormat="Group [{0}] ({1}/{2})">
                                         <Binding Path="GroupCode"/>
@@ -120,35 +222,83 @@
                                     </MultiBinding>
                                 </Label.Text>
                             </Label>
-                            <Button Text="Join Group" HeightRequest="22" Padding="6, 0, 6, 0" VerticalOptions="Center" 
-                                    Command="{Binding JoinCommand}"/>
+                            <Button Text="Join Group" 
+                                    HeightRequest="22"
+                                    Padding="6, 0, 6, 0" 
+                                    VerticalOptions="Center" 
+                                    Command="{Binding JoinCommand}"
+                                    />
                         </StackLayout>
-                        <Frame BackgroundColor="{StaticResource Tertiary}" Padding="1" BorderColor="{StaticResource TertiaryAccent}" 
-                               CornerRadius="0" Margin="0, 5, 0, 20" HasShadow="False">
+                        <Frame BackgroundColor="{StaticResource Tertiary}" 
+                               Padding="1" 
+                               BorderColor="{StaticResource TertiaryAccent}" 
+                               CornerRadius="0" 
+                               Margin="0, 5, 0, 20"
+                               HasShadow="False"
+                               >
                             <ScrollView HeightRequest="180">
-                                <StackLayout BindableLayout.ItemsSource="{Binding GroupMembers}" BackgroundColor="{StaticResource Tertiary}">
+                                <StackLayout BindableLayout.ItemsSource="{Binding GroupMembers}" 
+                                             BackgroundColor="{StaticResource Tertiary}"
+                                             >
                                     <BindableLayout.ItemTemplate>
                                         <DataTemplate>
                                             <StackLayout Spacing="0" Padding="4, 0, 4, 0">
-                                                <BoxView HeightRequest="0.3" HorizontalOptions="FillAndExpand" CornerRadius="0" 
-                                                         Color="{StaticResource PrimaryAccent}" Margin="0, -4, 0, 0"
-                                                         IsVisible="{Binding Path=IsYou, Converter={StaticResource invBool}}"/>
-                                                <StackLayout VerticalOptions="Center" Orientation="Horizontal" Padding="0, 4, 10, 2">
-                                                    <Label FontFamily="FASolid" Text="{Static fa:FASolid.CheckCircle}" FontSize="16" 
-                                                           TextColor="LightGreen" VerticalOptions="Center" Margin="5, 0, 0, 0" WidthRequest="16" 
-													       IsVisible="{Binding Path=IsReady}"/>
-                                                    <Label FontFamily="FASolid" Text="{Static fa:FASolid.SearchLocation}" FontSize="16" 
-                                                           TextColor="Gray" VerticalOptions="Center" Margin="5, 0, 0, 0" WidthRequest="16"
-													       IsVisible="{Binding Converter={StaticResource invBool}, Path=IsReady}"/>
-                                                    <local:ScoreView Image="{Binding Avatar}" Username="{Binding Username}" Score="{Binding Score}" 
-                                                                     IsHighlighted="{Binding IsYou}" HeightRequest="32" Margin="4, 2, 0, 2"/>
-                                                    <StackLayout VerticalOptions="Center" HorizontalOptions="EndAndExpand" Orientation="Horizontal">
-                                                        <Label FontFamily="FASolid" Text="{Static fa:FASolid.Star}" FontSize="16" 
-                                                               TextColor="Goldenrod" IsVisible="{Binding IsHost}" VerticalOptions="Center"/>
-                                                        <Button WidthRequest="72" HeightRequest="22" Padding="0" IsVisible="False" 
-                                                                VerticalOptions="Center" Margin="5, 0, 0, 0"
+                                                <BoxView HeightRequest="0.3"
+                                                         HorizontalOptions="FillAndExpand" 
+                                                         CornerRadius="0" 
+                                                         Color="{StaticResource PrimaryAccent}"
+                                                         Margin="0, -4, 0, 0"
+                                                         IsVisible="{Binding Path=IsYou, Converter={StaticResource invBool}}"
+                                                         />
+                                                <StackLayout VerticalOptions="Center" 
+                                                             Orientation="Horizontal" 
+                                                             Padding="0, 4, 10, 2"
+                                                             >
+                                                    <Label FontFamily="FASolid" 
+                                                           Text="{Static fa:FASolid.CheckCircle}" 
+                                                           FontSize="16" 
+                                                           TextColor="LightGreen" 
+                                                           VerticalOptions="Center" 
+                                                           Margin="5, 0, 0, 0" 
+                                                           WidthRequest="16" 
+													       IsVisible="{Binding Path=IsReady}"
+                                                           />
+                                                    <Label FontFamily="FASolid"
+                                                           Text="{Static fa:FASolid.SearchLocation}" 
+                                                           FontSize="16" 
+                                                           TextColor="Gray" 
+                                                           VerticalOptions="Center"
+                                                           Margin="5, 0, 0, 0"
+                                                           WidthRequest="16"
+													       IsVisible="{Binding Converter={StaticResource invBool}, Path=IsReady}"
+                                                           />
+                                                    <local:ScoreView Image="{Binding Avatar}"
+                                                                     Username="{Binding Username}"
+                                                                     Score="{Binding Score}" 
+                                                                     IsHighlighted="{Binding IsYou}"
+                                                                     HeightRequest="32"
+                                                                     Margin="4, 2, 0, 2"
+                                                                     />
+                                                    <StackLayout VerticalOptions="Center" 
+                                                                 HorizontalOptions="EndAndExpand"
+                                                                 Orientation="Horizontal"
+                                                                 >
+                                                        <Label FontFamily="FASolid" 
+                                                               Text="{Static fa:FASolid.Star}"
+                                                               FontSize="16" 
+                                                               TextColor="Goldenrod" 
+                                                               IsVisible="{Binding IsHost}" 
+                                                               VerticalOptions="Center"
+                                                               />
+                                                        <Button WidthRequest="72"
+                                                                HeightRequest="22" 
+                                                                Padding="0"
+                                                                IsVisible="False" 
+                                                                VerticalOptions="Center" 
+                                                                Margin="5, 0, 0, 0"
 															    Command="{Binding Path=LeaveCommand, Source={RelativeSource AncestorType={x:Type vm:GameViewModel}}}" 
-                                                                CommandParameter="{Binding Id}">
+                                                                CommandParameter="{Binding Id}"
+                                                                >
                                                             <Button.Triggers>
                                                                 <MultiTrigger TargetType="Button">
                                                                     <MultiTrigger.Conditions>

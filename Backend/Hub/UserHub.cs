@@ -53,5 +53,9 @@ namespace Backend.Hub
             return user.PrevChallenges.LastOrDefault().ToString();
         }
 
+        public async Task SendMetric(FrontendMetric metric, string data)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

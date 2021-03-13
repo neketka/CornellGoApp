@@ -18,4 +18,9 @@ namespace CommunicationModel
     public record ChallengeHistoryEntryData(string ChallengeId, string ImageUrl, string Name, string Description, int Points, DateTime UtcDateTime);
     public record GroupMemberData(string UserId, string Username, bool IsHost, bool IsDone, int Points);
     public record ChallengeProgressData(string WalkDistance, double Progress);
+    public enum FrontendMetric
+    {
+        ClosedApp = 0, AppSuspended = 1, OpenLeaderboard = 2, OpenHistory = 3, OpenLearnMore = 4,
+        OpenGroupMenu = 5, OpenJoinGroupMenu = 6, OpenGameMenu = 7, OpenSettings = 8, AppResumed = 9
+    }
 }

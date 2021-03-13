@@ -1,6 +1,8 @@
 ﻿using MobileApp.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,11 +34,9 @@ namespace MobileApp.Services
                     pageViewModelMapping[mapping] = (type, vmPair.Item2);
                 }
             }
-            foreach (var pvm in pageViewModelMapping)
-            {
-                Routing.RegisterRoute(pvm.Value.ViewModel.Name, pvm.Value.Page);
-            }
-            NavigationService = new NavigationServiceImpl(ConstructViewModel);
+            NavigationService = new NavigationServiceImpl(ConstructViewModel, ConstructPage, 
+                pageViewModelMapping.Values.Select(pvm => pvm.ViewModel).ToArray());
+
             serviceMapping[typeof(INavigationService)] = NavigationService;
         }
 
@@ -59,37 +59,65 @@ namespace MobileApp.Services
             return (BaseViewModel)Activator.CreateInstance(vmType, args);
         }
 
+        private Page ConstructPage(Type vmType)
+        {
+            string name = vmType.Name;
+            return (Page)Activator.CreateInstance(pageViewModelMapping[name.Substring(0, name.Length - 9)].Page);
+        }
+
         private class NavigationServiceImpl : INavigationService
         {
             private Func<Type, BaseViewModel> consViewModel;
+            private Func<Type, Page> consPage;
             private Stack<BaseViewModel> vmStack;
+            private Dictionary<Type, Page> cachedPages;
+            private Type[] vmTypes;
             private string rootVm;
+            private bool suppressExtraPop = false;
 
             private Page LastPage => Shell.Current.Navigation.NavigationStack[Shell.Current.Navigation.NavigationStack.Count - 1];
 
             public BaseViewModel PreviousViewModel => vmStack.Count == 0 ? null : vmStack.Peek();
 
-            public NavigationServiceImpl(Func<Type, BaseViewModel> cvm)
+            public NavigationServiceImpl(Func<Type, BaseViewModel> cvm, Func<Type, Page> cpage, Type[] vmTypes)
             {
                 consViewModel = cvm;
+                consPage = cpage;
                 vmStack = new Stack<BaseViewModel>();
+                cachedPages = new Dictionary<Type, Page>();
+                this.vmTypes = vmTypes;
             }
 
             private void Current_Navigated(object sender, ShellNavigatedEventArgs e)
             {
-                if (e.Source == ShellNavigationSource.Pop)
+                if (e.Source == ShellNavigationSource.Pop && !suppressExtraPop)
                     vmStack.Pop();
             }
 
             public async Task InitializeFirst<TViewModel>()
             {
                 rootVm = typeof(TViewModel).Name;
+                Shell.Current.Navigated += Current_Navigated;
+
+                foreach (Type vmType in vmTypes)
+                {
+                    if (vmType == typeof(TViewModel) || vmType == typeof(BaseViewModel))
+                        continue;
+                    try
+                    {
+                        cachedPages[vmType] = consPage(vmType);
+                        Console.WriteLine("Initialized " + vmType.Name);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"Failed to create page for {vmType.Name}: {e.Message}");
+                    }
+                }
 
                 var vm = consViewModel(typeof(TViewModel));
-                vm.OnEntering(null);
+                await vm.OnEntering(null);
+
                 LastPage.BindingContext = vm;
-                Shell.Current.Navigated += Current_Navigated;
-                await Task.CompletedTask;
             }
 
             public async Task NavigateBack(object parameter = null)
@@ -97,10 +125,8 @@ namespace MobileApp.Services
                 Console.WriteLine("Navigating back");
                 ((BaseViewModel)LastPage.BindingContext).OnDestroying();
 
-                await Shell.Current.GoToAsync("..");
-                BaseViewModel vm = vmStack.Pop();
-                LastPage.BindingContext = vm;
-                vm.OnReturning(parameter);
+                await Shell.Current.Navigation.PopAsync();
+                await vmStack.Pop().OnReturning(parameter);
             }
 
             public async Task NavigateTo<TViewModel>(object parameter = null) where TViewModel : BaseViewModel
@@ -108,14 +134,14 @@ namespace MobileApp.Services
                 string vmName = typeof(TViewModel).Name;
                 Console.WriteLine("Navigating to " + vmName);
 
+                Page p = cachedPages[typeof(TViewModel)];
                 var vm = consViewModel(typeof(TViewModel));
+                p.BindingContext = vm;
 
                 vmStack.Push(vmStack.Count == 0 ? null : LastPage.BindingContext as BaseViewModel);
 
-                vm.OnEntering(null);
-
-                await Shell.Current.GoToAsync(vmName);
-                LastPage.BindingContext = vm;
+                await Shell.Current.Navigation.PushAsync(p);
+                await vm.OnEntering(null);
             }
 
             public async Task NavigateBackTo<TViewModel>(object parameter = null) where TViewModel : BaseViewModel
@@ -124,22 +150,28 @@ namespace MobileApp.Services
                 Console.WriteLine("Navigating back to " + vmName);
 
                 while (vmStack.Peek() is not TViewModel)
-                    vmStack.Pop().OnDestroying();
-                vmStack.Peek().OnReturning(parameter);
+                {
+                    var vm = vmStack.Pop();
+                    Shell.Current.Navigation.RemovePage(cachedPages[vm.GetType()]);
+                    vm.OnDestroying();
+                }
 
-                await Shell.Current.GoToAsync($"/{vmName}");
+                suppressExtraPop = true;
+                await Shell.Current.Navigation.PopAsync(true);
+                suppressExtraPop = false;
+
+                await vmStack.Pop().OnReturning(parameter);
             }
 
-            public async Task ToRoot(object parameter = null)
+            public async Task NavigateToRoot(object parameter = null)
             {
                 Console.WriteLine("Navigating to root");
 
                 ((BaseViewModel)LastPage.BindingContext).OnDestroying();
                 while (vmStack.Count > 1)
                     vmStack.Pop().OnDestroying();
-                vmStack.Pop().OnReturning(parameter);
-
-                await Shell.Current.GoToAsync($"//{rootVm}");
+                await Shell.Current.Navigation.PopToRootAsync();
+                await vmStack.Pop().OnReturning(parameter);
             }
         }
     }
@@ -151,6 +183,6 @@ namespace MobileApp.Services
         Task NavigateTo<TViewModel>(object parameter = null) where TViewModel : BaseViewModel;
         Task NavigateBackTo<TViewModel>(object parameter = null) where TViewModel : BaseViewModel;
         Task NavigateBack(object parameter = null);
-        Task ToRoot(object parameter = null);
+        Task NavigateToRoot(object parameter = null);
     }
 }

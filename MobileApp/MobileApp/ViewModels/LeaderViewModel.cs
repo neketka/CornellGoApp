@@ -44,7 +44,12 @@ namespace MobileApp.ViewModels
 
             ProfilePicture = pfp;
             gameService.Client.ScorePositionsUpdated += RerankPlayer;
-            LoadData();
+        }
+
+        public override Task OnEntering(object parameter)
+        {
+            gameService.Client.SendMetric(CommunicationModel.FrontendMetric.OpenLeaderboard, "");
+            return LoadData();
         }
 
         private async Task RerankPlayer(string userId, string username, int oldIndex, int newIndex, int score)

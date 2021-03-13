@@ -151,6 +151,7 @@ namespace CommunicationModel
         {
             return Task.Delay(3000);
         }
+
         public Task<int> GetMaxPlayers()
         {
             return Task.FromResult(8);

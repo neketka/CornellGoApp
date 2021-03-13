@@ -6,6 +6,7 @@ using System.Text;
 using Xamarin.Forms;
 using Xamarin.Essentials;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MobileApp.ViewModels
 {
@@ -13,6 +14,7 @@ namespace MobileApp.ViewModels
     {
         private ImageSource avatar;
         private string username;
+        private IGameService gameService;
 
         public ImageSource Avatar { get => avatar; set => SetProperty(ref avatar, value); }
         public string Username { get => username; set => SetProperty(ref username, value); }
@@ -26,6 +28,8 @@ namespace MobileApp.ViewModels
 
         public SettingsViewModel(IGameService gameService, INavigationService navigationService, IDialogService dialogService)
         {
+            this.gameService = gameService;
+
             Avatar = ImageSource.FromResource("MobileApp.Assets.Images.profile.png");
             Username = "Username";
             ChangeAvatarCommand = new Command(async () => 
@@ -64,6 +68,12 @@ namespace MobileApp.ViewModels
                 if (await gameService.LogoutWithSession())
                     await navigationService.NavigateBackTo<LandingViewModel>();
             });
+        }
+
+        public override Task OnEntering(object parameter)
+        {
+            gameService.Client.SendMetric(CommunicationModel.FrontendMetric.OpenSettings, "");
+            return Task.CompletedTask;
         }
     }
 }

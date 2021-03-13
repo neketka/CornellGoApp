@@ -20,17 +20,16 @@ namespace MobileApp
             PreferredControlColor = Color.FromHex("CB2424")
         };
 
-        private ViewModelContainer vmContainer;
+        public ViewModelContainer Container { get; }
 
         public AppShell()
         {
-            vmContainer = new ViewModelContainer();
+            Container = new ViewModelContainer();
 
-            vmContainer.RegisterService<IGameService, GameService>();
-            vmContainer.RegisterService<IDialogService, DialogService>();
-            vmContainer.NavigationService.InitializeFirst<LoadingViewModel>();
+            Container.RegisterService<IGameService, MockGameService>();
+            Container.RegisterService<IDialogService, DialogService>();
 
-            GameService = vmContainer.GetService<IGameService>();
+            GameService = Container.GetService<IGameService>();
 
             GameService.LoggedIn += GameService_LoggedIn;
             GameService.Client.UserDataUpdated += Client_UserDataUpdated;
@@ -74,7 +73,7 @@ namespace MobileApp
             bool wasPresented = Current.FlyoutIsPresented;
             Current.FlyoutIsPresented = false;
             if (wasPresented)
-                await vmContainer.NavigationService.NavigateTo<SettingsViewModel>();
+                await Container.NavigationService.NavigateTo<SettingsViewModel>();
         }
 
         private async void Leaderboard_Clicked(object sender, EventArgs e)
@@ -82,7 +81,7 @@ namespace MobileApp
             bool wasPresented = Current.FlyoutIsPresented;
             Current.FlyoutIsPresented = false;
             if (wasPresented)
-                await vmContainer.NavigationService.NavigateTo<LeaderViewModel>();
+                await Container.NavigationService.NavigateTo<LeaderViewModel>();
         }
 
         private async void History_Clicked(object sender, EventArgs e)
@@ -90,7 +89,7 @@ namespace MobileApp
             bool wasPresented = Current.FlyoutIsPresented;
             Current.FlyoutIsPresented = false;
             if (wasPresented)
-                await vmContainer.NavigationService.NavigateTo<HistoryViewModel>();
+                await Container.NavigationService.NavigateTo<HistoryViewModel>();
         }
     }
 }

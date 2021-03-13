@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <eFModelDiagrams>
-<eFModelDiagram dslVersion="1.0.0.0" Id="cb44e370-435d-4062-8ecd-75ce9f85b22d" type="Sawczyn.EFDesigner.EFModel.EFModelDiagram" absoluteBounds="0, 0, 16.25, 11.443494351486368" name="CornellGoDb">
+<eFModelDiagram dslVersion="1.0.0.0" Id="cb44e370-435d-4062-8ecd-75ce9f85b22d" type="Sawczyn.EFDesigner.EFModel.EFModelDiagram" absoluteBounds="0, 0, 16.25, 11.8280972160697" name="CornellGoDb">
   <modelRootMoniker Id="cba47279-0950-4257-bb2c-e4d5e72a52a4" />
   <nestedChildShapes>
     <classShape Id="f9d2895e-fd75-4370-bbbb-5b6b8f5c1001" absoluteBounds="3.9895833333333313, 3.1979167461395259, 1.8750000000000009, 1.9473746744791662" fillColor="0, 122, 204" textColor="White" outlineColor="Black" outlineDashStyle="Solid" outlineThickness="0.01">
@@ -90,7 +90,7 @@
         <classShapeMoniker Id="2b64bb9d-5bc6-484c-93e7-3d4dbe1ec57a" />
       </nodes>
     </bidirectionalConnector>
-    <bidirectionalConnector Id="bec3c846-6db0-4954-a9c4-b0c95d1c1137" edgePoints="[(8.31318931960544 : 5.8720166015625); (8.31318931960544 : 7.61458352312445)]" fixedFrom="Caller" fixedTo="Algorithm" color="113, 111, 110" dashStyle="Solid">
+    <bidirectionalConnector Id="bec3c846-6db0-4954-a9c4-b0c95d1c1137" edgePoints="[(8.31318931960544 : 5.8720166015625); (8.31318931960544 : 7.61458352312445)]" fixedFrom="NotFixed" fixedTo="NotFixed" color="113, 111, 110" dashStyle="Solid">
       <bidirectionalAssociationMoniker Id="7643e6b7-72c9-4df5-b481-cd04783b561f" />
       <relativeChildShapes />
       <nodes>
@@ -164,10 +164,10 @@
         <classShapeMoniker Id="f9d2895e-fd75-4370-bbbb-5b6b8f5c1001" />
       </nodes>
     </bidirectionalConnector>
-    <enumShape Id="c5e54b6b-f217-4b73-bb5c-94a764e451b3" absoluteBounds="5.0983330879012776, 6.1111717603405351, 1.8545833206524458, 5.0823225911458332" fillColor="Gray" textColor="White" outlineColor="Black" outlineThickness="0.01" outlineDashStyle="Solid">
+    <enumShape Id="c5e54b6b-f217-4b73-bb5c-94a764e451b3" absoluteBounds="5.0983330879012776, 6.1111717603405351, 1.8545833206524458, 5.4669254557291653" fillColor="Gray" textColor="White" outlineColor="Black" outlineThickness="0.01" outlineDashStyle="Solid">
       <modelEnumMoniker Id="9e47a61f-769c-4f11-99d3-f225fe68d34c" />
       <nestedChildShapes>
-        <elementListCompartment Id="75f6d782-ca0b-4c4e-be47-63bcd0f31293" absoluteBounds="5.1133330879012773, 6.4211717603405347, 1.824583320652446, 4.672322591145833" name="ValuesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="75f6d782-ca0b-4c4e-be47-63bcd0f31293" absoluteBounds="5.1133330879012773, 6.4211717603405347, 1.824583320652446, 5.0569254557291661" name="ValuesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </enumShape>
     <classShape Id="72e51dc5-b702-4bbc-9d7c-755198b82dc3" absoluteBounds="2.4466664023598033, 6.1215887198547456, 2.3529166361639895, 1.9473746744791667" fillColor="0, 122, 204" textColor="White" outlineColor="Black" outlineDashStyle="Solid" outlineThickness="0.01">
