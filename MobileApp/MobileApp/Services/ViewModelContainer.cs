@@ -149,6 +149,7 @@ namespace MobileApp.Services
                 string vmName = typeof(TViewModel).Name;
                 Console.WriteLine("Navigating back to " + vmName);
 
+                string backRoute = "..";
                 while (vmStack.Peek() is not TViewModel)
                 {
                     var vm = vmStack.Pop();

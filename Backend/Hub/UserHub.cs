@@ -40,7 +40,7 @@ namespace Backend.Hub
             foreach (PrevChallenge prev in query)
             {
                 Challenge chal = prev.Challenge;
-                yield return new ChallengeHistoryEntryData(chal.Id.ToString(), chal.ImageJPG.ToString(), chal.Name, chal.Description, chal.Points, prev.Timestamp);
+                yield return new ChallengeHistoryEntryData(chal.Id.ToString(), chal.ImageUrl, chal.Name, chal.Description, chal.Points, prev.Timestamp);
             }
 
 
@@ -52,8 +52,8 @@ namespace Backend.Hub
             User user = session.User;
             return user.PrevChallenges.LastOrDefault().ToString();
         }
-
-        public async Task SendMetric(FrontendMetric metric, string data)
+      
+        public Task SendMetric(FrontendMetric metric, string data)
         {
             throw new NotImplementedException();
         }

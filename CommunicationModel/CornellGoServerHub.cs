@@ -68,5 +68,8 @@ namespace CommunicationModel
 
         public async Task<int> GetMaxPlayers()
             => await Connection.InvokeAsync<int>("GetMaxPlayers");
+
+        public async Task SendMetric(FrontendMetric metric, string data)
+            => await Connection.InvokeAsync("SendMetric", metric, data);
     }
 }

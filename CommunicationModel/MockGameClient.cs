@@ -71,7 +71,7 @@ namespace CommunicationModel
         public Task<ChallengeData> GetChallengeData()
         {
             return Task.FromResult(new ChallengeData("", 
-                "One of the most recognized landmarks of Cornell University, this tower can found and heard above a library.", 3,
+                "One of the most recognized landmarks of Cornell, this tower can found and heard above a library.", 3,
                 "https://upload.wikimedia.org/wikipedia/commons/d/d2/Cornell-McGraw_Tower.jpg"));
         }
 
@@ -155,6 +155,11 @@ namespace CommunicationModel
         public Task<int> GetMaxPlayers()
         {
             return Task.FromResult(8);
+        }
+
+        public Task SendMetric(FrontendMetric metric, string data)
+        {
+            return Task.CompletedTask;
         }
     }
 }
