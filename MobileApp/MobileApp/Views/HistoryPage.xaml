@@ -13,13 +13,14 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <ex:PluralConverter x:Key="plural"/>
+            <ex:InverseBoolConverter x:Key="invBool"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout Orientation="Vertical">
             <CollectionView Margin="0"
-                            ItemsSource="{Binding HistoryEntries}"
                             x:Name="EntryCollection"
+                            ItemsSource="{Binding HistoryEntries}"
                             >
                 <CollectionView.Header>
                     <SearchBar TextChanged="SearchBar_TextChanged"
@@ -31,22 +32,6 @@
                                Margin="15, 0, 15, 0"
                                />
                 </CollectionView.Header>
-                <CollectionView.Triggers>
-                    <DataTrigger TargetType="CollectionView" 
-                                 Binding="{Binding IsBusy}" 
-                                 Value="True"
-                                 >
-                        <Setter Property="Footer" Value=""/>
-                    </DataTrigger>
-                </CollectionView.Triggers>
-                <CollectionView.EmptyViewTemplate>
-                    <DataTemplate>
-                        <Label Text="There seems to be nothing here...go out and search!" 
-                               TextColor="{StaticResource SecondaryText}"
-                               FontSize="24"
-                               />
-                    </DataTemplate>
-                </CollectionView.EmptyViewTemplate>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Orientation="Horizontal" Padding="45, 10, 15, 0">
@@ -91,16 +76,33 @@
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
-                <CollectionView.FooterTemplate>
-                    <DataTemplate>
-                        <StackLayout>
-                            <ActivityIndicator Color="{StaticResource SecondaryText}" 
+                <CollectionView.Footer>
+                    <StackLayout>
+                        <ActivityIndicator Color="{StaticResource SecondaryText}" 
                                                IsRunning="True" 
                                                HorizontalOptions="Center" 
+                                               IsVisible="{Binding IsBusy}"
                                                />
-                        </StackLayout>
-                    </DataTemplate>
-                </CollectionView.FooterTemplate>
+
+                        <Label Text="There seems to be nothing here...go out and search!" 
+						       TextColor="{StaticResource TertiaryText}"
+						       FontSize="16"
+						       HorizontalOptions="CenterAndExpand"
+                               IsVisible="False"
+                               Margin="0, 16, 0, 0"
+						       >
+                            <Label.Triggers>
+                                <MultiTrigger TargetType="Label">
+                                    <MultiTrigger.Conditions>
+                                        <BindingCondition Binding="{Binding IsBusy}" Value="False"/>
+                                        <BindingCondition Binding="{Binding HistoryEntries.Count}" Value="0"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="IsVisible" Value="True"/>
+                                </MultiTrigger>
+                            </Label.Triggers>
+                        </Label>
+                    </StackLayout>
+                </CollectionView.Footer>
             </CollectionView>
         </StackLayout>
     </ContentPage.Content>

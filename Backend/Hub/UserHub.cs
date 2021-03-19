@@ -15,9 +15,10 @@ namespace Backend.Hub
         {
             UserSession session = await Database.UserSessions.FromSignalRId(Context.UserIdentifier);
             User user = session.User;
-            int index = Database.Users.AsQueryable().Select((c, i) => new { User = c, Index = i })
-                        .Where(x => x.User.Id == user.Id)
-                        .Select(x => x.Index).First();
+            int index = await Database.Users.AsAsyncEnumerable()
+                .Select((c, i) => new { User = c, Index = i })
+                .Where(x => x.User.Id == user.Id)
+                .Select(x => x.Index).SingleAsync();
 
             return new UserData(user.Username, user.Score, user.GroupMember.Group.Id.ToString(), user.Id.ToString(), index, Database.Users.Count());
         }
@@ -25,11 +26,10 @@ namespace Backend.Hub
         public IAsyncEnumerable<LeaderboardData> GetTopPlayers(int index, int count)
         {
             if (count > 100) count = 100;
-            return Database.Users.AsQueryable()
+            return Database.Users.AsAsyncEnumerable()
                 .OrderBy(User => User.Score)
                 .Skip(index).Take(count)
-                .Select((u, i) => new LeaderboardData(u.Id.ToString(), u.Username, i + index, u.Score))
-                .AsAsyncEnumerable();
+                .Select((u, i) => new LeaderboardData(u.Id.ToString(), u.Username, i + index, u.Score));
         }
 
         public async IAsyncEnumerable<ChallengeHistoryEntryData> GetHistoryData()

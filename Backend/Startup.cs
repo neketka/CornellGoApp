@@ -7,6 +7,9 @@ using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite;
 using Backend.Hub;
+using Backend.Admin;
+using System.IO;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 
 namespace Backend
 {
@@ -25,11 +28,10 @@ namespace Backend
             services.AddDbContext<BackendModel.CornellGoDb>(o => 
                 o.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), e => e.UseNetTopologySuite()));
             services.AddSignalR();
-            //services.AddControllers();
-            /*services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Backend", Version = "v1" });
-            });*/
+            services.AddControllers();
+            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "Backend", Version = "v1" }));
+            services.AddMvc(option => option.EnableEndpointRouting = false);
+            services.AddSpaStaticFiles(configuration => configuration.RootPath = "Admin/client/build");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,20 +40,31 @@ namespace Backend
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                //app.UseSwagger();
-                //app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Backend v1"));
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Backend v1"));
             }
-
-            app.UseHttpsRedirection();
 
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseHttpsRedirection();
+            app.UseSpaStaticFiles();
+            app.UseMvc();
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = Path.Join(env.ContentRootPath, "Admin/client");
+
+                if (env.IsDevelopment())
+                {
+                    spa.UseReactDevelopmentServer(npmScript: "start");
+                }
+            });
 
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<CornellGoHub>("/hub");
+                endpoints.MapHub<AdminHub>("/adminhub");
             });
         }
     }

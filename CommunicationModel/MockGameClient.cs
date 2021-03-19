@@ -45,7 +45,7 @@ namespace CommunicationModel
 
         public Task<bool> AttemptRelog(string session)
         {
-            return Task.FromResult(false);
+            return Task.FromResult(true);
         }
 
         public Task<bool> ChangeEmail(string email)

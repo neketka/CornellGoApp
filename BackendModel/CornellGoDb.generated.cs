@@ -29,6 +29,11 @@ namespace BackendModel
       #region DbSets
 
       /// <summary>
+      /// Repository for global::BackendModel.Admin - Manager of the CornellGO data
+      /// </summary>
+      public virtual Microsoft.EntityFrameworkCore.DbSet<global::BackendModel.Admin> Admins { get; set; }
+
+      /// <summary>
       /// Repository for global::BackendModel.Authenticator - User authentication data
       /// </summary>
       public virtual Microsoft.EntityFrameworkCore.DbSet<global::BackendModel.Authenticator> Authenticators { get; set; }
@@ -59,9 +64,9 @@ namespace BackendModel
       public virtual Microsoft.EntityFrameworkCore.DbSet<global::BackendModel.PrevChallenge> PrevChallenges { get; set; }
 
       /// <summary>
-      /// Repository for global::BackendModel.SessonLogEntry - Entry for the user&apos;s log
+      /// Repository for global::BackendModel.SessionLogEntry - Entry for the user&apos;s log
       /// </summary>
-      public virtual Microsoft.EntityFrameworkCore.DbSet<global::BackendModel.SessonLogEntry> SessonLogEntries { get; set; }
+      public virtual Microsoft.EntityFrameworkCore.DbSet<global::BackendModel.SessionLogEntry> SessionLogEntries { get; set; }
 
       /// <summary>
       /// Repository for global::BackendModel.Suggestion - Place suggestion created by the
@@ -104,6 +109,26 @@ namespace BackendModel
          OnModelCreatingImpl(modelBuilder);
 
          modelBuilder.HasDefaultSchema("dbo");
+
+         modelBuilder.Entity<global::BackendModel.Admin>()
+                     .ToTable("Admins")
+                     .HasKey(t => t.Id);
+         modelBuilder.Entity<global::BackendModel.Admin>()
+                     .Property(t => t.Id)
+                     .ValueGeneratedOnAdd()
+                     .IsRequired();
+         modelBuilder.Entity<global::BackendModel.Admin>()
+                     .Property(t => t.Email)
+                     .IsRequired();
+         modelBuilder.Entity<global::BackendModel.Admin>()
+                     .Property(t => t.PasswordHash)
+                     .IsRequired();
+         modelBuilder.Entity<global::BackendModel.Admin>()
+                     .Property(t => t.Status)
+                     .IsRequired();
+         modelBuilder.Entity<global::BackendModel.Admin>()
+                     .Property(t => t.SignalRId)
+                     .IsRequired();
 
          modelBuilder.Entity<global::BackendModel.Authenticator>()
                      .ToTable("Authenticators")
@@ -234,20 +259,20 @@ namespace BackendModel
                      .OnDelete(DeleteBehavior.NoAction);
          modelBuilder.Entity<global::BackendModel.PrevChallenge>().Navigation(e => e.Challenge).IsRequired();
 
-         modelBuilder.Entity<global::BackendModel.SessonLogEntry>()
-                     .ToTable("SessonLogEntries")
+         modelBuilder.Entity<global::BackendModel.SessionLogEntry>()
+                     .ToTable("SessionLogEntries")
                      .HasKey(t => t.Id);
-         modelBuilder.Entity<global::BackendModel.SessonLogEntry>()
+         modelBuilder.Entity<global::BackendModel.SessionLogEntry>()
                      .Property(t => t.Id)
                      .ValueGeneratedOnAdd()
                      .IsRequired();
-         modelBuilder.Entity<global::BackendModel.SessonLogEntry>()
+         modelBuilder.Entity<global::BackendModel.SessionLogEntry>()
                      .Property(t => t.EntryType)
                      .IsRequired();
-         modelBuilder.Entity<global::BackendModel.SessonLogEntry>()
+         modelBuilder.Entity<global::BackendModel.SessionLogEntry>()
                      .Property(t => t.EntryData)
                      .IsRequired();
-         modelBuilder.Entity<global::BackendModel.SessonLogEntry>()
+         modelBuilder.Entity<global::BackendModel.SessionLogEntry>()
                      .Property(t => t.Timestamp)
                      .IsRequired();
 
@@ -298,7 +323,7 @@ namespace BackendModel
                      .WithOne()
                      .HasForeignKey("UserPrevChallengesId");
          modelBuilder.Entity<global::BackendModel.User>()
-                     .HasMany<global::BackendModel.SessonLogEntry>(p => p.SessonLogEntries)
+                     .HasMany<global::BackendModel.SessionLogEntry>(p => p.SessonLogEntries)
                      .WithOne()
                      .HasForeignKey("UserSessonLogEntriesId");
          modelBuilder.Entity<global::BackendModel.User>()

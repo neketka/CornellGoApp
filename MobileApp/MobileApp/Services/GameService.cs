@@ -20,6 +20,7 @@ namespace MobileApp.Services
 
         Task<bool> LoginWithSession(string username, string password);
         Task<bool> LogoutWithSession();
+        Task<bool> AttemptRelog();
     }
 
     public class GameService : IGameService
@@ -66,6 +67,14 @@ namespace MobileApp.Services
             return loggedOut;
         }
 
+        public async Task<bool> AttemptRelog()
+        {
+            string token = await SecureStorage.GetAsync("session");
+            if (token != null)
+                return await Client.AttemptRelog(token);
+            return false;
+        }
+        
         private async Task PollLocation(Position pos)
         {
             var progress = await Client.CheckProgress(pos.Latitude, pos.Longitude);

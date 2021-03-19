@@ -98,7 +98,7 @@
                             RemainingItemsThresholdReachedCommandParameter="15" 
                             RemainingItemsThreshold="4" 
                             Margin="0" 
-                            BackgroundColor="{StaticResource Tertiary}"
+                            BackgroundColor="{StaticResource Secondary}"
                             >
                 <CollectionView.Triggers>
                     <DataTrigger TargetType="CollectionView" 
@@ -111,7 +111,7 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Orientation="Vertical" 
-                                     BackgroundColor="{StaticResource Tertiary}" 
+                                     BackgroundColor="{StaticResource Secondary}" 
                                      Spacing="0"
                                      >
                             <BoxView HeightRequest="0.3"
@@ -200,7 +200,7 @@
                                         </DataTrigger>
                                     </Label.Triggers>
                                 </Label>
-                                <Label Text="{Binding Path=Points, StringFormat='{}{0:#,#.}'}"
+                                <Label Text="{Binding Path=Points, StringFormat='{0:n0}'}"
                                        FontSize="18" 
                                        TextColor="{StaticResource SecondaryText}" 
                                        HorizontalOptions="EndAndExpand"

@@ -11,7 +11,7 @@ using Plugin.CurrentActivity;
 
 namespace MobileApp.Droid
 {
-    [Activity(Label = "CornellGO!", Icon = "@mipmap/icon", Theme = "@style/MainTheme", ScreenOrientation = ScreenOrientation.Portrait, MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize )]
+    [Activity(Label = "CornellGO!", Icon = "@mipmap/icon", MainLauncher = false, Theme = "@style/MainTheme", ScreenOrientation = ScreenOrientation.Portrait, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize )]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
@@ -26,7 +26,7 @@ namespace MobileApp.Droid
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
             LoadApplication(new App());
             Window.SetStatusBarColor(Android.Graphics.Color.ParseColor("#2C2F33"));
-            Window.SetNavigationBarColor(Android.Graphics.Color.Black);
+            Window.SetNavigationBarColor(Android.Graphics.Color.ParseColor("#2C2F33"));
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {

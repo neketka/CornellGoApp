@@ -47,7 +47,12 @@ namespace MobileApp.ViewModels
                     await dialogService.ShowConnectionError(e.Message);
                 }
             }
-            await navigationService.NavigateTo<LandingViewModel>();
+            if (await gameService.AttemptRelog())
+            {
+                await navigationService.NavigateTo<LandingViewModel>(animate: false);
+                await navigationService.NavigateTo<GameViewModel>();
+            }
+            else await navigationService.NavigateTo<LandingViewModel>();
         }
     }
 }

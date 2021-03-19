@@ -21,18 +21,19 @@ namespace MobileApp.ViewModels
             this.gameService = gameService;
 
             HistoryEntries = new ObservableCollection<HistoryEntry>();
-            ShowMoreCommand = new(async (id) => { await dialogService.ShowServerError(); });
+            ShowMoreCommand = new(async id => { await dialogService.ShowServerError(); });
+            IsBusy = true;
         }
 
         public override Task OnEntering(object parameter)
         {
             gameService.Client.SendMetric(CommunicationModel.FrontendMetric.OpenHistory, "");
-            return Load();
+            return Task.Run(Load);
         }
 
         private async Task Load()
         {
-            IsBusy = true;
+            List<HistoryEntry> entries = new List<HistoryEntry>();
             await foreach (var entry in gameService.Client.GetHistoryData())
             {
                 ImageSource img = new UriImageSource
@@ -40,9 +41,13 @@ namespace MobileApp.ViewModels
                     Uri = new Uri(entry.ImageUrl),
                     CachingEnabled = true
                 };
-                HistoryEntries.Add(new(entry.ChallengeId, img, entry.UtcDateTime.ToLocalTime(), entry.Name, entry.Points));
+                entries.Add(new(entry.ChallengeId, img, entry.UtcDateTime.ToLocalTime(), entry.Name, entry.Points));
             }
-            IsBusy = false;
+            await Device.InvokeOnMainThreadAsync(() =>
+            {
+                entries.ForEach(HistoryEntries.Add);
+                IsBusy = false;
+            });
         }
     }
 }

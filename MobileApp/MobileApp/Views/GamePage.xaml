@@ -32,6 +32,8 @@
                    Opacity="0"
                    />
 
+            <ActivityIndicator IsRunning="{Binding IsBusy}" Scale="0.2" Color="{StaticResource Secondary}"/>
+
             <BoxView CornerRadius="0" 
                      x:Name="Darkener" 
                      BackgroundColor="Black"
@@ -159,9 +161,10 @@
                                      Margin="0, 0, 0, 4"
                                      x:Name="Description"
                                      >
-                            <Label Text="{Binding ChallengeDescription}"
+                            <Label x:Name="DescriptionLabel"
+                                   Text="{Binding ChallengeDescription}"
                                    TextColor="{StaticResource SecondaryText}" 
-                                   FontSize="20"
+                                   FontSize="19"
                                    />
                         </StackLayout>
 
@@ -239,6 +242,7 @@
                             <ScrollView HeightRequest="180">
                                 <StackLayout BindableLayout.ItemsSource="{Binding GroupMembers}" 
                                              BackgroundColor="{StaticResource Tertiary}"
+                                             Padding="0"
                                              >
                                     <BindableLayout.ItemTemplate>
                                         <DataTemplate>

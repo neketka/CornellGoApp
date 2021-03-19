@@ -26,7 +26,7 @@ namespace CommunicationModel
         public CornellGoClient(string url)
         {
             Connection = new HubConnectionBuilder()
-                .WithAutomaticReconnect()
+                .WithAutomaticReconnect(new[] { TimeSpan.FromSeconds(10) })
                 .WithUrl(url, opts =>
                 {
                     opts.HttpMessageHandlerFactory = (message) =>
@@ -39,7 +39,7 @@ namespace CommunicationModel
                 }).Build();
 
             Client = new ClientCalls(this);
-            Connection.Closed += async (e) => await ConnectionClosed();
+            Connection.Closed += async e => await ConnectionClosed();
         }
 
         public async Task Connect()

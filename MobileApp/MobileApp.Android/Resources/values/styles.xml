@@ -2,4 +2,13 @@
 <resources>
   <style name = "MainTheme" parent = "MainTheme.Base">
   </style>
+
+  <style name="MainTheme.Splash" parent ="Theme.AppCompat.Light.NoActionBar">
+    <item name="android:windowBackground">@drawable/splash_screen_background</item>
+    <item name="android:windowNoTitle">true</item>
+    <item name="android:windowContentOverlay">@null</item>
+    <item name="android:windowActionBar">true</item>
+    <item name="android:statusBarColor">@color/launcher_background</item>
+    <item name="android:navigationBarColor">@color/launcher_background</item>
+  </style>
 </resources>
