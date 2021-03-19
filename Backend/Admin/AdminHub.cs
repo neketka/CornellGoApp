@@ -115,8 +115,7 @@ namespace Backend.Admin
 
         private async Task<bool> CheckAuthorization()
         {
-            return await Database.Admins
-                .SingleAsync(a => a.SignalRId == Context.ConnectionId && a.Status == AdminAccountStatus.Approved) != null;
+            return await Database.Admins.AnyAsync(a => a.SignalRId == Context.ConnectionId && a.Status == AdminAccountStatus.Approved);
         }
     }
 }
