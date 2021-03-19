@@ -2,24 +2,29 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:MobileApp.ViewModels"
+             xmlns:ex="clr-namespace:MobileApp.Extensions"
              x:Class="MobileApp.Views.LoadingPage"
              Shell.PresentationMode="ModalNotAnimated" 
              BackgroundColor="{StaticResource Secondary}"
              Shell.FlyoutBehavior="Disabled"
              Shell.NavBarIsVisible="False"
+             Padding="0"
              >
     <ContentPage.Content>
-        <StackLayout>
-            <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
-                <Label Text="Connecting to Online Service" 
-                       TextColor="{StaticResource SecondaryText}" 
-                       FontSize="16" 
-                       />
-                <ActivityIndicator IsRunning="True" 
-                                   Color="{StaticResource SecondaryText}" 
-                                   HeightRequest="48"
-                                   />
-            </StackLayout>
-        </StackLayout>
+        <Grid VerticalOptions="FillAndExpand">
+            <Image Source="{ex:ImageResource MobileApp.Assets.Images.logo.png}"
+                   HorizontalOptions="CenterAndExpand"
+                   VerticalOptions="CenterAndExpand"
+                   WidthRequest="250"
+                   HeightRequest="250"
+                   Aspect="Fill"
+                   Margin="0"
+                   TranslationY="12"
+                   />
+            <ActivityIndicator IsRunning="True" 
+                               Color="{StaticResource PrimaryAccent}"
+                               Scale="0.1"
+                               TranslationY="128"/>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

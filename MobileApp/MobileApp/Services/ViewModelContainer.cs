@@ -120,16 +120,16 @@ namespace MobileApp.Services
                 LastPage.BindingContext = vm;
             }
 
-            public async Task NavigateBack(object parameter = null)
+            public async Task NavigateBack(object parameter = null, bool animate = true)
             {
                 Console.WriteLine("Navigating back");
                 ((BaseViewModel)LastPage.BindingContext).OnDestroying();
 
-                await Shell.Current.Navigation.PopAsync();
+                await Shell.Current.Navigation.PopAsync(animate);
                 await vmStack.Pop().OnReturning(parameter);
             }
 
-            public async Task NavigateTo<TViewModel>(object parameter = null) where TViewModel : BaseViewModel
+            public async Task NavigateTo<TViewModel>(object parameter = null, bool animate = true) where TViewModel : BaseViewModel
             {
                 string vmName = typeof(TViewModel).Name;
                 Console.WriteLine("Navigating to " + vmName);
@@ -140,11 +140,11 @@ namespace MobileApp.Services
 
                 vmStack.Push(vmStack.Count == 0 ? null : LastPage.BindingContext as BaseViewModel);
 
-                await Shell.Current.Navigation.PushAsync(p);
+                await Shell.Current.Navigation.PushAsync(p, animate);
                 await vm.OnEntering(null);
             }
 
-            public async Task NavigateBackTo<TViewModel>(object parameter = null) where TViewModel : BaseViewModel
+            public async Task NavigateBackTo<TViewModel>(object parameter = null, bool animate = true) where TViewModel : BaseViewModel
             {
                 string vmName = typeof(TViewModel).Name;
                 Console.WriteLine("Navigating back to " + vmName);
@@ -158,20 +158,20 @@ namespace MobileApp.Services
                 }
 
                 suppressExtraPop = true;
-                await Shell.Current.Navigation.PopAsync(true);
+                await Shell.Current.Navigation.PopAsync(animate);
                 suppressExtraPop = false;
 
                 await vmStack.Pop().OnReturning(parameter);
             }
 
-            public async Task NavigateToRoot(object parameter = null)
+            public async Task NavigateToRoot(object parameter = null, bool animate = true)
             {
                 Console.WriteLine("Navigating to root");
 
                 ((BaseViewModel)LastPage.BindingContext).OnDestroying();
                 while (vmStack.Count > 1)
                     vmStack.Pop().OnDestroying();
-                await Shell.Current.Navigation.PopToRootAsync();
+                await Shell.Current.Navigation.PopToRootAsync(animate);
                 await vmStack.Pop().OnReturning(parameter);
             }
         }
@@ -181,9 +181,9 @@ namespace MobileApp.Services
     {
         BaseViewModel PreviousViewModel { get; }
         Task InitializeFirst<TViewModel>();
-        Task NavigateTo<TViewModel>(object parameter = null) where TViewModel : BaseViewModel;
-        Task NavigateBackTo<TViewModel>(object parameter = null) where TViewModel : BaseViewModel;
-        Task NavigateBack(object parameter = null);
-        Task NavigateToRoot(object parameter = null);
+        Task NavigateTo<TViewModel>(object parameter = null, bool animate = true) where TViewModel : BaseViewModel;
+        Task NavigateBackTo<TViewModel>(object parameter = null, bool animate = true) where TViewModel : BaseViewModel;
+        Task NavigateBack(object parameter = null, bool animate = true);
+        Task NavigateToRoot(object parameter = null, bool animate = true);
     }
 }

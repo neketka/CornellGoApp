@@ -18,7 +18,7 @@ namespace Backend.Hub
             UserSession session = await Database.UserSessions.FromSignalRId(Context.UserIdentifier);
             if (session == null) return false;
             
-            User query = Database.Users.Single(b => b.Id == long.Parse(userId));
+            User query = await Database.Users.AsAsyncEnumerable().SingleAsync(b => b.Id == long.Parse(userId));
             if (query.GroupMember.Group == null) return false; //Is default null?
 
             GroupMember gmem = query.GroupMember;
@@ -34,7 +34,7 @@ namespace Backend.Hub
             //edge case if kicked get points and update challeng
             if (query.GroupMember.IsDone)
             {
-                query.Score += grp.Challenge.Points;  
+                query.Score += grp.Challenge.Points;
             }
             //edge case if kicked and last one then move group on
             if (grp.GroupMembers.All(b => b.IsDone))
@@ -65,10 +65,10 @@ namespace Backend.Hub
             UserSession session = await Database.UserSessions.FromSignalRId(Context.UserIdentifier);
             User user = session.User;
 
-            var gmems = Database.GroupMembers.AsQueryable().Where(b => b.Group.Id == user.GroupMember.Group.Id);
+            var gmems = Database.GroupMembers.AsAsyncEnumerable().Where(b => b.Group.Id == user.GroupMember.Group.Id);
             List<GroupMemberData> list = new List<GroupMemberData>();
 
-            foreach (GroupMember gmem in gmems)
+            await foreach (GroupMember gmem in gmems)
             {
                 GroupMemberData res = await GetGroupMember(gmem.User.Id.ToString());
                 list.Add(res);

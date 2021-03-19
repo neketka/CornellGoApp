@@ -20,6 +20,7 @@
                    Aspect="AspectFill"
                    HorizontalOptions="Center"
                    HeightRequest="128" 
+                   WidthRequest="128" 
                    Margin="0, 64, 0, 0"
                    />
             <Label Text="{Binding BadText}" 

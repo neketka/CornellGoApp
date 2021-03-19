@@ -13,7 +13,7 @@ namespace MobileApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ChangePasswordPage : ContentPage
     {
-        public ChangePasswordPage(ChangePasswordViewModel vm)
+        public ChangePasswordPage()
         {
             InitializeComponent();
         }

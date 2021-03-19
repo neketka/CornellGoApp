@@ -13,7 +13,7 @@ namespace MobileApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CloseAccountPage : ContentPage
     {
-        public CloseAccountPage(CloseAccountViewModel vm)
+        public CloseAccountPage()
         {
             InitializeComponent();
         }

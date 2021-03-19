@@ -29,14 +29,14 @@ namespace BackendModel
    /// Entry for the user&apos;s log
    /// </summary>
    [System.ComponentModel.Description("Entry for the user's log")]
-   public partial class SessonLogEntry
+   public partial class SessionLogEntry
    {
       partial void Init();
 
       /// <summary>
       /// Default constructor. Protected due to required properties, but present because EF needs it.
       /// </summary>
-      protected SessonLogEntry()
+      protected SessionLogEntry()
       {
          Init();
       }
@@ -44,9 +44,9 @@ namespace BackendModel
       /// <summary>
       /// Replaces default constructor, since it's protected. Caller assumes responsibility for setting all required values before saving.
       /// </summary>
-      public static SessonLogEntry CreateSessonLogEntryUnsafe()
+      public static SessionLogEntry CreateSessionLogEntryUnsafe()
       {
-         return new SessonLogEntry();
+         return new SessionLogEntry();
       }
 
       /// <summary>
@@ -56,7 +56,7 @@ namespace BackendModel
       /// <param name="entrydata">If applicable, semicolon separated list of strings/numbers relating to this entry (no spaces other than those required by the strings themselves).</param>
       /// <param name="timestamp">Time that this entry was created</param>
       /// <param name="_user0"></param>
-      public SessonLogEntry(global::BackendModel.SessionLogEntryType entrytype, string entrydata, DateTime timestamp, global::BackendModel.User _user0)
+      public SessionLogEntry(global::BackendModel.SessionLogEntryType entrytype, string entrydata, DateTime timestamp, global::BackendModel.User _user0)
       {
          this.EntryType = entrytype;
 
@@ -78,9 +78,9 @@ namespace BackendModel
       /// <param name="entrydata">If applicable, semicolon separated list of strings/numbers relating to this entry (no spaces other than those required by the strings themselves).</param>
       /// <param name="timestamp">Time that this entry was created</param>
       /// <param name="_user0"></param>
-      public static SessonLogEntry Create(global::BackendModel.SessionLogEntryType entrytype, string entrydata, DateTime timestamp, global::BackendModel.User _user0)
+      public static SessionLogEntry Create(global::BackendModel.SessionLogEntryType entrytype, string entrydata, DateTime timestamp, global::BackendModel.User _user0)
       {
-         return new SessonLogEntry(entrytype, entrydata, timestamp, _user0);
+         return new SessionLogEntry(entrytype, entrydata, timestamp, _user0);
       }
 
       /*************************************************************************

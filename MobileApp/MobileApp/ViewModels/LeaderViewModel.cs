@@ -44,12 +44,13 @@ namespace MobileApp.ViewModels
 
             ProfilePicture = pfp;
             gameService.Client.ScorePositionsUpdated += RerankPlayer;
+            IsBusy = true;
         }
 
         public override Task OnEntering(object parameter)
         {
             gameService.Client.SendMetric(CommunicationModel.FrontendMetric.OpenLeaderboard, "");
-            return LoadData();
+            return Task.Run(LoadData);
         }
 
         private async Task RerankPlayer(string userId, string username, int oldIndex, int newIndex, int score)
@@ -83,8 +84,6 @@ namespace MobileApp.ViewModels
 
         private async Task LoadData()
         {
-            IsBusy = true;
-
             try
             {
                 await LoadUserData();
@@ -97,7 +96,7 @@ namespace MobileApp.ViewModels
             }
             finally
             {
-                IsBusy = false;
+                await Device.InvokeOnMainThreadAsync(() => IsBusy = false);
             }
         }
 
@@ -122,7 +121,7 @@ namespace MobileApp.ViewModels
             {
                 tempPlayers.Add(new(entry.UserId, entry.Index + 1, pfp, entry.Username, entry.Score, entry.UserId == gameService.UserId));
             }
-            await Device.InvokeOnMainThreadAsync(() => tempPlayers.ForEach(p => Players.Add(p)));
+            await Device.InvokeOnMainThreadAsync(() => tempPlayers.ForEach(Players.Add));
         }
     }
 }

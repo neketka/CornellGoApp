@@ -39,7 +39,7 @@ namespace BackendModel
       protected User()
       {
          PrevChallenges = new System.Collections.Generic.HashSet<global::BackendModel.PrevChallenge>();
-         SessonLogEntries = new System.Collections.Generic.HashSet<global::BackendModel.SessonLogEntry>();
+         SessonLogEntries = new System.Collections.Generic.HashSet<global::BackendModel.SessionLogEntry>();
          Suggestions = new System.Collections.Generic.HashSet<global::BackendModel.Suggestion>();
          Feedbacks = new System.Collections.Generic.HashSet<global::BackendModel.Feedback>();
 
@@ -71,7 +71,7 @@ namespace BackendModel
          this.Email = email;
 
          this.PrevChallenges = new System.Collections.Generic.HashSet<global::BackendModel.PrevChallenge>();
-         this.SessonLogEntries = new System.Collections.Generic.HashSet<global::BackendModel.SessonLogEntry>();
+         this.SessonLogEntries = new System.Collections.Generic.HashSet<global::BackendModel.SessionLogEntry>();
          this.Suggestions = new System.Collections.Generic.HashSet<global::BackendModel.Suggestion>();
          this.Feedbacks = new System.Collections.Generic.HashSet<global::BackendModel.Feedback>();
          Init();
@@ -143,7 +143,7 @@ namespace BackendModel
       /// The log entry
       /// </summary>
       [Description("The log entry")]
-      public virtual ICollection<global::BackendModel.SessonLogEntry> SessonLogEntries { get; private set; }
+      public virtual ICollection<global::BackendModel.SessionLogEntry> SessonLogEntries { get; private set; }
 
       /// <summary>
       /// User associated with this suggestion

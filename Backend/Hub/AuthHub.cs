@@ -38,7 +38,7 @@ namespace Backend.Hub
 
         public async Task<bool> Login(string email, string password)
         {
-            Authenticator authenticator = await Database.Authenticators.AsQueryable().FirstOrDefaultAsync(e => e.Email == email);
+            Authenticator authenticator = await Database.Authenticators.AsAsyncEnumerable().FirstOrDefaultAsync(e => e.Email == email);
             if (authenticator == null || !VerifyPasswordHash(password, authenticator.Password))
                 return false;
 
@@ -71,19 +71,20 @@ namespace Backend.Hub
 
         public async Task<bool> Register(string username, string password, string email)
         {
-            if (await Database.Authenticators.AsQueryable().AnyAsync(e => e.Email == email))
+            if (await Database.Authenticators.AsAsyncEnumerable().AnyAsync(e => e.Email == email))
                 return false;
 
             Authenticator auth = new(email, CreatePasswordHash(password), DateTime.UtcNow, new(0, username, email));
 
             // TODO: add user to a new group, sync the group with users, and generate a new challenge. There should be an extenstion method for each one.
             //Group Extension method to generate new random challenge (not in prev challenge), add current challenge if one exists to prev challenge list of group + all members
-            await auth.User.NewGroup(Database.Challenges);
 
+            await auth.User.NewGroup(Database.Challenges);
             await Groups.AddToGroupAsync(Context.UserIdentifier, auth.User.GroupMember.Group.Id.ToString());
+            await Database.Groups.AddAsync(auth.User.GroupMember.Group);
 
             await Database.Authenticators.AddAsync(auth);
-            await Database.Groups.AddAsync(auth.User.GroupMember.Group);
+            await Database.SaveChangesAsync();
             return true;
         }
 
@@ -108,7 +109,7 @@ namespace Backend.Hub
             if (session == null)
                 return false;
 
-            Authenticator auth = await Database.Authenticators.AsQueryable().SingleOrDefaultAsync(a => a.User.Id == session.User.Id);
+            Authenticator auth = await Database.Authenticators.AsAsyncEnumerable().SingleOrDefaultAsync(a => a.User.Id == session.User.Id);
             if (auth == null)
                 return false;
 
@@ -125,7 +126,7 @@ namespace Backend.Hub
             if (session == null)
                 return false;
 
-            Authenticator auth = await Database.Authenticators.AsQueryable().SingleOrDefaultAsync(a => a.User.Id == session.User.Id);
+            Authenticator auth = await Database.Authenticators.AsAsyncEnumerable().SingleOrDefaultAsync(a => a.User.Id == session.User.Id);
             /*if (auth == null || !VerifyPasswordHash(password, auth.Password))
                 return false;*/
 
@@ -139,7 +140,7 @@ namespace Backend.Hub
         }
 
         // With insight from: http://csharptest.net/470/another-example-of-how-to-store-a-salted-password-hash/
-        private static string CreatePasswordHash(string password)
+        public static string CreatePasswordHash(string password)
         {
             byte[] salt = new byte[16];
             new RNGCryptoServiceProvider().GetBytes(salt);
@@ -154,7 +155,7 @@ namespace Backend.Hub
             return Convert.ToBase64String(storedBytes);
         }
 
-        private static bool VerifyPasswordHash(string password, string passwordHash)
+        public static bool VerifyPasswordHash(string password, string passwordHash)
         {
             byte[] storedBytes = Convert.FromBase64String(passwordHash); 
             byte[] salt = new byte[16];
@@ -169,8 +170,6 @@ namespace Backend.Hub
                     return false;
             }
             return true;
-
-
         }
     }
 }

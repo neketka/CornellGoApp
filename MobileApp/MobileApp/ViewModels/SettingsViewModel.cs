@@ -43,7 +43,7 @@ namespace MobileApp.ViewModels
                 string newName = Username;
                 do
                 {
-                    newName = await dialogService.ShowChangeUsername(newName, isValid);
+                    newName = await dialogService.ShowChangeUsername(newName, !isValid);
 
                     bool lenValid = !string.IsNullOrWhiteSpace(newName) && newName.Length is >= 1 and <= 16;
                     bool formatValid = !string.IsNullOrWhiteSpace(newName) && newName.All(c => char.IsLetterOrDigit(c) || c == '_');
