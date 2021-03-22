@@ -187,11 +187,11 @@
                                          Opacity="0.6"
                                          />
                                 <StackLayout Orientation="Horizontal" Padding="15, 10, 15, 0">
-                                    <Label Text="Cold" 
+                                    <Label Text="Far" 
                                            HorizontalOptions="StartAndExpand" 
                                            TextColor="{StaticResource PrimaryText}"
                                            />
-                                    <Label Text="Hot" TextColor="{StaticResource PrimaryText}"/>
+                                    <Label Text="Close" TextColor="{StaticResource PrimaryText}"/>
                                 </StackLayout>
                                 <StackLayout BackgroundColor="LightGreen"
                                              x:Name="TempFinisher" 
