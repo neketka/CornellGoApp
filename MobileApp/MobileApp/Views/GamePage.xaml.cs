@@ -35,6 +35,12 @@ namespace MobileApp.Views
         private void GamePage_BindingContextChanged(object sender, EventArgs e)
         {
             ((BaseViewModel)BindingContext).PropertyChanged += GamePage_PropertyChanged;
+            if (((GameViewModel)BindingContext).IsBusy)
+            {
+                OldImage.FadeTo(1, 100u);
+                DescriptionLabel.FadeTo(0, 100u);
+                ContentPage_SizeChanged(null, null);
+            }
         }
 
         protected override bool OnBackButtonPressed()
@@ -80,6 +86,23 @@ namespace MobileApp.Views
                 else
                     TempFinisher.FadeTo(0);
             }
+            else if (e.PropertyName == nameof(GameViewModel.IsBusy))
+            {
+                bool state = ((GameViewModel)BindingContext).IsBusy;
+                if (state)
+                {
+                    OldImage.FadeTo(1);
+                    DescriptionLabel.FadeTo(0);
+                }
+                else
+                {
+                    OldImage.FadeTo(0);
+                }
+            }
+            else if (e.PropertyName == nameof(GameViewModel.ChallengeDescription))
+            {
+                DescriptionLabel.FadeTo(1);
+            }
         }
 
         private void ContentPage_SizeChanged(object sender, EventArgs e)
@@ -122,7 +145,6 @@ namespace MobileApp.Views
                         ((GameViewModel)BindingContext).GroupMenuVisibilityCommand.Execute(false);
                     groupMenuOpen = false;
                 }
-
             }
         }
 

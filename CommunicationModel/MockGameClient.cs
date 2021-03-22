@@ -71,7 +71,7 @@ namespace CommunicationModel
         public Task<ChallengeData> GetChallengeData()
         {
             return Task.FromResult(new ChallengeData("", 
-                "One of the most recognized landmarks of Cornell, this tower can found and heard above a library.", 3,
+                "One of the most recognized landmarks of Cornell, this tower can be found and heard above a library.", 3,
                 "https://upload.wikimedia.org/wikipedia/commons/d/d2/Cornell-McGraw_Tower.jpg"));
         }
 
@@ -119,7 +119,7 @@ namespace CommunicationModel
         public Task<UserData> GetUserData()
         {
             var you = MockPlayers[0];
-            return Task.FromResult(new UserData(you.Username, you.Points, "ABCD12", you.UserId, 0, 8));
+            return Task.FromResult(new UserData(you.Username, you.Points, "You", you.UserId, 0, 8));
         }
 
         public Task<bool> JoinGroup(string groupId)

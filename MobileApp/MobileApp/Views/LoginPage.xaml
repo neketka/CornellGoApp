@@ -31,7 +31,7 @@
             <Entry Text="{Binding Path=Username, Mode=TwoWay}"
                    HorizontalOptions="FillAndExpand" 
                    TextColor="{StaticResource SecondaryText}"
-                   Placeholder="Username"
+                   Placeholder="Email"
                    PlaceholderColor="{StaticResource PrimaryAccent}"
                    Margin="20, 0, 20, 0"
                    />

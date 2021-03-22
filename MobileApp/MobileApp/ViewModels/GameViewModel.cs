@@ -79,6 +79,7 @@ namespace MobileApp.ViewModels
                     await gameService.Client.Kick(gm.Id);
                 }
             });
+
             JoinCommand = new Command(async () =>
             {
                 if (GroupMembers.Count == 1 || (IsHost ? await dialogService.ConfirmLeave(true) : await dialogService.ConfirmDisband(true)))
@@ -108,6 +109,12 @@ namespace MobileApp.ViewModels
                     : CommunicationModel.FrontendMetric.OpenGameMenu, "");
             });
 
+            ProgressString = "? min";
+            Points = 0;
+            OldChallengeImage = ImageSource.FromResource("MobileApp.Assets.Images.blur.jpg");
+            IsBusy = true;
+            ChallengeDescription = "Loading...";
+
             gameService.Client.ChallengeFinished += Client_ChallengeFinished;
             gameService.Client.ChallengeUpdated += Client_ChallengeUpdated;
             gameService.Client.GroupDataUpdated += Client_GroupDataUpdated;
@@ -119,7 +126,7 @@ namespace MobileApp.ViewModels
         public override Task OnEntering(object parameter)
         {
             gameService.Client.SendMetric(CommunicationModel.FrontendMetric.OpenGameMenu, "");
-            return LoadInitialData();
+            return Task.Run(LoadInitialData);
         }
 
         public override Task OnReturning(object parameter)
@@ -131,19 +138,27 @@ namespace MobileApp.ViewModels
         private async Task LoadInitialData()
         {
             var challenge = await gameService.Client.GetChallengeData();
-            ChallengeImage = new UriImageSource
+            var groupCode = await gameService.Client.GetFriendlyGroupId();
+            var members = await gameService.Client.GetGroupMembers();
+            var chalImg = new UriImageSource
             {
                 Uri = new(challenge.ImageUrl),
                 CachingEnabled = true
             };
-            ChallengeDescription = challenge.Description;
-            Points = challenge.Points;
 
-            GroupCode = await gameService.Client.GetFriendlyGroupId();
+            chalImg.PropertyChanged += Img_PropertyChanged;
 
-            var members = await gameService.Client.GetGroupMembers();
-            AddMembers(members);
-            UpdateGroupDataFromList();
+            await Device.InvokeOnMainThreadAsync(() =>
+            {
+                ChallengeImage = chalImg;
+                ChallengeDescription = challenge.Description;
+                Points = challenge.Points;
+                GroupCode = groupCode;
+                AddMembers(members);
+                UpdateGroupDataFromList();
+            });
+
+            await gameService.PollLocation();
         }
 
         private async Task Client_GroupMemberUpdated(CommunicationModel.GroupMemberData data)
@@ -168,6 +183,7 @@ namespace MobileApp.ViewModels
             {
                 AddMembers(members);
                 UpdateGroupDataFromList();
+                gameService.PollLocation();
             });
         }
 
@@ -188,6 +204,12 @@ namespace MobileApp.ViewModels
                 ChallengeImage = img;
                 Points = data.Points;
             });
+        }
+
+        private void Img_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            ((ImageSource)sender).PropertyChanged -= Img_PropertyChanged;
+            Device.BeginInvokeOnMainThread(() => IsBusy = false);
         }
 
         private async Task Client_ChallengeFinished()

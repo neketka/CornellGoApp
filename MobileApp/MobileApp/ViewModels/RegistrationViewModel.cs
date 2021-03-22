@@ -115,6 +115,7 @@ namespace MobileApp.ViewModels
                 IsBusy = true;
                 RegisterCommand.ChangeCanExecute();
                 BadText = "";
+
                 try
                 {
                     if (await gameService.Client.Register(Username, Password, Email))

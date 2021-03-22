@@ -20,6 +20,8 @@ namespace MobileApp.Services
 
         Task<bool> LoginWithSession(string username, string password);
         Task<bool> LogoutWithSession();
+        Task<bool> AttemptRelog();
+        Task PollLocation();
     }
 
     public class GameService : IGameService
@@ -66,7 +68,30 @@ namespace MobileApp.Services
             return loggedOut;
         }
 
-        private async Task PollLocation(Position pos)
+        public async Task<bool> AttemptRelog()
+        {
+            string token = await SecureStorage.GetAsync("session");
+            if (token != null && await Client.AttemptRelog(token))
+            {
+                UserId = (await Client.GetUserData()).UserId;
+                while (!await CrossGeolocator.Current.StartListeningAsync(TimeSpan.FromSeconds(2), 5));
+
+                return true;
+            }
+            return false;
+        }
+
+        public async Task PollLocation()
+        {
+            Location pos = await Geolocation.GetLocationAsync(new()
+            {
+                DesiredAccuracy = GeolocationAccuracy.Best
+            });
+            var progress = await Client.CheckProgress(pos.Latitude, pos.Longitude);
+            await Device.InvokeOnMainThreadAsync(() => ProgressUpdated(progress));
+        }
+
+        public async Task PollLocation(Position pos)
         {
             var progress = await Client.CheckProgress(pos.Latitude, pos.Longitude);
             await Device.InvokeOnMainThreadAsync(() => ProgressUpdated(progress));

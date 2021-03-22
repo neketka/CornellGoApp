@@ -97,6 +97,7 @@
                             RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}"
                             RemainingItemsThresholdReachedCommandParameter="15" 
                             RemainingItemsThreshold="4" 
+                            ItemsUpdatingScrollMode="KeepScrollOffset"
                             Margin="0" 
                             BackgroundColor="{StaticResource Tertiary}"
                             >
@@ -226,6 +227,7 @@
                             <ActivityIndicator Color="{StaticResource SecondaryText}"
                                                IsRunning="True" 
                                                HorizontalOptions="Center"
+                                               Margin="0, 24, 0, 0"
                                                />
                         </StackLayout>
                     </DataTemplate>
