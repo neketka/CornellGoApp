@@ -61,10 +61,12 @@ namespace MobileApp.ViewModels
         private ImageSource pfp;
 
         private IGameService gameService;
+        private IDialogService dialogService;
 
         public GameViewModel(IGameService gameService, INavigationService navigationService, IDialogService dialogService)
         {
             this.gameService = gameService;
+            this.dialogService = dialogService;
 
             pfp = ImageSource.FromResource("MobileApp.Assets.Images.profile.png");
             GroupMembers = new ObservableCollection<GroupMember>();
@@ -90,7 +92,7 @@ namespace MobileApp.ViewModels
                         await gameService.Client.JoinGroup(id);
                 }
             });
-            FindOutMoreCommand = new Command(async () => { await dialogService.ShowServerError(); });
+            FindOutMoreCommand = new Command(async () => { await dialogService.ShowWIP(); });
             NextChallengeCommand = new Command(() => VictoryMode = false );
 
             DoVictoryCommand = new Command(() =>
@@ -204,6 +206,10 @@ namespace MobileApp.ViewModels
                 ChallengeImage = img;
                 Points = data.Points;
             });
+
+            await Task.Delay(2000);
+            if (await dialogService.ShowAskFeedback())
+                await AppShell.OpenFeedbackForm();
         }
 
         private void Img_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

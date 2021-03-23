@@ -18,9 +18,12 @@
                    VerticalTextAlignment="Center"
                    Text="THIS WILL DELETE YOUR ACCOUNT PERMANENTLY. IT CANNOT BE RESTORED AFTERWARDS."
                    />
+            <Label Margin="3, 24, 0, 0"
+                       Text="Password" 
+                       TextColor="{StaticResource SecondaryText}"
+                       />
             <Entry Text="{Binding Password, Mode=TwoWay}"
                    WidthRequest="2000"
-                   Placeholder="Password"
                    IsPassword="True"
                    PlaceholderColor="{StaticResource PrimaryAccent}" 
                    TextColor="{StaticResource SecondaryText}"
@@ -33,7 +36,7 @@
                    />
             <Button Text="Close account (PERMANENT)" 
                     VerticalOptions="Center"
-                    HeightRequest="36" 
+                    HeightRequest="40" 
                     Margin="0, 10, 0, 0"
                     Padding="0"
                     Command="{Binding CloseAccountCommand}"

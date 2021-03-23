@@ -19,39 +19,55 @@
             <Image Source="{ex:ImageResource MobileApp.Assets.Images.logo.png}"
                    Aspect="AspectFill"
                    HorizontalOptions="Center"
-                   HeightRequest="128" 
-                   WidthRequest="128" 
-                   Margin="0, 64, 0, 0"
+                   HeightRequest="160" 
+                   WidthRequest="160" 
+                   Margin="0, 16, 0, 16"
                    />
-            <Label Text="{Binding BadText}" 
-                   TextColor="Red" 
-                   HorizontalOptions="Center"
-                   HeightRequest="32" 
-                   FontSize="18"
+            <Label Margin="25, 0, 0, 0"
+                   Text="Email" 
+                   TextColor="{StaticResource SecondaryText}"
                    />
             <Entry Text="{Binding Path=Username, Mode=TwoWay}"
                    HorizontalOptions="FillAndExpand" 
                    TextColor="{StaticResource SecondaryText}"
-                   Placeholder="Email"
                    PlaceholderColor="{StaticResource PrimaryAccent}"
-                   Margin="20, 0, 20, 0"
+                   Margin="22, 0, 22, 0"
+                   />
+            <Label Margin="25, 8, 0, 0"
+                   Text="Password" 
+                   TextColor="{StaticResource SecondaryText}"
                    />
             <Entry Text="{Binding Path=Password, Mode=TwoWay}" 
                    IsPassword="True" 
                    HorizontalOptions="FillAndExpand" 
                    TextColor="{StaticResource SecondaryText}"
-                   Placeholder="Password" 
                    PlaceholderColor="{StaticResource PrimaryAccent}"
-                   Margin="20, 0, 20, 0"
+                   Margin="22, 0, 22, 0"
                    />
+            <Grid>
+                <Label Text="{Binding BadText}" 
+                       TextColor="Red" 
+                       HorizontalOptions="Center"
+                       HeightRequest="32" 
+                       FontSize="18"
+                       />
+                <ActivityIndicator Color="{StaticResource SecondaryText}" 
+                                   IsRunning="{Binding IsBusy}" 
+                                   HeightRequest="32"/>
+            </Grid>
             <Button Text="Log In" 
-                    VerticalOptions="Center" 
-                    HeightRequest="30" 
+                    HeightRequest="40" 
                     Padding="0"
-                    Margin="20, 8, 20, 0"
+                    Margin="22, 0, 22, 0"
                     Command="{Binding LoginCommand}"
                     />
-            <ActivityIndicator Color="{StaticResource SecondaryText}" IsRunning="{Binding IsBusy}"/>
+            <Label Text="Forgot Password?" 
+                   TextColor="{StaticResource TertiaryText}" 
+                   HorizontalOptions="Center"
+                   TextDecorations="Underline"
+                   Margin="0, 8, 0, 0"
+                   FontSize="16"
+                   />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

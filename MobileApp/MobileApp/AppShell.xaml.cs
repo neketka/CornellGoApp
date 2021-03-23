@@ -56,9 +56,17 @@ namespace MobileApp
             });
         }
 
+        public static async Task OpenFeedbackForm()
+        {
+            string iosLink = "https://docs.google.com/forms/d/e/1FAIpQLSfwl50y3ebjjsQrtoAxkXoYYoQntodpQhp9RFkYURv_vg94Ug/viewform?usp=sf_link";
+            string andLink = "https://docs.google.com/forms/d/e/1FAIpQLSfbEp9ytE9JtKy-hM2YF-X7nPIaKEuUTuA3eyuE9IbQJZI1dg/viewform?usp=sf_link";
+            
+            await Browser.OpenAsync(Device.RuntimePlatform == Device.Android ? andLink : iosLink, CustomTabsOptions);
+        }
+
         private async void Suggest_Clicked(object sender, EventArgs e)
         {
-            await Browser.OpenAsync("https://docs.google.com/forms/d/e/1FAIpQLSeUQFU8LI2LnHHSg7I4r-i10BNYr4zDiwp_la0v0nBT-fP4GA/viewform", CustomTabsOptions);
+            await OpenFeedbackForm();
             Current.FlyoutIsPresented = false;
         }
 
