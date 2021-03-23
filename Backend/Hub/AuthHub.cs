@@ -21,6 +21,11 @@ namespace Backend.Hub
                 await Database.SaveChangesAsync();
             }
             await base.OnDisconnectedAsync(exception);
+
+            //Add to sessionlog
+            var entry = new SessionLogEntry(SessionLogEntryType.LostConnection, session.User + "Lost Connection", DateTime.UtcNow, session.User);
+            await Database.SessionLogEntries.AddAsync(entry);
+            await Database.SaveChangesAsync();
         }
 
         public async Task<bool> AttemptRelog(string session)
@@ -29,8 +34,13 @@ namespace Backend.Hub
             if (usession != null)
             {
                 usession.SignalRId = Context.UserIdentifier;
-                await Database.SaveChangesAsync();
                 await Groups.AddToGroupAsync(Context.UserIdentifier, usession.User.GroupMember.Group.Id.ToString());
+                
+                //Add to sessionlog
+                var entry = new SessionLogEntry(SessionLogEntryType.Relog, usession.User.Id + "relogged", DateTime.UtcNow, usession.User);
+                await Database.SessionLogEntries.AddAsync(entry);
+
+                await Database.SaveChangesAsync();
                 return true;
             }
             return false;
@@ -38,16 +48,23 @@ namespace Backend.Hub
 
         public async Task<bool> Login(string email, string password)
         {
-            Authenticator authenticator = await Database.Authenticators.AsAsyncEnumerable().FirstOrDefaultAsync(e => e.Email == email);
+            Authenticator authenticator = await Database.Authenticators.AsQueryable().FirstOrDefaultAsync(e => e.Email == email);
             if (authenticator == null || !VerifyPasswordHash(password, authenticator.Password))
                 return false;
 
             UserSession session = authenticator.User.UserSession ?? new(DateTime.UtcNow, authenticator.User);
+            User user = session.User;
             authenticator.User.UserSession = session;
 
             session.SignalRId = Context.UserIdentifier;
 
-            await Groups.AddToGroupAsync(Context.UserIdentifier, session.User.GroupMember.Group.Id.ToString());
+            await Groups.AddToGroupAsync(Context.UserIdentifier, user.GroupMember.Group.Id.ToString());
+            await Database.SaveChangesAsync();
+
+            //Add to sessionlog
+            var entry = new SessionLogEntry(SessionLogEntryType.Login, session.User.Id + "logged in", DateTime.UtcNow, user);
+            await Database.SessionLogEntries.AddAsync(entry);
+
             await Database.SaveChangesAsync();
             return true;
         }
@@ -60,6 +77,11 @@ namespace Backend.Hub
 
             Database.Remove(session);
             await Groups.RemoveFromGroupAsync(Context.UserIdentifier, session.User.GroupMember.Group.Id.ToString());
+
+            //Add to sessionlog
+            var entry = new SessionLogEntry(SessionLogEntryType.Logout, session.User.Id + "logged out", DateTime.UtcNow, session.User);
+            await Database.SessionLogEntries.AddAsync(entry);
+
             await Database.SaveChangesAsync();
             return true;
         }
@@ -69,21 +91,25 @@ namespace Backend.Hub
             return (await Database.UserSessions.FromSignalRId(Context.UserIdentifier))?.ToToken();
         }
 
-        public async Task<bool> Register(string username, string password, string email)
+        public async Task<bool> Register(string username, string password, string email, double curLat, double curLong)
         {
-            if (await Database.Authenticators.AsAsyncEnumerable().AnyAsync(e => e.Email == email))
+            if (await Database.Authenticators.AsQueryable().AnyAsync(e => e.Email == email))
                 return false;
 
-            Authenticator auth = new(email, CreatePasswordHash(password), DateTime.UtcNow, new(0, username, email));
+            User user = new(0, username, email);
+            Authenticator auth = new(email, CreatePasswordHash(password), DateTime.UtcNow, user);
 
-            // TODO: add user to a new group, sync the group with users, and generate a new challenge. There should be an extenstion method for each one.
-            //Group Extension method to generate new random challenge (not in prev challenge), add current challenge if one exists to prev challenge list of group + all members
+            await auth.User.NewGroup(Database.Challenges, curLat, curLong);
 
-            await auth.User.NewGroup(Database.Challenges);
             await Groups.AddToGroupAsync(Context.UserIdentifier, auth.User.GroupMember.Group.Id.ToString());
-            await Database.Groups.AddAsync(auth.User.GroupMember.Group);
 
             await Database.Authenticators.AddAsync(auth);
+            await Database.Groups.AddAsync(auth.User.GroupMember.Group);
+
+            //Add to sessionlog
+            var entry = new SessionLogEntry(SessionLogEntryType.UserCreated, user.Id + "registered", DateTime.UtcNow, user);
+            await Database.SessionLogEntries.AddAsync(entry);
+
             await Database.SaveChangesAsync();
             return true;
         }
@@ -100,6 +126,10 @@ namespace Backend.Hub
             await Database.SaveChangesAsync();
             await Clients.Group(user.GroupMember.Group.SignalRId).UpdateGroupMember(new(user.Id.ToString(), username, user.GroupMember.IsHost, user.GroupMember.IsDone, user.Score));
             await Clients.Caller.UpdateUserData(username, user.Score);
+
+            //Add to sessionlog
+            var entry = new SessionLogEntry(SessionLogEntryType.ChangeUsername, user.Id + "changed username to " + username, DateTime.UtcNow, user);
+            await Database.SessionLogEntries.AddAsync(entry);
             return true;
         }
 
@@ -109,7 +139,7 @@ namespace Backend.Hub
             if (session == null)
                 return false;
 
-            Authenticator auth = await Database.Authenticators.AsAsyncEnumerable().SingleOrDefaultAsync(a => a.User.Id == session.User.Id);
+            Authenticator auth = await Database.Authenticators.AsQueryable().SingleOrDefaultAsync(a => a.User.Id == session.User.Id);
             if (auth == null)
                 return false;
 
@@ -126,7 +156,7 @@ namespace Backend.Hub
             if (session == null)
                 return false;
 
-            Authenticator auth = await Database.Authenticators.AsAsyncEnumerable().SingleOrDefaultAsync(a => a.User.Id == session.User.Id);
+            Authenticator auth = await Database.Authenticators.AsQueryable().SingleOrDefaultAsync(a => a.User.Id == session.User.Id);
             /*if (auth == null || !VerifyPasswordHash(password, auth.Password))
                 return false;*/
 
@@ -140,7 +170,7 @@ namespace Backend.Hub
         }
 
         // With insight from: http://csharptest.net/470/another-example-of-how-to-store-a-salted-password-hash/
-        public static string CreatePasswordHash(string password)
+        private static string CreatePasswordHash(string password)
         {
             byte[] salt = new byte[16];
             new RNGCryptoServiceProvider().GetBytes(salt);
@@ -155,7 +185,7 @@ namespace Backend.Hub
             return Convert.ToBase64String(storedBytes);
         }
 
-        public static bool VerifyPasswordHash(string password, string passwordHash)
+        private static bool VerifyPasswordHash(string password, string passwordHash)
         {
             byte[] storedBytes = Convert.FromBase64String(passwordHash); 
             byte[] salt = new byte[16];
@@ -170,6 +200,8 @@ namespace Backend.Hub
                     return false;
             }
             return true;
+
+
         }
     }
 }

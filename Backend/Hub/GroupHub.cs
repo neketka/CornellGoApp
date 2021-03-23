@@ -18,23 +18,23 @@ namespace Backend.Hub
             UserSession session = await Database.UserSessions.FromSignalRId(Context.UserIdentifier);
             if (session == null) return false;
             
-            User query = await Database.Users.AsAsyncEnumerable().SingleAsync(b => b.Id == long.Parse(userId));
-            if (query.GroupMember.Group == null) return false; //Is default null?
+            User user = await Database.Users.AsAsyncEnumerable().SingleAsync(b => b.Id == long.Parse(userId));
+            if (user.GroupMember.Group == null) return false; //Is default null?
 
-            GroupMember gmem = query.GroupMember;
-            Group grp = query.GroupMember.Group;
+            GroupMember gmem = user.GroupMember;
+            Group grp = user.GroupMember.Group;
             grp.GroupMembers.Remove(gmem);
             Database.GroupMembers.Remove(gmem);
             grp.SyncPlacesWithUsers();
             await Database.SaveChangesAsync();
 
-            await Clients.Group(query.GroupMember.Group.SignalRId).UpdateGroupData(grp.GetFriendlyId(), await GetGroupMembers());
+            await Clients.Group(user.GroupMember.Group.SignalRId).UpdateGroupData(grp.GetFriendlyId(), await GetGroupMembers());
             
 
             //edge case if kicked get points and update challeng
-            if (query.GroupMember.IsDone)
+            if (user.GroupMember.IsDone)
             {
-                query.Score += grp.Challenge.Points;
+                user.Score += grp.Challenge.Points;
             }
             //edge case if kicked and last one then move group on
             if (grp.GroupMembers.All(b => b.IsDone))
@@ -42,14 +42,86 @@ namespace Backend.Hub
                 await grp.GetNewChallenge(Database.Challenges);
             }
             
+            await user.NewGroup(Database.Challenges, grp.Challenge.LongLat.Coordinate.X, grp.Challenge.LongLat.Coordinate.Y);
 
-            await query.NewGroup(Database.Challenges);
+            await Clients.Group(user.GroupMember.Group.SignalRId).UpdateGroupData(grp.GetFriendlyId(), await GetGroupMembers());
 
-            await Clients.Group(query.GroupMember.Group.SignalRId).UpdateGroupData(grp.GetFriendlyId(), await GetGroupMembers());
+            //Add to sessionlog
+            if (user.Id == long.Parse(userId) && !user.GroupMember.IsHost)
+            { 
+                var entry = new SessionLogEntry(SessionLogEntryType.LeaveGroup, user + "Left" + grp, DateTime.UtcNow, user);
+                await Database.SessionLogEntries.AddAsync(entry);
+            }
+            else if (user.Id == long.Parse(userId) && user.GroupMember.IsHost)
+            {
+                var entry = new SessionLogEntry(SessionLogEntryType.LeaveGroup, user + "Left" + grp, DateTime.UtcNow, user);
+                await Database.SessionLogEntries.AddAsync(entry);
 
+                var entry2 = new SessionLogEntry(SessionLogEntryType.DisbandedGroup, user + "Disbanded" + grp, DateTime.UtcNow, user);
+                await Database.SessionLogEntries.AddAsync(entry2);
+            }
+            else
+            {
+                var entry = new SessionLogEntry(SessionLogEntryType.KickedMember, "Kicked" + user + "from" + grp, DateTime.UtcNow, session.User);
+                await Database.SessionLogEntries.AddAsync(entry);
+
+                var entry2 = new SessionLogEntry(SessionLogEntryType.KickedByHost, "Kickedfrom" + grp, DateTime.UtcNow, user);
+                await Database.SessionLogEntries.AddAsync(entry2);
+            }
+
+            if (!user.GroupMember.IsHost)
+            {
+                foreach (GroupMember gmem2 in grp.GroupMembers)
+                {
+                    //Add to sessionlog of group members
+                    if (gmem2.Id != long.Parse(userId))
+                    {
+                        var entry2 = new SessionLogEntry(SessionLogEntryType.UserFromGroupLeft, user + "Left" + grp, DateTime.UtcNow, gmem2.User);
+                        await Database.SessionLogEntries.AddAsync(entry2);
+                    }
+
+                }
+            }
             await Database.SaveChangesAsync();
             return true;
             
+        }
+
+        public async Task<bool> JoinGroup(string groupId)
+        {
+            UserSession session = await Database.UserSessions.FromSignalRId(Context.UserIdentifier);
+            User user = session.User;
+            Group grp = Database.Groups.Single(b => b.Id == long.Parse(groupId));
+
+            //Make sure group isnt null
+            if (grp == null)
+                return false;
+
+            //Remove user from old group
+            await Kick(user.Id.ToString());
+
+            //Add user to new group
+            grp.GroupMembers.Add(user.GroupMember);
+            Database.GroupMembers.Add(user.GroupMember);
+
+            //Add to sessionlog
+            var entry = new SessionLogEntry(SessionLogEntryType.UserFromGroupJoined, user.Id + "Joined" + groupId, DateTime.UtcNow, user);
+            await Database.SessionLogEntries.AddAsync(entry);
+
+
+            foreach (GroupMember gmem2 in user.GroupMember.Group.GroupMembers)
+            {
+                //Add to sessionlog of group members
+                if (gmem2.Id != user.Id)
+                {
+                    var entry2 = new SessionLogEntry(SessionLogEntryType.UserFromGroupJoined, user + "Joined" + grp, DateTime.UtcNow, user);
+                    await Database.SessionLogEntries.AddAsync(entry2);
+                }
+
+            }
+
+            await Database.SaveChangesAsync();
+            return true;
         }
 
         public async Task<ChallengeData> GetChallengeData()
@@ -73,6 +145,7 @@ namespace Backend.Hub
                 GroupMemberData res = await GetGroupMember(gmem.User.Id.ToString());
                 list.Add(res);
             }
+            // CHANGE TO LINQ
             return list.ToArray();
    
         }
@@ -92,27 +165,9 @@ namespace Backend.Hub
             return user.GroupMember.Group.GetFriendlyId();
         }
 
-        public async Task<bool> JoinGroup(string groupId)
-        {
-            UserSession session = await Database.UserSessions.FromSignalRId(Context.UserIdentifier);
-            User user = session.User;
-            Group grp = Database.Groups.Single(b => b.Id == long.Parse(groupId));
 
-            //Make sure group isnt null
-            if (grp == null)
-                return false;
 
-            //Remove user from old group
-            await Kick(user.Id.ToString());
-
-            //Add user to new group
-            grp.GroupMembers.Add(user.GroupMember);
-            Database.GroupMembers.Add(user.GroupMember);
-            await Database.SaveChangesAsync();
-            return true;
-        }
-
-        public async Task<ChallengeProgressData> CheckProgress(double lat, double @long)
+        public async Task<ChallengeProgressData> CheckProgress(double lat, double @long, Boolean userDone)
         {
             UserSession session = await Database.UserSessions.FromSignalRId(Context.UserIdentifier);
             User user = session.User;
@@ -128,12 +183,19 @@ namespace Backend.Hub
             {
                 user.GroupMember.IsDone = true;
                 await Clients.Caller.FinishChallenge();
-                if(user.GroupMember.Group.GroupMembers.All(b => b.IsDone))
+
+                //Add to sessionlog
+                var entry = new SessionLogEntry(SessionLogEntryType.FoundPlace, user.GroupMember.Group.Id + "Finished Challenge", DateTime.UtcNow, user);
+                await Database.SessionLogEntries.AddAsync(entry);
+
+                if (user.GroupMember.Group.GroupMembers.All(b => b.IsDone))
                 {
                     Challenge newChal = await user.GroupMember.Group.GetNewChallenge(Database.Challenges);
                     ChallengeData cData = new ChallengeData(newChal.Id.ToString(), newChal.Description, newChal.Points, newChal.ImageUrl);
-                    await Clients.Group(user.GroupMember.Group.SignalRId).UpdateChallenge(cData);  
+                    await Clients.Group(user.GroupMember.Group.SignalRId).UpdateChallenge(cData);
+
                 }
+                await Database.SaveChangesAsync();
 
             }
 
