@@ -94,7 +94,8 @@ namespace Backend.Admin
             if (!await CheckAuthorization())
                 return new string[0];
 
-            return await Database.Admins.AsAsyncEnumerable()
+            return await Database.Admins
+                .AsAsyncEnumerable()
                 .Where(a => a.Status == AdminAccountStatus.Awaiting)
                 .Select(a => a.Email)
                 .ToArrayAsync();

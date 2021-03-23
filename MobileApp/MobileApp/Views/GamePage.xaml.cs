@@ -39,6 +39,7 @@ namespace MobileApp.Views
             {
                 OldImage.FadeTo(1, 100u);
                 DescriptionLabel.FadeTo(0, 100u);
+                ContentPage_SizeChanged(null, null);
             }
         }
 

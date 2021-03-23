@@ -157,6 +157,8 @@ namespace MobileApp.ViewModels
                 AddMembers(members);
                 UpdateGroupDataFromList();
             });
+
+            await gameService.PollLocation();
         }
 
         private async Task Client_GroupMemberUpdated(CommunicationModel.GroupMemberData data)
@@ -181,6 +183,7 @@ namespace MobileApp.ViewModels
             {
                 AddMembers(members);
                 UpdateGroupDataFromList();
+                gameService.PollLocation();
             });
         }
 

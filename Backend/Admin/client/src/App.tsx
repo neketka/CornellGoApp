@@ -16,9 +16,14 @@ export default function App() {
             </AppBar>
             
             <Switch>
-                <Route path="/dashboard">
-                </Route>
                 <Route path="/">
+
+                </Route>
+                <Route path="/places">
+
+                </Route>
+                <Route path="/adminapproval">
+
                 </Route>
             </Switch>
         </BrowserRouter>
