@@ -14,7 +14,10 @@ namespace MobileApp.Services
         Task<string> ShowChangeUsername(string oldName, bool invalid);
         Task ShowConnectionError(string message);
         Task<string> ShowJoinGroup(bool invalid);
+        Task<bool> ShowAskFeedback();
         Task ShowServerError();
+        Task ShowWIP();
+        Task ShowLocationPerm();
     }
 
     public class DialogService : IDialogService
@@ -52,6 +55,11 @@ namespace MobileApp.Services
                 "Enter your desired username (letters, numbers, underscores, 1-16 characters).", "Change", "Cancel", "Username", 16, null, oldName);
         }
 
+        public async Task<bool> ShowAskFeedback()
+        {
+            return await Shell.Current.DisplayAlert("Feedback", "We hope you're enjoying CornellGO! Your feedback will help us improve it and bring you an even better experience.", "Give Feedback", "Later");
+        }
+
         public async Task ShowServerError()
         {
             await Shell.Current.DisplayAlert("Error!", "Server returned an error while processing your request!", "OK");
@@ -60,6 +68,16 @@ namespace MobileApp.Services
         public async Task ShowConnectionError(string message)
         {
             await Shell.Current.DisplayAlert("Could not connect to server!", $"Please check your wireless connection and hit retry. Error: {message}", "Retry");
+        }
+
+        public async Task ShowWIP()
+        {
+            await Shell.Current.DisplayAlert("WIP", "This feature is still work-in-progress! Come back soon.", "OK");
+        }
+
+        public async Task ShowLocationPerm()
+        {
+            await Shell.Current.DisplayAlert("Error!", "Please allow the location permission for the application to work.", "OK");
         }
     }
 }

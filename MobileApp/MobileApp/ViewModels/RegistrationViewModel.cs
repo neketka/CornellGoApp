@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace MobileApp.ViewModels
@@ -23,9 +24,6 @@ namespace MobileApp.ViewModels
         private bool usernameLengthValid = false;
         private bool usernameFormatValid = false;
         private bool passwordLengthValid = false;
-        private bool passwordNumberValid = false;
-        private bool passwordLetterValid = false;
-        private bool passwordSymbolValid = false;
         private bool passwordMatches = false;
         private bool emailAddressValid = false;
         private bool emailAddressMatches = false;
@@ -34,9 +32,6 @@ namespace MobileApp.ViewModels
         public bool UsernameLengthValid { get => usernameLengthValid; set => SetProperty(ref usernameLengthValid, value); }
         public bool UsernameFormatValid { get => usernameFormatValid; set => SetProperty(ref usernameFormatValid, value); }
         public bool PasswordLengthValid { get => passwordLengthValid; set => SetProperty(ref passwordLengthValid, value); }
-        public bool PasswordNumberValid { get => passwordNumberValid; set => SetProperty(ref passwordNumberValid, value); }
-        public bool PasswordLetterValid { get => passwordLetterValid; set => SetProperty(ref passwordLetterValid, value); }
-        public bool PasswordSymbolValid { get => passwordSymbolValid; set => SetProperty(ref passwordSymbolValid, value); }
         public bool PasswordMatches { get => passwordMatches; set => SetProperty(ref passwordMatches, value); }
         public bool EmailAddressValid { get => emailAddressValid; set => SetProperty(ref emailAddressValid, value); }
         public bool EmailAddressMatches { get => emailAddressMatches; set => SetProperty(ref emailAddressMatches, value); }
@@ -52,7 +47,7 @@ namespace MobileApp.ViewModels
 
         private void Validate()
         {
-            FormValid = UsernameLengthValid && UsernameFormatValid && PasswordLengthValid && PasswordNumberValid && PasswordSymbolValid &&
+            FormValid = UsernameLengthValid && UsernameFormatValid && PasswordLengthValid &&
                 PasswordMatches && EmailAddressValid && EmailAddressMatches;
             RegisterCommand.ChangeCanExecute();
         }
@@ -66,12 +61,7 @@ namespace MobileApp.ViewModels
 
         private void ValidatePassword()
         {
-            //PasswordLengthValid = Password.All(c => char.IsLetter(c) || char.IsNumber(c) || passwordSymbols.Contains(c)) 
-            //    && Password.Length is >= 8 and <= 128;
             PasswordLengthValid = Password.Length is >= 8 and <= 128;
-            PasswordLetterValid = Password.Any(char.IsLetter);
-            PasswordNumberValid = Password.Any(char.IsNumber);
-            PasswordSymbolValid = Password.Any(c => passwordSymbols.Contains(c));
             PasswordMatches = !string.IsNullOrWhiteSpace(Password) && Password == PasswordVerification;
             Validate();
         }
