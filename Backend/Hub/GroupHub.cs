@@ -42,30 +42,30 @@ namespace Backend.Hub
                 await grp.GetNewChallenge(Database.Challenges);
             }
             
-            await user.NewGroup(Database.Challenges, grp.Challenge.LongLat.Coordinate.X, grp.Challenge.LongLat.Coordinate.Y);
+            await user.NewGroup(Database.Challenges, grp.Challenge.LongLat.Coordinate.Y, grp.Challenge.LongLat.Coordinate.X);
 
             await Clients.Group(user.GroupMember.Group.SignalRId).UpdateGroupData(grp.GetFriendlyId(), await GetGroupMembers());
 
             //Add to sessionlog
             if (user.Id == long.Parse(userId) && !user.GroupMember.IsHost)
             { 
-                var entry = new SessionLogEntry(SessionLogEntryType.LeaveGroup, user + "Left" + grp, DateTime.UtcNow, user);
+                var entry = new SessionLogEntry(SessionLogEntryType.LeaveGroup, user + ";" + grp, DateTime.UtcNow, user);
                 await Database.SessionLogEntries.AddAsync(entry);
             }
             else if (user.Id == long.Parse(userId) && user.GroupMember.IsHost)
             {
-                var entry = new SessionLogEntry(SessionLogEntryType.LeaveGroup, user + "Left" + grp, DateTime.UtcNow, user);
+                var entry = new SessionLogEntry(SessionLogEntryType.LeaveGroup, user + ";" + grp, DateTime.UtcNow, user);
                 await Database.SessionLogEntries.AddAsync(entry);
 
-                var entry2 = new SessionLogEntry(SessionLogEntryType.DisbandedGroup, user + "Disbanded" + grp, DateTime.UtcNow, user);
+                var entry2 = new SessionLogEntry(SessionLogEntryType.DisbandedGroup, user + ";" + grp, DateTime.UtcNow, user);
                 await Database.SessionLogEntries.AddAsync(entry2);
             }
             else
             {
-                var entry = new SessionLogEntry(SessionLogEntryType.KickedMember, "Kicked" + user + "from" + grp, DateTime.UtcNow, session.User);
+                var entry = new SessionLogEntry(SessionLogEntryType.KickedMember,  session.User + ";" + user + ";" + grp, DateTime.UtcNow, session.User);
                 await Database.SessionLogEntries.AddAsync(entry);
 
-                var entry2 = new SessionLogEntry(SessionLogEntryType.KickedByHost, "Kickedfrom" + grp, DateTime.UtcNow, user);
+                var entry2 = new SessionLogEntry(SessionLogEntryType.KickedByHost, user + ";" + session.User + ";" + grp, DateTime.UtcNow, user);
                 await Database.SessionLogEntries.AddAsync(entry2);
             }
 
@@ -76,7 +76,7 @@ namespace Backend.Hub
                     //Add to sessionlog of group members
                     if (gmem2.Id != long.Parse(userId))
                     {
-                        var entry2 = new SessionLogEntry(SessionLogEntryType.UserFromGroupLeft, user + "Left" + grp, DateTime.UtcNow, gmem2.User);
+                        var entry2 = new SessionLogEntry(SessionLogEntryType.UserFromGroupLeft, user + ";" + grp, DateTime.UtcNow, gmem2.User);
                         await Database.SessionLogEntries.AddAsync(entry2);
                     }
 
@@ -105,7 +105,7 @@ namespace Backend.Hub
             Database.GroupMembers.Add(user.GroupMember);
 
             //Add to sessionlog
-            var entry = new SessionLogEntry(SessionLogEntryType.UserFromGroupJoined, user.Id + "Joined" + groupId, DateTime.UtcNow, user);
+            var entry = new SessionLogEntry(SessionLogEntryType.UserFromGroupJoined, user.Id + ";" + groupId, DateTime.UtcNow, user);
             await Database.SessionLogEntries.AddAsync(entry);
 
 
@@ -114,7 +114,7 @@ namespace Backend.Hub
                 //Add to sessionlog of group members
                 if (gmem2.Id != user.Id)
                 {
-                    var entry2 = new SessionLogEntry(SessionLogEntryType.UserFromGroupJoined, user + "Joined" + grp, DateTime.UtcNow, user);
+                    var entry2 = new SessionLogEntry(SessionLogEntryType.UserFromGroupJoined, user + ";" + grp, DateTime.UtcNow, user);
                     await Database.SessionLogEntries.AddAsync(entry2);
                 }
 
@@ -185,7 +185,7 @@ namespace Backend.Hub
                 await Clients.Caller.FinishChallenge();
 
                 //Add to sessionlog
-                var entry = new SessionLogEntry(SessionLogEntryType.FoundPlace, user.GroupMember.Group.Id + "Finished Challenge", DateTime.UtcNow, user);
+                var entry = new SessionLogEntry(SessionLogEntryType.FoundPlace, user.GroupMember.Group.Id.ToString(), DateTime.UtcNow, user);
                 await Database.SessionLogEntries.AddAsync(entry);
 
                 if (user.GroupMember.Group.GroupMembers.All(b => b.IsDone))

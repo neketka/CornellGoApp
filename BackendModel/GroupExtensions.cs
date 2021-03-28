@@ -39,7 +39,7 @@ namespace BackendModel
             grp.SyncPlacesWithUsers();
 
             //add dummy challenge for location
-            Challenge mychal = new("dummy", "dummy", 0, new NetTopologySuite.Geometries.Point(new NetTopologySuite.Geometries.Coordinate(latitude, longitude)), 0, "dummy");
+            Challenge mychal = new("dummy", "dummy", 0, new NetTopologySuite.Geometries.Point(new NetTopologySuite.Geometries.Coordinate(longitude, latitude)), 0, "dummy");
             grp.PrevChallenges.Add(mychal);
             grp.Challenge = await grp.GetNewChallenge(chals); //HERE
             grp.PrevChallenges.Remove(mychal);

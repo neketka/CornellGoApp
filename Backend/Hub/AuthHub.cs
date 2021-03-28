@@ -37,7 +37,7 @@ namespace Backend.Hub
                 await Groups.AddToGroupAsync(Context.UserIdentifier, usession.User.GroupMember.Group.Id.ToString());
                 
                 //Add to sessionlog
-                var entry = new SessionLogEntry(SessionLogEntryType.Relog, usession.User.Id + "relogged", DateTime.UtcNow, usession.User);
+                var entry = new SessionLogEntry(SessionLogEntryType.Relog, usession.User.Id.ToString(), DateTime.UtcNow, usession.User);
                 await Database.SessionLogEntries.AddAsync(entry);
 
                 await Database.SaveChangesAsync();
@@ -48,7 +48,7 @@ namespace Backend.Hub
 
         public async Task<bool> Login(string email, string password)
         {
-            Authenticator authenticator = await Database.Authenticators.AsQueryable().FirstOrDefaultAsync(e => e.Email == email);
+            Authenticator authenticator = await Database.Authenticators.AsAsyncEnumerable().FirstOrDefaultAsync(e => e.Email == email);
             if (authenticator == null || !VerifyPasswordHash(password, authenticator.Password))
                 return false;
 
@@ -62,7 +62,7 @@ namespace Backend.Hub
             await Database.SaveChangesAsync();
 
             //Add to sessionlog
-            var entry = new SessionLogEntry(SessionLogEntryType.Login, session.User.Id + "logged in", DateTime.UtcNow, user);
+            var entry = new SessionLogEntry(SessionLogEntryType.Login, session.User.Id.ToString(), DateTime.UtcNow, user);
             await Database.SessionLogEntries.AddAsync(entry);
 
             await Database.SaveChangesAsync();
@@ -79,7 +79,7 @@ namespace Backend.Hub
             await Groups.RemoveFromGroupAsync(Context.UserIdentifier, session.User.GroupMember.Group.Id.ToString());
 
             //Add to sessionlog
-            var entry = new SessionLogEntry(SessionLogEntryType.Logout, session.User.Id + "logged out", DateTime.UtcNow, session.User);
+            var entry = new SessionLogEntry(SessionLogEntryType.Logout, session.User.Id.ToString(), DateTime.UtcNow, session.User);
             await Database.SessionLogEntries.AddAsync(entry);
 
             await Database.SaveChangesAsync();
@@ -93,7 +93,7 @@ namespace Backend.Hub
 
         public async Task<bool> Register(string username, string password, string email, double curLat, double curLong)
         {
-            if (await Database.Authenticators.AsQueryable().AnyAsync(e => e.Email == email))
+            if (await Database.Authenticators.AsAsyncEnumerable().AnyAsync(e => e.Email == email))
                 return false;
 
             User user = new(0, username, email);
@@ -107,7 +107,7 @@ namespace Backend.Hub
             await Database.Groups.AddAsync(auth.User.GroupMember.Group);
 
             //Add to sessionlog
-            var entry = new SessionLogEntry(SessionLogEntryType.UserCreated, user.Id + "registered", DateTime.UtcNow, user);
+            var entry = new SessionLogEntry(SessionLogEntryType.UserCreated, user.Id.ToString(), DateTime.UtcNow, user);
             await Database.SessionLogEntries.AddAsync(entry);
 
             await Database.SaveChangesAsync();
@@ -121,6 +121,7 @@ namespace Backend.Hub
                 return false;
 
             User user = session.User;
+            String oldUsername = user.Username;
             user.Username = username;
 
             await Database.SaveChangesAsync();
@@ -128,7 +129,7 @@ namespace Backend.Hub
             await Clients.Caller.UpdateUserData(username, user.Score);
 
             //Add to sessionlog
-            var entry = new SessionLogEntry(SessionLogEntryType.ChangeUsername, user.Id + "changed username to " + username, DateTime.UtcNow, user);
+            var entry = new SessionLogEntry(SessionLogEntryType.ChangeUsername, user.Id + ";" + oldUsername + ";" + username, DateTime.UtcNow, user);
             await Database.SessionLogEntries.AddAsync(entry);
             return true;
         }
@@ -139,7 +140,7 @@ namespace Backend.Hub
             if (session == null)
                 return false;
 
-            Authenticator auth = await Database.Authenticators.AsQueryable().SingleOrDefaultAsync(a => a.User.Id == session.User.Id);
+            Authenticator auth = await Database.Authenticators.AsAsyncEnumerable().SingleOrDefaultAsync(a => a.User.Id == session.User.Id);
             if (auth == null)
                 return false;
 
@@ -156,7 +157,7 @@ namespace Backend.Hub
             if (session == null)
                 return false;
 
-            Authenticator auth = await Database.Authenticators.AsQueryable().SingleOrDefaultAsync(a => a.User.Id == session.User.Id);
+            Authenticator auth = await Database.Authenticators.AsAsyncEnumerable().SingleOrDefaultAsync(a => a.User.Id == session.User.Id);
             /*if (auth == null || !VerifyPasswordHash(password, auth.Password))
                 return false;*/
 
@@ -170,7 +171,7 @@ namespace Backend.Hub
         }
 
         // With insight from: http://csharptest.net/470/another-example-of-how-to-store-a-salted-password-hash/
-        private static string CreatePasswordHash(string password)
+        public static string CreatePasswordHash(string password)
         {
             byte[] salt = new byte[16];
             new RNGCryptoServiceProvider().GetBytes(salt);
@@ -185,7 +186,7 @@ namespace Backend.Hub
             return Convert.ToBase64String(storedBytes);
         }
 
-        private static bool VerifyPasswordHash(string password, string passwordHash)
+        public static bool VerifyPasswordHash(string password, string passwordHash)
         {
             byte[] storedBytes = Convert.FromBase64String(passwordHash); 
             byte[] salt = new byte[16];

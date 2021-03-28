@@ -56,41 +56,22 @@ namespace Backend.Hub
 
             UserSession session = await Database.UserSessions.FromSignalRId(Context.UserIdentifier);
             User user = session.User;
+            IDictionary<FrontendMetric, SessionLogEntryType> entryDic = new Dictionary<FrontendMetric, SessionLogEntryType>();
+            entryDic.Add(FrontendMetric.AppResumed, SessionLogEntryType.AppResumed);
+            entryDic.Add(FrontendMetric.AppSuspended, SessionLogEntryType.AppSuspended);
+            entryDic.Add(FrontendMetric.OpenSettings, SessionLogEntryType.OpenSettings);
+            entryDic.Add(FrontendMetric.OpenGameMenu, SessionLogEntryType.OpenGameMenu);
+            entryDic.Add(FrontendMetric.OpenJoinGroupMenu, SessionLogEntryType.OpenJoinGroupMenu);
+            entryDic.Add(FrontendMetric.OpenGroupMenu, SessionLogEntryType.OpenGroupMenu);
+            entryDic.Add(FrontendMetric.OpenLearnMore, SessionLogEntryType.OpenLearnMore);
+            entryDic.Add(FrontendMetric.AppSuspended, SessionLogEntryType.AppSuspended);
+            entryDic.Add(FrontendMetric.OpenHistory, SessionLogEntryType.OpenHistory);
+            entryDic.Add(FrontendMetric.OpenLeaderboard, SessionLogEntryType.OpenLeaderboard);
+            entryDic.Add(FrontendMetric.ClosedApp, SessionLogEntryType.ClosedApp);
 
-            switch (metric)
-            {
-                case FrontendMetric.ClosedApp:
-                    await Database.SessionLogEntries.AddAsync(new SessionLogEntry(SessionLogEntryType.ClosedApp, data, DateTime.UtcNow, user));
-                    break;
-                case FrontendMetric.AppSuspended:
-                    await Database.SessionLogEntries.AddAsync(new SessionLogEntry(SessionLogEntryType.AppSuspended, data, DateTime.UtcNow, user));
-                    break;
-                case FrontendMetric.OpenLeaderboard:
-                    await Database.SessionLogEntries.AddAsync(new SessionLogEntry(SessionLogEntryType.OpenLeaderboard, data, DateTime.UtcNow, user));
-                    break;
-                case FrontendMetric.OpenHistory:
-                    await Database.SessionLogEntries.AddAsync(new SessionLogEntry(SessionLogEntryType.OpenHistory, data, DateTime.UtcNow, user));
-                    break;
-                case FrontendMetric.OpenLearnMore:
-                    await Database.SessionLogEntries.AddAsync(new SessionLogEntry(SessionLogEntryType.OpenLearnMore, data, DateTime.UtcNow, user));
-                    break;
-                case FrontendMetric.OpenGroupMenu:
-                    await Database.SessionLogEntries.AddAsync(new SessionLogEntry(SessionLogEntryType.OpenGroupMenu, data, DateTime.UtcNow, user));
-                    break;
-                case FrontendMetric.OpenJoinGroupMenu:
-                    await Database.SessionLogEntries.AddAsync(new SessionLogEntry(SessionLogEntryType.OpenJoinGroupMenu, data, DateTime.UtcNow, user));
-                    break;
-                case FrontendMetric.OpenGameMenu:
-                    await Database.SessionLogEntries.AddAsync(new SessionLogEntry(SessionLogEntryType.OpenGameMenu, data, DateTime.UtcNow, user));
-                    break;
-                case FrontendMetric.OpenSettings:
-                    await Database.SessionLogEntries.AddAsync(new SessionLogEntry(SessionLogEntryType.OpenSettings, data, DateTime.UtcNow, user));
-                    break;
-                case FrontendMetric.AppResumed:
-                    await Database.SessionLogEntries.AddAsync(new SessionLogEntry(SessionLogEntryType.AppResumed, data, DateTime.UtcNow, user));
-                    break;
+            await Database.SessionLogEntries.AddAsync(new SessionLogEntry(entryDic[metric], data, DateTime.UtcNow, user));
+            await Database.SaveChangesAsync();
 
-            }
         }
     }
 }
