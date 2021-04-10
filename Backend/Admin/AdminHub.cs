@@ -17,7 +17,7 @@ namespace Backend.Admin
         public IAsyncEnumerable<PlaceData> GetPlaces()
         {
             return Database.Challenges.AsAsyncEnumerable().Select(chal => new PlaceData(chal.Id.ToString(), chal.ImageUrl, chal.Name,
-                chal.Description, chal.Points, chal.LongLat.Y, chal.LongLat.X, chal.Radius));
+                chal.Description, chal.Points, chal.LongLat.Y, chal.LongLat.X, chal.Radius, chal.CitationUrl, chal.LinkUrl, chal.LongDescription));
         }
 
         public async Task<bool> ModifyPlace(PlaceDataModifiedState state, PlaceData data)
@@ -26,7 +26,7 @@ namespace Backend.Admin
                 return false;
 
             Challenge chal = state == PlaceDataModifiedState.Created 
-                ? new(data.Name, data.Description, data.Points, new(data.Long, data.Lat), data.Radius, data.ImageUrl)
+                ? new(data.Name, data.Description, data.Points, new(data.Long, data.Lat), data.Radius, data.ImageUrl, data.longDescription, data.citationURL, data.linkURL)
                 : await Database.Challenges.SingleAsync(c => c.Id.ToString() == data.Id);
 
             switch (state)

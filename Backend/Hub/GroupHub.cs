@@ -167,7 +167,7 @@ namespace Backend.Hub
 
 
 
-        public async Task<ChallengeProgressData> CheckProgress(double lat, double @long, Boolean userDone)
+        public async Task<ChallengeProgressData> CheckProgress(double lat, double @long)
         {
             UserSession session = await Database.UserSessions.FromSignalRId(Context.UserIdentifier);
             User user = session.User;
