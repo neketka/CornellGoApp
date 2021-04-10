@@ -40,6 +40,7 @@ namespace BackendModel
 
             //add dummy challenge for location
             Challenge mychal = new("dummy", "dummy", 0, new NetTopologySuite.Geometries.Point(new NetTopologySuite.Geometries.Coordinate(longitude, latitude)), 0, "dummy");
+            //
             grp.PrevChallenges.Add(mychal);
             grp.Challenge = await grp.GetNewChallenge(chals); //HERE
             grp.PrevChallenges.Remove(mychal);
@@ -54,6 +55,12 @@ namespace BackendModel
             var query = chals.Where(p => group.PrevChallenges.All(p2 => p2.Id != p.Id))
                              .Where(p => group.PrevChallenges.All(p2 => p2.Radius < p2.LongLat.Distance(p.LongLat)))
                              .OrderBy(c => c.LongLat.Distance(group.PrevChallenges.Last().LongLat)).FirstOrDefaultAsync();
+
+
+            if(query == null)
+            {
+                return new Challenge("NoMoreLocations", "More places coming soon!", 0, new NetTopologySuite.Geometries.Point(new NetTopologySuite.Geometries.Coordinate(1000, 1000)), 0, "https://www.publicdomainpictures.net/pictures/280000/velka/erfolg.jpg");
+            }
 
             return await query;
         }

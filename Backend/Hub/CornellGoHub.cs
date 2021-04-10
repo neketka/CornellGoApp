@@ -12,5 +12,6 @@ namespace Backend.Hub
     {
         private CornellGoDb Database { get; }
         public CornellGoHub(CornellGoDb context) => Database = context;
+
     }
 }
