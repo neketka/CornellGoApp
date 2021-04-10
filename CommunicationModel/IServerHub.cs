@@ -29,5 +29,6 @@ namespace CommunicationModel
         Task<ChallengeProgressData> CheckProgress(double lat, double @long);
         Task<int> GetMaxPlayers();
         Task SendMetric(FrontendMetric metric, string data);
+        Task<LearnMoreData> GetLearnMoreData(string placeId);
     }
 }

@@ -76,11 +76,9 @@ namespace Backend.Hub
 
         public async Task<LearnMoreData> GetLearnMoreData(string placeId)
         {
-            UserSession session = await Database.UserSessions.FromSignalRId(Context.UserIdentifier);
-            Challenge data = Database.Challenges.Single(b => b.Id == long.Parse(placeId));
+            Challenge place = Database.Challenges.Single(b => b.Id == long.Parse(placeId));
+            return new LearnMoreData(place.Id, place.Name, place.LongLat.X, place.LongLat.Y, place.Description, place.LongDescription, place.CitationUrl, place.LinkUrl, place.ImageUrl, DateTime.UtcNow);
 
-            return new LearnMoreData(data.Id, data.Name, data.LongLat.X, data.LongLat.Y, data.ImageUrl, data.ImageUrl, data.ImageUrl, data.Description, DateTime.UtcNow);
-            //Change second ImageUrl and linkURL
         }
     }
 }
