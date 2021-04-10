@@ -71,5 +71,8 @@ namespace CommunicationModel
 
         public async Task SendMetric(FrontendMetric metric, string data)
             => await Connection.InvokeAsync("SendMetric", metric, data);
+
+        public async Task GetLearnMoreData(string placeId)
+            => await Connection.InvokeAsync("GetLearnMoreData", placeId);
     }
 }

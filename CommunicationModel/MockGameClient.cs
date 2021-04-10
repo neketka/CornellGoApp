@@ -161,5 +161,9 @@ namespace CommunicationModel
         {
             return Task.CompletedTask;
         }
+        public Task GetLearnMoreData(string placeId)
+        {
+            return Task.CompletedTask;
+        }
     }
 }

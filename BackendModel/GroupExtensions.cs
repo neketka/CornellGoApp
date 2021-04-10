@@ -54,6 +54,10 @@ namespace BackendModel
             var query = chals.Where(p => group.PrevChallenges.All(p2 => p2.Id != p.Id))
                              .Where(p => group.PrevChallenges.All(p2 => p2.Radius < p2.LongLat.Distance(p.LongLat)))
                              .OrderBy(c => c.LongLat.Distance(group.PrevChallenges.Last().LongLat)).FirstOrDefaultAsync();
+            if(query == null)
+            {
+                return new Challenge("NoMoreLocations", "More places coming soon!", 0, new NetTopologySuite.Geometries.Point(new NetTopologySuite.Geometries.Coordinate(1000, 1000)), 0, "https://www.publicdomainpictures.net/pictures/280000/velka/erfolg.jpg");
+            }
 
             return await query;
         }
