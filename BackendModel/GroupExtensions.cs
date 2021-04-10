@@ -57,6 +57,7 @@ namespace BackendModel
             if(query == null)
             {
                 query = new("Finished", "More Locations Coming soon", 0, new NetTopologySuite.Geometries.Point(new NetTopologySuite.Geometries.Coordinate(1000, 1000)), 0, "https://www.publicdomainpictures.net/pictures/280000/velka/erfolg.jpg", "finished", "finished", "finished");
+
             }
 
             return query;

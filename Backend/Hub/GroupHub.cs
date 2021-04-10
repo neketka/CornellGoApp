@@ -164,9 +164,6 @@ namespace Backend.Hub
             User user = session.User;
             return user.GroupMember.Group.GetFriendlyId();
         }
-
-
-
         public async Task<ChallengeProgressData> CheckProgress(double lat, double @long)
         {
             UserSession session = await Database.UserSessions.FromSignalRId(Context.UserIdentifier);
@@ -207,5 +204,7 @@ namespace Backend.Hub
             int current_max = 8;
             return current_max;
         }
+
+
     }
 }
