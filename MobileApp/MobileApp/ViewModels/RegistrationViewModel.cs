@@ -106,9 +106,14 @@ namespace MobileApp.ViewModels
                 RegisterCommand.ChangeCanExecute();
                 BadText = "";
 
+                var pos = await Xamarin.Essentials.Geolocation.GetLocationAsync(new()
+                {
+                    DesiredAccuracy = Xamarin.Essentials.GeolocationAccuracy.Best
+                });
+
                 try
                 {
-                    if (await gameService.Client.Register(Username, Password, Email))
+                    if (await gameService.Client.Register(Username, Password, Email, pos.Latitude, pos.Longitude))
                     {
                         if (await gameService.LoginWithSession(Username, Password))
                             await navigationService.NavigateTo<GameViewModel>();

@@ -142,7 +142,7 @@ namespace CommunicationModel
             return Task.FromResult(true);
         }
 
-        public Task<bool> Register(string username, string password, string email)
+        public Task<bool> Register(string username, string password, string email, double latitude, double longitude)
         {
             return Task.FromResult(true);
         }
@@ -160,6 +160,11 @@ namespace CommunicationModel
         public Task SendMetric(FrontendMetric metric, string data)
         {
             return Task.CompletedTask;
+        }
+
+        public Task<LearnMoreData> GetLearnMoreData(string placeId)
+        {
+            return Task.FromResult(new LearnMoreData(001, "name", 100, 100, "description", "long description", "cit url", "link url", "imag url", DateTime.Now));
         }
     }
 }

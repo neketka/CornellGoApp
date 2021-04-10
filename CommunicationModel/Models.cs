@@ -22,4 +22,5 @@ namespace CommunicationModel
         ClosedApp = 0, AppSuspended = 1, OpenLeaderboard = 2, OpenHistory = 3, OpenLearnMore = 4,
         OpenGroupMenu = 5, OpenJoinGroupMenu = 6, OpenGameMenu = 7, OpenSettings = 8, AppResumed = 9
     }
+    public record LearnMoreData(long placeId, string name, Double lon, Double lat, string description, string longDescription, string citationURL, string linkURL, string imageURL, DateTime UtcDateTime);
 }

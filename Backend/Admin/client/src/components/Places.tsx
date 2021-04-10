@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: "40%",
   },
 }));
-
+    
 function PlaceCard({
   id,
   name,
