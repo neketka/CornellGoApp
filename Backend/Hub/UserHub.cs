@@ -42,8 +42,6 @@ namespace Backend.Hub
                 Challenge chal = prev.Challenge;
                 yield return new ChallengeHistoryEntryData(chal.Id.ToString(), chal.ImageUrl, chal.Name, chal.Description, chal.Points, prev.Timestamp);
             }
-
-
         }
 
         public async Task<string> GetPrevChallengeName()
@@ -53,9 +51,27 @@ namespace Backend.Hub
             return user.PrevChallenges.LastOrDefault().ToString();
         }
       
-        public Task SendMetric(FrontendMetric metric, string data)
+        public async Task SendMetric(FrontendMetric metric, string data)
         {
-            throw new NotImplementedException();
+
+            UserSession session = await Database.UserSessions.FromSignalRId(Context.UserIdentifier);
+            User user = session.User;
+            IDictionary<FrontendMetric, SessionLogEntryType> entryDic = new Dictionary<FrontendMetric, SessionLogEntryType>();
+            entryDic.Add(FrontendMetric.AppResumed, SessionLogEntryType.AppResumed);
+            entryDic.Add(FrontendMetric.AppSuspended, SessionLogEntryType.AppSuspended);
+            entryDic.Add(FrontendMetric.OpenSettings, SessionLogEntryType.OpenSettings);
+            entryDic.Add(FrontendMetric.OpenGameMenu, SessionLogEntryType.OpenGameMenu);
+            entryDic.Add(FrontendMetric.OpenJoinGroupMenu, SessionLogEntryType.OpenJoinGroupMenu);
+            entryDic.Add(FrontendMetric.OpenGroupMenu, SessionLogEntryType.OpenGroupMenu);
+            entryDic.Add(FrontendMetric.OpenLearnMore, SessionLogEntryType.OpenLearnMore);
+            entryDic.Add(FrontendMetric.AppSuspended, SessionLogEntryType.AppSuspended);
+            entryDic.Add(FrontendMetric.OpenHistory, SessionLogEntryType.OpenHistory);
+            entryDic.Add(FrontendMetric.OpenLeaderboard, SessionLogEntryType.OpenLeaderboard);
+            entryDic.Add(FrontendMetric.ClosedApp, SessionLogEntryType.ClosedApp);
+
+            await Database.SessionLogEntries.AddAsync(new SessionLogEntry(entryDic[metric], data, DateTime.UtcNow, user));
+            await Database.SaveChangesAsync();
+
         }
     }
 }

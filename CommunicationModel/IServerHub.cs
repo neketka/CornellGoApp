@@ -15,7 +15,7 @@ namespace CommunicationModel
         Task<bool> ChangePassword(string password);
         Task<bool> ChangeEmail(string email);
         Task<string> GetSessionToken();
-        Task<bool> Register(string username, string password, string email);
+        Task<bool> Register(string username, string password, string email, double latitude, double longitude);
         Task<UserData> GetUserData();
         Task<bool> Kick(string userId);
         IAsyncEnumerable<LeaderboardData> GetTopPlayers(int index, int count);

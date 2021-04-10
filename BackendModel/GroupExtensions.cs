@@ -32,33 +32,30 @@ namespace BackendModel
             }
         }
 
-        public static async Task NewGroup(this User user, DbSet<Challenge> chals)
+        public static async Task NewGroup(this User user, DbSet<Challenge> chals, double latitude, double longitude)
         {
-            Group grp = new(user.GroupMember.Group.Challenge); //unsure here
 
+            Group grp = new(user.GroupMember.Group.Challenge);
             grp.SyncPlacesWithUsers();
-            await grp.GetNewChallenge(chals);
-            //make async
-            //add user to a new group, sync the group with users, and generate a new challenge.
 
+            //add dummy challenge for location
+            Challenge mychal = new("dummy", "dummy", 0, new NetTopologySuite.Geometries.Point(new NetTopologySuite.Geometries.Coordinate(longitude, latitude)), 0, "dummy");
+            grp.PrevChallenges.Add(mychal);
+            grp.Challenge = await grp.GetNewChallenge(chals); //HERE
+            grp.PrevChallenges.Remove(mychal);
+  
         }
+
 
         public static async Task<Challenge> GetNewChallenge(this Group group, DbSet<Challenge> chals)
         {
             //Group Extension method to generate new random challenge (not in prev challenge), add current challenge if one exists to prev challenge list of group + all members
 
-            if(group.PrevChallenges.Count() > 0)
-            {
-                return chals.OrderBy(c => c.LongLat.Distance(group.PrevChallenges.Last().LongLat)).FirstOrDefault();
+            var query = chals.Where(p => group.PrevChallenges.All(p2 => p2.Id != p.Id))
+                             .Where(p => group.PrevChallenges.All(p2 => p2.Radius < p2.LongLat.Distance(p.LongLat)))
+                             .OrderBy(c => c.LongLat.Distance(group.PrevChallenges.Last().LongLat)).FirstOrDefaultAsync();
 
-            }
-
-            var query = chals.Where(p => group.PrevChallenges.All(p2 => p2.Id != p.Id));
-            var rnd = new Random();
-
-            Challenge Selected = await query.OrderBy(x => rnd.Next()).FirstOrDefaultAsync();
-
-            return Selected;
+            return await query;
         }
 
         public static string GetFriendlyId(this Group group)

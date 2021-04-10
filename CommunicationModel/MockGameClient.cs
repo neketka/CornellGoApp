@@ -142,7 +142,7 @@ namespace CommunicationModel
             return Task.FromResult(true);
         }
 
-        public Task<bool> Register(string username, string password, string email)
+        public Task<bool> Register(string username, string password, string email, double latitude, double longitude)
         {
             return Task.FromResult(true);
         }
