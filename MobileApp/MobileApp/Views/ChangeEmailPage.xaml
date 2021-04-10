@@ -10,49 +10,67 @@
              Shell.FlyoutBehavior="Disabled"
              Title="Change email address"
              >
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <ex:StringLengthNotZeroConverter x:Key="strNotEmpty"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout Padding="20, 20, 20, 0">
-            <Entry Text="{Binding Email, Mode=TwoWay}" 
-                   WidthRequest="2000" 
-                   Placeholder="Email address"
-                   PlaceholderColor="{StaticResource PrimaryAccent}" 
-                   TextColor="{StaticResource SecondaryText}"
-                   />
-            <Label Text="Valid email address format (e.g. ab123@example.com)" 
-                   HeightRequest="16" 
-                   FontSize="12" 
-                   TextColor="Red" 
-                   Margin="12, 0, 0, 0" 
-                   FontAttributes="Bold"
-                   >
+            <Label Margin="3, 24, 0, 0"
+                       Text="Email" 
+                       TextColor="{StaticResource SecondaryText}"
+                       />
+            <Entry Text="{Binding Email, Mode=TwoWay}"
+                       WidthRequest="2000" 
+                       Placeholder="e.g. ab123@example.com"
+					   PlaceholderColor="{StaticResource PrimaryAccent}"
+                       TextColor="{StaticResource SecondaryText}"
+                       />
+            <Label Text="Must be a valid email address" 
+                       HeightRequest="16" 
+                       FontSize="12" 
+                       TextColor="Red" 
+                       Margin="12, 0, 0, 0" 
+                       FontAttributes="Bold"
+                       IsVisible="False"
+                       >
                 <Label.Triggers>
-                    <DataTrigger TargetType="Label" 
-                                 Binding="{Binding EmailAddressValid}" 
-                                 Value="True">
-                        <Setter Property="TextColor" Value="Green"/>
-                    </DataTrigger>
+                    <MultiTrigger TargetType="Label">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding EmailAddressValid}" Value="False"/>
+                            <BindingCondition Binding="{Binding Email, Converter={StaticResource strNotEmpty}}" Value="True"/>
+                        </MultiTrigger.Conditions>
+                        <Setter Property="IsVisible" Value="True"/>
+                    </MultiTrigger>
                 </Label.Triggers>
             </Label>
-            <Entry Text="{Binding EmailVerification, Mode=TwoWay}" 
-                   WidthRequest="2000" 
-                   Placeholder="Confirm email address"
-                   PlaceholderColor="{StaticResource PrimaryAccent}"
-                   TextColor="{StaticResource SecondaryText}"
-                   />
-            <Label Text="Matches email field" 
-                   HeightRequest="16"
-                   FontSize="12" 
-                   TextColor="Red" 
-                   Margin="12, 0, 0, 0" 
-                   FontAttributes="Bold"
-                   >
+            <Label Margin="3, 2, 0, 0"
+                       Text="Confirm email" 
+                       TextColor="{StaticResource SecondaryText}"
+                       />
+            <Entry Text="{Binding EmailVerification, Mode=TwoWay}"
+                       WidthRequest="2000" 
+                       Placeholder=""
+					   PlaceholderColor="{StaticResource PrimaryAccent}"
+                       TextColor="{StaticResource SecondaryText}"
+                       />
+            <Label Text="Must match email field" 
+                       HeightRequest="16"
+                       FontSize="12" 
+                       TextColor="Red"
+                       Margin="12, 0, 0, 0" 
+                       FontAttributes="Bold"
+                       IsVisible="False"
+                       >
                 <Label.Triggers>
-                    <DataTrigger TargetType="Label" 
-                                 Binding="{Binding EmailAddressMatches}" 
-                                 Value="True"
-                                 >
-                        <Setter Property="TextColor" Value="Green"/>
-                    </DataTrigger>
+                    <MultiTrigger TargetType="Label">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding EmailAddressMatches}" Value="False"/>
+                            <BindingCondition Binding="{Binding EmailVerification, Converter={StaticResource strNotEmpty}}" Value="True"/>
+                        </MultiTrigger.Conditions>
+                        <Setter Property="IsVisible" Value="True"/>
+                    </MultiTrigger>
                 </Label.Triggers>
             </Label>
             <Label Text="{Binding BadText}" 
@@ -63,7 +81,7 @@
                    />
             <Button Text="Change" 
                     VerticalOptions="Center"
-                    HeightRequest="36" 
+                    HeightRequest="40" 
                     Margin="0, 10, 0, 0"
                     Padding="0" Grid.Column="0" 
                     Command="{Binding ChangeEmailCommand}"

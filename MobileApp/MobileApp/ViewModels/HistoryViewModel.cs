@@ -21,7 +21,7 @@ namespace MobileApp.ViewModels
             this.gameService = gameService;
 
             HistoryEntries = new ObservableCollection<HistoryEntry>();
-            ShowMoreCommand = new(async id => { await dialogService.ShowServerError(); });
+            ShowMoreCommand = new(async id => { await dialogService.ShowWIP(); });
             IsBusy = true;
         }
 

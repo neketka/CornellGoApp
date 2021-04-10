@@ -58,7 +58,10 @@ namespace BackendModel
       /// <param name="longlat">Position of the challenge</param>
       /// <param name="radius">Furthest radius at which the user is considered far</param>
       /// <param name="imageurl">Url to this image</param>
-      public Challenge(string name, string description, int points, Point longlat, double radius, string imageurl)
+      /// <param name="longdescription">Learn more description of place</param>
+      /// <param name="citationurl">Url for citation of the information in long description</param>
+      /// <param name="linkurl">Link to learn more about place</param>
+      public Challenge(string name, string description, int points, Point longlat, double radius, string imageurl, string longdescription, string citationurl, string linkurl)
       {
          if (string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
          this.Name = name;
@@ -75,6 +78,15 @@ namespace BackendModel
          if (string.IsNullOrEmpty(imageurl)) throw new ArgumentNullException(nameof(imageurl));
          this.ImageUrl = imageurl;
 
+         if (string.IsNullOrEmpty(longdescription)) throw new ArgumentNullException(nameof(longdescription));
+         this.LongDescription = longdescription;
+
+         if (string.IsNullOrEmpty(citationurl)) throw new ArgumentNullException(nameof(citationurl));
+         this.CitationUrl = citationurl;
+
+         if (string.IsNullOrEmpty(linkurl)) throw new ArgumentNullException(nameof(linkurl));
+         this.LinkUrl = linkurl;
+
          Init();
       }
 
@@ -87,9 +99,12 @@ namespace BackendModel
       /// <param name="longlat">Position of the challenge</param>
       /// <param name="radius">Furthest radius at which the user is considered far</param>
       /// <param name="imageurl">Url to this image</param>
-      public static Challenge Create(string name, string description, int points, Point longlat, double radius, string imageurl)
+      /// <param name="longdescription">Learn more description of place</param>
+      /// <param name="citationurl">Url for citation of the information in long description</param>
+      /// <param name="linkurl">Link to learn more about place</param>
+      public static Challenge Create(string name, string description, int points, Point longlat, double radius, string imageurl, string longdescription, string citationurl, string linkurl)
       {
-         return new Challenge(name, description, points, longlat, radius, imageurl);
+         return new Challenge(name, description, points, longlat, radius, imageurl, longdescription, citationurl, linkurl);
       }
 
       /*************************************************************************
@@ -158,6 +173,30 @@ namespace BackendModel
       [Required]
       [System.ComponentModel.Description("Url to this image")]
       public string ImageUrl { get; set; }
+
+      /// <summary>
+      /// Required
+      /// Learn more description of place
+      /// </summary>
+      [Required]
+      [System.ComponentModel.Description("Learn more description of place")]
+      public string LongDescription { get; set; }
+
+      /// <summary>
+      /// Required
+      /// Url for citation of the information in long description
+      /// </summary>
+      [Required]
+      [System.ComponentModel.Description("Url for citation of the information in long description")]
+      public string CitationUrl { get; set; }
+
+      /// <summary>
+      /// Required
+      /// Link to learn more about place
+      /// </summary>
+      [Required]
+      [System.ComponentModel.Description("Link to learn more about place")]
+      public string LinkUrl { get; set; }
 
       /*************************************************************************
        * Navigation properties

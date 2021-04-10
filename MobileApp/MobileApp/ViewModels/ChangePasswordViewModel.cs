@@ -26,9 +26,6 @@ namespace MobileApp.ViewModels
         public string BadText { get => badText; set => SetProperty(ref badText, value); }
 
         public bool PasswordLengthValid { get => passwordLengthValid; set => SetProperty(ref passwordLengthValid, value); }
-        public bool PasswordNumberValid { get => passwordNumberValid; set => SetProperty(ref passwordNumberValid, value); }
-        public bool PasswordLetterValid { get => passwordLetterValid; set => SetProperty(ref passwordLetterValid, value); }
-        public bool PasswordSymbolValid { get => passwordSymbolValid; set => SetProperty(ref passwordSymbolValid, value); }
         public bool PasswordMatches { get => passwordMatches; set => SetProperty(ref passwordMatches, value); }
         public bool FormValid { get => formValid; set => SetProperty(ref formValid, value); }
 
@@ -36,7 +33,7 @@ namespace MobileApp.ViewModels
 
         private void Validate()
         {
-            FormValid = PasswordLengthValid && PasswordNumberValid && PasswordSymbolValid && PasswordMatches;
+            FormValid = PasswordLengthValid && PasswordMatches;
             ChangePasswordCommand.ChangeCanExecute();
         }
 
@@ -44,9 +41,6 @@ namespace MobileApp.ViewModels
         {
             PasswordLengthValid = Password.All(c => char.IsLetter(c) || char.IsNumber(c) || passwordSymbols.Contains(c))
                 && Password.Length is >= 8 and <= 128;
-            PasswordLetterValid = Password.Any(char.IsLetter);
-            PasswordNumberValid = Password.Any(char.IsNumber);
-            PasswordSymbolValid = Password.Any(c => passwordSymbols.Contains(c));
             PasswordMatches = !string.IsNullOrWhiteSpace(Password) && Password == PasswordVerification;
             Validate();
         }

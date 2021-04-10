@@ -164,9 +164,6 @@ namespace Backend.Hub
             User user = session.User;
             return user.GroupMember.Group.GetFriendlyId();
         }
-
-
-
         public async Task<ChallengeProgressData> CheckProgress(double lat, double @long, Boolean userDone)
         {
             UserSession session = await Database.UserSessions.FromSignalRId(Context.UserIdentifier);

@@ -180,6 +180,15 @@ namespace BackendModel
          modelBuilder.Entity<global::BackendModel.Challenge>()
                      .Property(t => t.ImageUrl)
                      .IsRequired();
+         modelBuilder.Entity<global::BackendModel.Challenge>()
+                     .Property(t => t.LongDescription)
+                     .IsRequired();
+         modelBuilder.Entity<global::BackendModel.Challenge>()
+                     .Property(t => t.CitationUrl)
+                     .IsRequired();
+         modelBuilder.Entity<global::BackendModel.Challenge>()
+                     .Property(t => t.LinkUrl)
+                     .IsRequired();
 
          modelBuilder.Entity<global::BackendModel.Feedback>()
                      .ToTable("Feedbacks")

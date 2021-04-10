@@ -52,7 +52,12 @@ namespace MobileApp.Services
                 await SecureStorage.SetAsync("session", await Client.GetSessionToken());
                 LoggedIn();
 
-                while (!await CrossGeolocator.Current.StartListeningAsync(TimeSpan.FromSeconds(2), 5));
+                if (!await CrossGeolocator.Current.StartListeningAsync(TimeSpan.FromSeconds(2), 5))
+                {
+                    await Client.Logout();
+                    SecureStorage.Remove("session");
+                    return false;
+                }
             }
             return loggedIn;
         }
@@ -74,7 +79,12 @@ namespace MobileApp.Services
             if (token != null && await Client.AttemptRelog(token))
             {
                 UserId = (await Client.GetUserData()).UserId;
-                while (!await CrossGeolocator.Current.StartListeningAsync(TimeSpan.FromSeconds(2), 5));
+                if (!await CrossGeolocator.Current.StartListeningAsync(TimeSpan.FromSeconds(2), 5))
+                {
+                    await Client.Logout();
+                    SecureStorage.Remove("session");
+                    return false;
+                }
 
                 return true;
             }
