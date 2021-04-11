@@ -44,13 +44,6 @@ namespace BackendModel
                 : await chals.Where(p => (p.Radius * 0.1 > p.LongLat.Distance(coord)) && group.PrevChallenges.All(p2 => p2.Id != p.Id))
                              .OrderBy(c => c.LongLat.Distance(coord)).FirstOrDefaultAsync();
 
-
-
-            if(query == null)
-            {
-                query = new("Finished", "More Locations Coming Soon", 0, new NetTopologySuite.Geometries.Point(new NetTopologySuite.Geometries.Coordinate(1000, 1000)), 0, "https://www.publicdomainpictures.net/pictures/280000/velka/erfolg.jpg", "finished", "finished", "finished");
-            }
-
             return query;
         }
 
@@ -61,16 +54,14 @@ namespace BackendModel
             {
                 mapString[(byte)(id & 31L)], mapString[(byte)((id >> 5) & 31L)], mapString[(byte)((id >> 10) & 31L)],
                 mapString[(byte)((id >> 15) & 31L)], mapString[(byte)((id >> 20) & 31L)], mapString[(byte)((id >> 25) & 31L)],
-                mapString[(byte)((id >> 30) & 31L)], mapString[(byte)((id >> 35) & 31L)], mapString[(byte)((id >> 40) & 31L)]
             }); 
         }
 
         public static ValueTask<Group> FromFriendlyId(this DbSet<Group> groups, string friendlyId)
         {
-            long id = 
-                mapToNums[friendlyId[0]]       | mapToNums[friendlyId[1]] << 5  | mapToNums[friendlyId[1]] << 10 |
-                mapToNums[friendlyId[2]] << 15 | mapToNums[friendlyId[3]] << 20 | mapToNums[friendlyId[4]] << 25 |
-                mapToNums[friendlyId[5]] << 30 | mapToNums[friendlyId[6]] << 35 | mapToNums[friendlyId[7]] << 40;
+            long id =
+                mapToNums[friendlyId[0]] | mapToNums[friendlyId[1]] << 5 | mapToNums[friendlyId[1]] << 10 |
+                mapToNums[friendlyId[2]] << 15 | mapToNums[friendlyId[3]] << 20 | mapToNums[friendlyId[4]] << 25;
 
             return groups.FindAsync(id);
         }
