@@ -10,6 +10,7 @@ using Backend.Hub;
 using Backend.Admin;
 using System.IO;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using System;
 
 namespace Backend
 {
@@ -32,8 +33,12 @@ namespace Backend
                 .AllowCredentials()
                 .WithOrigins("https://localhost:5001");
             }));
+
+            string conString = Environment.GetEnvironmentVariable("JDBC_DATABASE_URL") ?? 
+                Configuration.GetConnectionString("DefaultConnection");
+
             services.AddDbContext<BackendModel.CornellGoDb>(o => 
-                o.UseLazyLoadingProxies().UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), 
+                o.UseLazyLoadingProxies().UseNpgsql(conString, 
                 e => e.UseNetTopologySuite()), ServiceLifetime.Scoped);
             services.AddSignalR();
             services.AddControllers();
@@ -64,17 +69,17 @@ namespace Backend
                 endpoints.MapHub<AdminHub>("/adminhub");
             });
 
+            app.UseAuthorization();
+
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = Path.Join(env.ContentRootPath, "Admin/client");
 
-                if (env.IsDevelopment())
+                /*if (env.IsDevelopment())
                 {
                     spa.UseReactDevelopmentServer(npmScript: "start");
-                }
+                }*/
             });
-
-            app.UseAuthorization();
         }
     }
 }
