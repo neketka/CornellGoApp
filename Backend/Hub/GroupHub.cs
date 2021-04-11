@@ -183,8 +183,10 @@ namespace Backend.Hub
 
             var nPoint = geometryFactory.CreatePoint(new Coordinate(@long, lat));
             var fPoint = geometryFactory.CreatePoint(chal.LongLat.Coordinates.FirstOrDefault());
+            nPoint.SRID = 4326;
+            fPoint.SRID = 4326;
 
-            double dist = nPoint.Distance(fPoint);
+            double dist = nPoint.ProjectTo(2855).Distance(fPoint.ProjectTo(2855));
             double scaled = dist / chal.Radius;
             if(scaled >= 0.9)
             {
