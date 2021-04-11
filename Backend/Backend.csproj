@@ -6,6 +6,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\favicon.ico" />
+    <Content Remove="wwwroot\index.html" />
+    <Content Remove="wwwroot\logo192.png" />
+    <Content Remove="wwwroot\logo512.png" />
+    <Content Remove="wwwroot\robots.txt" />
+    <Content Remove="wwwroot\static\css\main.afd7172b.chunk.css" />
+    <Content Remove="wwwroot\static\css\main.afd7172b.chunk.css.map" />
+    <Content Remove="wwwroot\static\js\2.6447f738.chunk.js" />
+    <Content Remove="wwwroot\static\js\2.6447f738.chunk.js.LICENSE.txt" />
+    <Content Remove="wwwroot\static\js\2.6447f738.chunk.js.map" />
+    <Content Remove="wwwroot\static\js\3.f3ccc828.chunk.js" />
+    <Content Remove="wwwroot\static\js\3.f3ccc828.chunk.js.map" />
+    <Content Remove="wwwroot\static\js\main.a45949bc.chunk.js" />
+    <Content Remove="wwwroot\static\js\main.a45949bc.chunk.js.map" />
+    <Content Remove="wwwroot\static\js\runtime-main.2d0c9ef4.js" />
+    <Content Remove="wwwroot\static\js\runtime-main.2d0c9ef4.js.map" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Admin\client\src\components\Login.tsx" />
   </ItemGroup>
 
@@ -43,6 +62,34 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="Admin\client\src\components\Login.tsx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\favicon.ico" />
+    <None Include="wwwroot\index.html" />
+    <None Include="wwwroot\logo192.png" />
+    <None Include="wwwroot\logo512.png" />
+    <None Include="wwwroot\robots.txt" />
+    <None Include="wwwroot\static\css\main.afd7172b.chunk.css" />
+    <None Include="wwwroot\static\css\main.afd7172b.chunk.css.map" />
+    <None Include="wwwroot\static\js\2.6447f738.chunk.js" />
+    <None Include="wwwroot\static\js\2.6447f738.chunk.js.LICENSE.txt" />
+    <None Include="wwwroot\static\js\2.6447f738.chunk.js.map" />
+    <None Include="wwwroot\static\js\3.f3ccc828.chunk.js" />
+    <None Include="wwwroot\static\js\3.f3ccc828.chunk.js.map" />
+    <None Include="wwwroot\static\js\main.a45949bc.chunk.js" />
+    <None Include="wwwroot\static\js\main.a45949bc.chunk.js.map" />
+    <None Include="wwwroot\static\js\runtime-main.2d0c9ef4.js" />
+    <None Include="wwwroot\static\js\runtime-main.2d0c9ef4.js.map" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\asset-manifest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\manifest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

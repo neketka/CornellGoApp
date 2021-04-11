@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BackendModel.Migrations
 {
     [DbContext(typeof(CornellGoDb))]
-    [Migration("20210411063948_InitialCreate")]
+    [Migration("20210411074053_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
