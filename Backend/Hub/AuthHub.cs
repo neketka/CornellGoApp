@@ -73,7 +73,7 @@ namespace Backend.Hub
         public async Task<bool> Logout()
         {
             UserSession session = await Database.UserSessions.FromSignalRId(Context.ConnectionId);
-            if (session != null)
+            if (session == null)
                 return false;
 
             Database.Remove(session);
