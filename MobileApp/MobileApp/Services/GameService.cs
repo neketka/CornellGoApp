@@ -34,6 +34,8 @@ namespace MobileApp.Services
         public GameService()
         {
             Client = new CornellGoClient("https://10.0.2.2:5001/hub");
+            CrossGeolocator.Current.PositionChanged += (s, e) => PollLocation(e.Position);
+            CrossGeolocator.Current.DesiredAccuracy = 1;
         }
 
         public GameService(IGameClient client)
@@ -52,7 +54,7 @@ namespace MobileApp.Services
                 await SecureStorage.SetAsync("session", await Client.GetSessionToken());
                 LoggedIn();
 
-                if (!await CrossGeolocator.Current.StartListeningAsync(TimeSpan.FromSeconds(2), 5))
+                if (!await CrossGeolocator.Current.StartListeningAsync(TimeSpan.FromSeconds(2), 1))
                 {
                     await Client.Logout();
                     SecureStorage.Remove("session");
@@ -79,7 +81,9 @@ namespace MobileApp.Services
             if (token != null && await Client.AttemptRelog(token))
             {
                 UserId = (await Client.GetUserData()).UserId;
-                if (!await CrossGeolocator.Current.StartListeningAsync(TimeSpan.FromSeconds(2), 5))
+                LoggedIn();
+
+                if (!await CrossGeolocator.Current.StartListeningAsync(TimeSpan.FromSeconds(2), 1))
                 {
                     await Client.Logout();
                     SecureStorage.Remove("session");

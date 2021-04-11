@@ -31,7 +31,10 @@ namespace MobileApp.ViewModels
             this.gameService = gameService;
 
             Avatar = ImageSource.FromResource("MobileApp.Assets.Images.profile.png");
-            Username = "Username";
+
+            gameService.Client.GetUserData().ContinueWith(u => Device.BeginInvokeOnMainThread(() => Username = u.Result.Username));
+            gameService.Client.UserDataUpdated += Client_UserDataUpdated;
+
             ChangeAvatarCommand = new Command(async () => 
             {
                 await MediaPicker.PickPhotoAsync();
@@ -70,10 +73,20 @@ namespace MobileApp.ViewModels
             });
         }
 
+        private async Task Client_UserDataUpdated(string username, int points)
+        {
+            await Device.InvokeOnMainThreadAsync(() => Username = username);
+        }
+
         public override Task OnEntering(object parameter)
         {
             gameService.Client.SendMetric(CommunicationModel.FrontendMetric.OpenSettings, "");
             return Task.CompletedTask;
+        }
+
+        public override void OnDestroying()
+        {
+            gameService.Client.UserDataUpdated -= Client_UserDataUpdated;
         }
     }
 }

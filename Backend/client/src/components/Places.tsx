@@ -179,11 +179,11 @@ function EditorDialog({ id, close, isOpen }: PlaceDialogProps) {
           </Grid>
           <Grid container>
             <TextField
-              label="Longitude"
+              label="Latitude"
               type="number"
-              value={data.long}
+              value={data.lat}
               onChange={(e) =>
-                setData({ ...data, long: parseFloat(e.target.value) })
+                setData({ ...data, lat: parseFloat(e.target.value) })
               }
               style={{ marginBottom: 8 }}
               fullWidth
@@ -191,11 +191,11 @@ function EditorDialog({ id, close, isOpen }: PlaceDialogProps) {
           </Grid>
           <Grid container>
             <TextField
-              label="Latitude"
+              label="Longitude"
               type="number"
-              value={data.lat}
+              value={data.long}
               onChange={(e) =>
-                setData({ ...data, lat: parseFloat(e.target.value) })
+                setData({ ...data, long: parseFloat(e.target.value) })
               }
               style={{ marginBottom: 8 }}
               fullWidth

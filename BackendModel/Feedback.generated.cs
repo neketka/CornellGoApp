@@ -5,7 +5,7 @@
 //     Manual changes to this file may cause unexpected behavior in your application.
 //     Manual changes to this file will be overwritten if the code is regenerated.
 //
-//     Produced by Entity Framework Visual Editor v3.0.3.2
+//     Produced by Entity Framework Visual Editor v3.0.4.7
 //     Source:                    https://github.com/msawczyn/EFDesigner
 //     Visual Studio Marketplace: https://marketplace.visualstudio.com/items?itemName=michaelsawczyn.EFDesigner
 //     Documentation:             https://msawczyn.github.io/EFDesigner/
@@ -54,7 +54,7 @@ namespace BackendModel
       /// </summary>
       /// <param name="message">The message within a feedback</param>
       /// <param name="timestamp">Creation timestamp</param>
-      /// <param name="user"></param>
+      /// <param name="user">Feedbacks associated with this user</param>
       public Feedback(string message, DateTime timestamp, global::BackendModel.User user)
       {
          if (string.IsNullOrEmpty(message)) throw new ArgumentNullException(nameof(message));
@@ -74,7 +74,7 @@ namespace BackendModel
       /// </summary>
       /// <param name="message">The message within a feedback</param>
       /// <param name="timestamp">Creation timestamp</param>
-      /// <param name="user"></param>
+      /// <param name="user">Feedbacks associated with this user</param>
       public static Feedback Create(string message, DateTime timestamp, global::BackendModel.User user)
       {
          return new Feedback(message, timestamp, user);

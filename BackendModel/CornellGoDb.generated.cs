@@ -5,7 +5,7 @@
 //     Manual changes to this file may cause unexpected behavior in your application.
 //     Manual changes to this file will be overwritten if the code is regenerated.
 //
-//     Produced by Entity Framework Visual Editor v3.0.3.2
+//     Produced by Entity Framework Visual Editor v3.0.4.7
 //     Source:                    https://github.com/msawczyn/EFDesigner
 //     Visual Studio Marketplace: https://marketplace.visualstudio.com/items?itemName=michaelsawczyn.EFDesigner
 //     Documentation:             https://msawczyn.github.io/EFDesigner/
@@ -175,7 +175,7 @@ namespace BackendModel
                      .IsRequired();
          modelBuilder.Entity<global::BackendModel.Challenge>()
                      .Property(t => t.LongLat)
-                     .HasColumnType("geography")
+                     .HasColumnType("geography (point)")
                      .IsRequired();
          modelBuilder.Entity<global::BackendModel.Challenge>()
                      .Property(t => t.Radius)
@@ -221,20 +221,18 @@ namespace BackendModel
                      .HasDefaultValue(8);
          modelBuilder.Entity<global::BackendModel.Group>()
                      .HasOne<global::BackendModel.Challenge>(p => p.Challenge)
-                     .WithOne()
-                     .HasForeignKey("Group", "ChallengeId")
-                     .OnDelete(DeleteBehavior.NoAction);
+                     .WithMany()
+                     .HasForeignKey("ChallengeId");
          modelBuilder.Entity<global::BackendModel.Group>().Navigation(e => e.Challenge).IsRequired();
-         modelBuilder.Entity<global::BackendModel.Group>()
-                     .HasMany<global::BackendModel.Challenge>(p => p.PrevChallenges)
-                     .WithOne()
-                     .HasForeignKey("GroupPrevChallengesId")
-                     .OnDelete(DeleteBehavior.NoAction);
          modelBuilder.Entity<global::BackendModel.Group>()
                      .HasMany<global::BackendModel.GroupMember>(p => p.GroupMembers)
                      .WithOne(p => p.Group)
                      .HasForeignKey("GroupId");
          modelBuilder.Entity<global::BackendModel.GroupMember>().Navigation(e => e.Group).IsRequired();
+         modelBuilder.Entity<global::BackendModel.Group>()
+                     .HasMany<global::BackendModel.Challenge>(p => p.PrevChallenges)
+                     .WithMany(p => p.Groups)
+                     .UsingEntity(x => x.ToTable("Challenge_Groups_x_Group_PrevChallenges"));
 
          modelBuilder.Entity<global::BackendModel.GroupMember>()
                      .ToTable("GroupMembers")
@@ -262,9 +260,8 @@ namespace BackendModel
                      .IsRequired();
          modelBuilder.Entity<global::BackendModel.PrevChallenge>()
                      .HasOne<global::BackendModel.Challenge>(p => p.Challenge)
-                     .WithOne()
-                     .HasForeignKey("PrevChallenge", "ChallengeId")
-                     .OnDelete(DeleteBehavior.NoAction);
+                     .WithMany()
+                     .HasForeignKey("ChallengeId");
          modelBuilder.Entity<global::BackendModel.PrevChallenge>().Navigation(e => e.Challenge).IsRequired();
 
          modelBuilder.Entity<global::BackendModel.SessionLogEntry>()

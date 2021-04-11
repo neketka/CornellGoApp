@@ -5,7 +5,7 @@
 //     Manual changes to this file may cause unexpected behavior in your application.
 //     Manual changes to this file will be overwritten if the code is regenerated.
 //
-//     Produced by Entity Framework Visual Editor v3.0.3.2
+//     Produced by Entity Framework Visual Editor v3.0.4.7
 //     Source:                    https://github.com/msawczyn/EFDesigner
 //     Visual Studio Marketplace: https://marketplace.visualstudio.com/items?itemName=michaelsawczyn.EFDesigner
 //     Documentation:             https://msawczyn.github.io/EFDesigner/
@@ -57,7 +57,7 @@ namespace BackendModel
       /// <param name="name">Name of this suggested challenge</param>
       /// <param name="desc">Description of the suggested challenge</param>
       /// <param name="timestamp">Creation timestamp</param>
-      /// <param name="user"></param>
+      /// <param name="user">Suggestions associated with this user</param>
       public Suggestion(byte[] imageurl, Point longlat, string name, string desc, DateTime timestamp, global::BackendModel.User user)
       {
          this.ImageUrl = imageurl;
@@ -87,7 +87,7 @@ namespace BackendModel
       /// <param name="name">Name of this suggested challenge</param>
       /// <param name="desc">Description of the suggested challenge</param>
       /// <param name="timestamp">Creation timestamp</param>
-      /// <param name="user"></param>
+      /// <param name="user">Suggestions associated with this user</param>
       public static Suggestion Create(byte[] imageurl, Point longlat, string name, string desc, DateTime timestamp, global::BackendModel.User user)
       {
          return new Suggestion(imageurl, longlat, name, desc, timestamp, user);
