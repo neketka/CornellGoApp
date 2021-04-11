@@ -5,7 +5,7 @@
 //     Manual changes to this file may cause unexpected behavior in your application.
 //     Manual changes to this file will be overwritten if the code is regenerated.
 //
-//     Produced by Entity Framework Visual Editor v3.0.3.2
+//     Produced by Entity Framework Visual Editor v3.0.4.7
 //     Source:                    https://github.com/msawczyn/EFDesigner
 //     Visual Studio Marketplace: https://marketplace.visualstudio.com/items?itemName=michaelsawczyn.EFDesigner
 //     Documentation:             https://msawczyn.github.io/EFDesigner/
@@ -53,7 +53,7 @@ namespace BackendModel
       /// Public constructor with required data
       /// </summary>
       /// <param name="timestamp">Creation timestamp</param>
-      /// <param name="challenge"></param>
+      /// <param name="challenge">Challenge associated with this previous challenge</param>
       /// <param name="_user0"></param>
       public PrevChallenge(DateTime timestamp, global::BackendModel.Challenge challenge, global::BackendModel.User _user0)
       {
@@ -72,7 +72,7 @@ namespace BackendModel
       /// Static create function (for use in LINQ queries, etc.)
       /// </summary>
       /// <param name="timestamp">Creation timestamp</param>
-      /// <param name="challenge"></param>
+      /// <param name="challenge">Challenge associated with this previous challenge</param>
       /// <param name="_user0"></param>
       public static PrevChallenge Create(DateTime timestamp, global::BackendModel.Challenge challenge, global::BackendModel.User _user0)
       {

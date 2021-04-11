@@ -23,7 +23,7 @@ namespace BackendModel
     {
         public static string ToToken(this UserSession userSession)
         {
-            return userSession.ToString();
+            return userSession.Id.ToString();
         }
     }
 }

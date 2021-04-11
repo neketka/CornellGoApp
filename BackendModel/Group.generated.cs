@@ -5,7 +5,7 @@
 //     Manual changes to this file may cause unexpected behavior in your application.
 //     Manual changes to this file will be overwritten if the code is regenerated.
 //
-//     Produced by Entity Framework Visual Editor v3.0.3.2
+//     Produced by Entity Framework Visual Editor v3.0.4.7
 //     Source:                    https://github.com/msawczyn/EFDesigner
 //     Visual Studio Marketplace: https://marketplace.visualstudio.com/items?itemName=michaelsawczyn.EFDesigner
 //     Documentation:             https://msawczyn.github.io/EFDesigner/
@@ -39,8 +39,8 @@ namespace BackendModel
       protected Group()
       {
          MaxMembers = 8;
-         PrevChallenges = new System.Collections.Generic.HashSet<global::BackendModel.Challenge>();
          GroupMembers = new System.Collections.Generic.HashSet<global::BackendModel.GroupMember>();
+         PrevChallenges = new System.Collections.Generic.HashSet<global::BackendModel.Challenge>();
 
          Init();
       }
@@ -57,7 +57,7 @@ namespace BackendModel
       /// Public constructor with required data
       /// </summary>
       /// <param name="maxmembers">Maximum number of members allowed</param>
-      /// <param name="challenge"></param>
+      /// <param name="challenge">Challenge of this group</param>
       public Group(global::BackendModel.Challenge challenge, int maxmembers = 8)
       {
          this.MaxMembers = maxmembers;
@@ -65,8 +65,8 @@ namespace BackendModel
          if (challenge == null) throw new ArgumentNullException(nameof(challenge));
          this.Challenge = challenge;
 
-         this.PrevChallenges = new System.Collections.Generic.HashSet<global::BackendModel.Challenge>();
          this.GroupMembers = new System.Collections.Generic.HashSet<global::BackendModel.GroupMember>();
+         this.PrevChallenges = new System.Collections.Generic.HashSet<global::BackendModel.Challenge>();
          Init();
       }
 
@@ -74,7 +74,7 @@ namespace BackendModel
       /// Static create function (for use in LINQ queries, etc.)
       /// </summary>
       /// <param name="maxmembers">Maximum number of members allowed</param>
-      /// <param name="challenge"></param>
+      /// <param name="challenge">Challenge of this group</param>
       public static Group Create(global::BackendModel.Challenge challenge, int maxmembers = 8)
       {
          return new Group(challenge, maxmembers);
@@ -119,16 +119,12 @@ namespace BackendModel
       public virtual global::BackendModel.Challenge Challenge { get; set; }
 
       /// <summary>
-      /// Union of all users&apos; visited places
-      /// </summary>
-      [Description("Union of all users' visited places")]
-      public virtual ICollection<global::BackendModel.Challenge> PrevChallenges { get; private set; }
-
-      /// <summary>
       /// Group this member belongs to
       /// </summary>
       [Description("Group this member belongs to")]
       public virtual ICollection<global::BackendModel.GroupMember> GroupMembers { get; private set; }
+
+      public virtual ICollection<global::BackendModel.Challenge> PrevChallenges { get; private set; }
 
    }
 }

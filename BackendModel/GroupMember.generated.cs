@@ -5,7 +5,7 @@
 //     Manual changes to this file may cause unexpected behavior in your application.
 //     Manual changes to this file will be overwritten if the code is regenerated.
 //
-//     Produced by Entity Framework Visual Editor v3.0.3.2
+//     Produced by Entity Framework Visual Editor v3.0.4.7
 //     Source:                    https://github.com/msawczyn/EFDesigner
 //     Visual Studio Marketplace: https://marketplace.visualstudio.com/items?itemName=michaelsawczyn.EFDesigner
 //     Documentation:             https://msawczyn.github.io/EFDesigner/
@@ -57,7 +57,7 @@ namespace BackendModel
       /// </summary>
       /// <param name="ishost">True if this member is a host</param>
       /// <param name="isdone">Is the group member done.</param>
-      /// <param name="group"></param>
+      /// <param name="group">Group members of this group</param>
       public GroupMember(bool ishost, bool isdone, global::BackendModel.Group group)
       {
          // NOTE: This class has one-to-one associations with GroupMember.
@@ -79,7 +79,7 @@ namespace BackendModel
       /// </summary>
       /// <param name="ishost">True if this member is a host</param>
       /// <param name="isdone">Is the group member done.</param>
-      /// <param name="group"></param>
+      /// <param name="group">Group members of this group</param>
       public static GroupMember Create(bool ishost, bool isdone, global::BackendModel.Group group)
       {
          return new GroupMember(ishost, isdone, group);

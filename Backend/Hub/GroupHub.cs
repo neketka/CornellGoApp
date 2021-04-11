@@ -37,6 +37,12 @@ namespace Backend.Hub
                     await Database.SaveChangesAsync();
                     gp.SignalRId = user.GroupMember.Group.Id.ToString();
 
+                    if (member.User?.UserSession?.SignalRId != null)
+                    {
+                        await Groups.RemoveFromGroupAsync(member.User.UserSession.SignalRId, grp.SignalRId);
+                        await Groups.AddToGroupAsync(gmem.User.UserSession.SignalRId, gp.SignalRId);
+                    }
+
                     await Clients.Group(user.GroupMember.Group.Id.ToString()).UpdateGroupData(gp.GetFriendlyId(), new GroupMemberData[] { 
                         new GroupMemberData(member.User.Id.ToString(), member.User.Username, true, member.IsDone, member.User.Score)
                     });
@@ -53,15 +59,19 @@ namespace Backend.Hub
                 await Database.SaveChangesAsync();
                 gp.SignalRId = user.GroupMember.Group.Id.ToString();
 
-                await Clients.Group(user.GroupMember.Group.Id.ToString()).UpdateGroupData(gp.GetFriendlyId(), new[] {
-                    new GroupMemberData(gmem.User.Id.ToString(), gmem.User.Username, true, gmem.IsDone, gmem.User.Score)
-                });
+                await Groups.RemoveFromGroupAsync(gmem.User.UserSession.SignalRId, grp.SignalRId);
+                await Groups.AddToGroupAsync(gmem.User.UserSession.SignalRId, gp.SignalRId);
 
                 grp.GroupMembers.Remove(gmem);
-                await Clients.Group(grp.SignalRId).UpdateGroupData(grp.GetFriendlyId(), new[] {
+
+                await Clients.Group(grp.SignalRId).UpdateGroupData(grp.GetFriendlyId(), grp.GroupMembers.Select(gmem => 
+                    new GroupMemberData(gmem.User.Id.ToString(), gmem.User.Username, true, gmem.IsDone, gmem.User.Score)).ToArray());
+
+                await Clients.Group(gp.SignalRId).UpdateGroupData(gp.GetFriendlyId(), new[] {
                     new GroupMemberData(gmem.User.Id.ToString(), gmem.User.Username, true, gmem.IsDone, gmem.User.Score)
                 });
             }
+            await Database.SaveChangesAsync();
 
             //Add to sessionlog
             if (user.Id == long.Parse(userId) && !user.GroupMember.IsHost)
@@ -108,7 +118,10 @@ namespace Backend.Hub
         {
             UserSession session = await Database.UserSessions.FromSignalRId(Context.ConnectionId);
             User user = session.User;
-            Group grp = Database.Groups.Single(b => b.Id == long.Parse(groupId));
+            Group grp = await Database.Groups.FromFriendlyId(groupId);
+
+            if (grp.MaxMembers == grp.GroupMembers.Count)
+                return false;
 
             //Make sure group isnt null
             if (grp == null)
@@ -117,16 +130,20 @@ namespace Backend.Hub
             //Remove user from old group
             await Kick(user.Id.ToString());
 
-            Database.Remove(user.GroupMember.Group);
-
             //Add user to new group
             grp.GroupMembers.Add(user.GroupMember);
             user.GroupMember.Group = grp;
+            user.GroupMember.IsHost = false;
+            user.GroupMember.IsDone = false;
 
             //Add to sessionlog
             var entry = new SessionLogEntry(SessionLogEntryType.UserFromGroupJoined, user.Id + ";" + groupId, DateTime.UtcNow, user);
             await Database.SessionLogEntries.AddAsync(entry);
 
+            await Groups.AddToGroupAsync(user.UserSession.SignalRId, grp.Id.ToString());
+
+            await Clients.Group(grp.SignalRId).UpdateGroupData(grp.GetFriendlyId(), grp.GroupMembers.Select(gmem =>
+                    new GroupMemberData(gmem.User.Id.ToString(), gmem.User.Username, true, gmem.IsDone, gmem.User.Score)).ToArray());
 
             foreach (GroupMember gmem2 in user.GroupMember.Group.GroupMembers)
             {
@@ -162,7 +179,6 @@ namespace Backend.Hub
 
         public async Task<GroupMemberData> GetGroupMember(string userId)
         {
-
             UserSession session = await Database.UserSessions.FromSignalRId(Context.ConnectionId);
             User user = Database.Users.Single(b => b.Id == long.Parse(userId));
             return new GroupMemberData(user.Id.ToString(), user.Username, user.GroupMember.IsHost, user.GroupMember.IsDone, user.Score);
@@ -174,6 +190,7 @@ namespace Backend.Hub
             User user = session.User;
             return user.GroupMember.Group.GetFriendlyId();
         }
+
         public async Task<ChallengeProgressData> CheckProgress(double lat, double @long)
         {
             UserSession session = await Database.UserSessions.FromSignalRId(Context.ConnectionId);
@@ -182,13 +199,12 @@ namespace Backend.Hub
             var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory();
 
             var nPoint = geometryFactory.CreatePoint(new Coordinate(@long, lat));
-            var fPoint = geometryFactory.CreatePoint(chal.LongLat.Coordinates.FirstOrDefault());
-            nPoint.SRID = 4326;
-            fPoint.SRID = 4326;
+            var fPoint = chal.LongLat;
+            nPoint.SRID = fPoint.SRID;
 
             double dist = nPoint.ProjectTo(2855).Distance(fPoint.ProjectTo(2855));
             double scaled = dist / chal.Radius;
-            if(scaled >= 0.9)
+            if(scaled < 0.1)
             {
                 user.GroupMember.IsDone = true;
                 await Clients.Caller.FinishChallenge();
@@ -199,16 +215,34 @@ namespace Backend.Hub
 
                 if (user.GroupMember.Group.GroupMembers.All(b => b.IsDone))
                 {
+                    foreach (GroupMember member in user.GroupMember.Group.GroupMembers)
+                    {
+                        member.User.GroupMember.IsDone = false;
+                        member.User.PrevChallenges.Add(new PrevChallenge(DateTime.UtcNow, user.GroupMember.Group.Challenge, member.User));
+                        await Clients.Group(user.GroupMember.Group.SignalRId).UpdateGroupMember(new GroupMemberData(
+                            member.User.Id.ToString(), member.User.Username, member.IsHost, member.IsDone, member.User.Score
+                        ));
+                    }
+                    user.GroupMember.Group.PrevChallenges.Add(user.GroupMember.Group.Challenge);
+
+                    await Database.SaveChangesAsync();
+
                     Challenge newChal = await user.GroupMember.Group.GetNewChallenge(Database.Challenges, @long, lat);
+                    user.GroupMember.Group.Challenge = newChal;
+
                     ChallengeData cData = new ChallengeData(newChal.Id.ToString(), newChal.Description, newChal.Points, newChal.ImageUrl);
+                    await Database.SaveChangesAsync();
+
                     await Clients.Group(user.GroupMember.Group.SignalRId).UpdateChallenge(cData);
 
                 }
                 await Database.SaveChangesAsync();
-
             }
 
-            return new ChallengeProgressData(nPoint.Distance(fPoint).ToString(), scaled);
+            string progressString = ((int)Math.Ceiling(dist / 80.4)).ToString() + " min";
+            double progressScale = 1.0 - Math.Max(Math.Min(scaled, 1.0), 0.0);
+
+            return new ChallengeProgressData(progressString, progressScale);
         }
 
         public async Task<int> GetMaxPlayers()

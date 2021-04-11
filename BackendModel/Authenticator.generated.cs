@@ -5,7 +5,7 @@
 //     Manual changes to this file may cause unexpected behavior in your application.
 //     Manual changes to this file will be overwritten if the code is regenerated.
 //
-//     Produced by Entity Framework Visual Editor v3.0.3.2
+//     Produced by Entity Framework Visual Editor v3.0.4.7
 //     Source:                    https://github.com/msawczyn/EFDesigner
 //     Visual Studio Marketplace: https://marketplace.visualstudio.com/items?itemName=michaelsawczyn.EFDesigner
 //     Documentation:             https://msawczyn.github.io/EFDesigner/
@@ -55,7 +55,7 @@ namespace BackendModel
       /// <param name="email">Email associated with the authenticator.</param>
       /// <param name="password">User&apos;s password hash</param>
       /// <param name="timestamp">Creation timestamp</param>
-      /// <param name="user"></param>
+      /// <param name="user">User that this is authenticating</param>
       public Authenticator(string email, string password, DateTime timestamp, global::BackendModel.User user)
       {
          if (string.IsNullOrEmpty(email)) throw new ArgumentNullException(nameof(email));
@@ -78,7 +78,7 @@ namespace BackendModel
       /// <param name="email">Email associated with the authenticator.</param>
       /// <param name="password">User&apos;s password hash</param>
       /// <param name="timestamp">Creation timestamp</param>
-      /// <param name="user"></param>
+      /// <param name="user">User that this is authenticating</param>
       public static Authenticator Create(string email, string password, DateTime timestamp, global::BackendModel.User user)
       {
          return new Authenticator(email, password, timestamp, user);

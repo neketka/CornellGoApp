@@ -181,12 +181,14 @@ namespace MobileApp.ViewModels
 
         private async Task Client_GroupDataUpdated(string friendlyId, CommunicationModel.GroupMemberData[] members)
         {
-            await Device.InvokeOnMainThreadAsync(() =>
+            await LoadInitialData();
+            /*await Device.InvokeOnMainThreadAsync(() =>
             {
+                GroupCode = friendlyId;
                 AddMembers(members);
                 UpdateGroupDataFromList();
                 gameService.PollLocation();
-            });
+            });*/
         }
 
         private async Task Client_ChallengeUpdated(CommunicationModel.ChallengeData data)
@@ -205,7 +207,10 @@ namespace MobileApp.ViewModels
                 VictoryMode = true;
                 ChallengeImage = img;
                 Points = data.Points;
+                ChallengeDescription = data.Description;
             });
+
+            IsDone = false;
 
             await Task.Delay(2000);
             if (await dialogService.ShowAskFeedback())

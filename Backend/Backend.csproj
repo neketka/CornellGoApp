@@ -85,6 +85,9 @@
     <None Update="client\build\static\js\main.a45949bc.chunk.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="client\build\static\js\main.a86c851c.chunk.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="client\build\static\js\runtime-main.2d0c9ef4.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

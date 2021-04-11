@@ -80,7 +80,6 @@ namespace Backend.Hub
         {
             Challenge place = Database.Challenges.Single(b => b.Id == long.Parse(placeId));
             return new LearnMoreData(place.Id, place.Name, place.LongLat.X, place.LongLat.Y, place.Description, place.LongDescription, place.CitationUrl, place.LinkUrl, place.ImageUrl, DateTime.UtcNow);
-
         }
     }
 }
