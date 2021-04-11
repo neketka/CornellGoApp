@@ -39,5 +39,7 @@
 	</array>
 	<key>CFBundleShortVersionString</key>
 	<string>0.1.0</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Needs location to track found places</string>
 </dict>
 </plist>

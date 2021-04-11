@@ -66,7 +66,7 @@ export function ServerData(props: { children: ReactNode }) {
   });
 
   const placesRef = useRef([] as ServerPlace[]);
-
+        
   useEffect(() => {
     methodRef.current.modified = (
       state: PlaceDataModifiedState,
