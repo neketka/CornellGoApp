@@ -156,17 +156,8 @@ namespace Backend.Hub
             UserSession session = await Database.UserSessions.FromSignalRId(Context.ConnectionId);
             User user = session.User;
 
-            var gmems = Database.GroupMembers.AsAsyncEnumerable().Where(b => b.Group.Id == user.GroupMember.Group.Id);
-            List<GroupMemberData> list = new List<GroupMemberData>();
-
-            await foreach (GroupMember gmem in gmems)
-            {
-                GroupMemberData res = await GetGroupMember(gmem.User.Id.ToString());
-                list.Add(res);
-            }
-            // CHANGE TO LINQ
-            return list.ToArray();
-   
+            return user.GroupMember.Group.GroupMembers.Select(gmem =>
+                new GroupMemberData(gmem.User.Id.ToString(), gmem.User.Username, gmem.IsHost, gmem.IsDone, gmem.User.Score)).ToArray();
         }
 
         public async Task<GroupMemberData> GetGroupMember(string userId)
@@ -190,7 +181,7 @@ namespace Backend.Hub
             Challenge chal = user.GroupMember.Group.Challenge;
             var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory();
 
-            var nPoint = geometryFactory.CreatePoint(new Coordinate(lat, @long));
+            var nPoint = geometryFactory.CreatePoint(new Coordinate(@long, lat));
             var fPoint = geometryFactory.CreatePoint(chal.LongLat.Coordinates.FirstOrDefault());
 
             double dist = nPoint.Distance(fPoint);

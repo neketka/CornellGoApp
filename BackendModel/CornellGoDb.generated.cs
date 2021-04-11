@@ -96,6 +96,8 @@ namespace BackendModel
       /// <inheritdoc />
       protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
       {
+         optionsBuilder.UseLazyLoadingProxies();
+
          CustomInit(optionsBuilder);
       }
 

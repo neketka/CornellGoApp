@@ -33,7 +33,8 @@ namespace Backend
                 .WithOrigins("https://localhost:5001");
             }));
             services.AddDbContext<BackendModel.CornellGoDb>(o => 
-                o.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), e => e.UseNetTopologySuite()));
+                o.UseLazyLoadingProxies().UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), 
+                e => e.UseNetTopologySuite()), ServiceLifetime.Scoped);
             services.AddSignalR();
             services.AddControllers();
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "Backend", Version = "v1" }));

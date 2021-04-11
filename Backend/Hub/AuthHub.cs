@@ -98,7 +98,7 @@ namespace Backend.Hub
                 return false;
 
             User user = new(0, username, email);
-            await Database.AddAsync(user);
+            user = (await Database.AddAsync(user)).Entity;
             await Database.SaveChangesAsync();
 
             Authenticator auth = new(email, CreatePasswordHash(password), DateTime.UtcNow, user);
@@ -106,6 +106,9 @@ namespace Backend.Hub
             var newChal = await GroupExtensions.GetNewChallenge(null, Database.Challenges, curLong, curLat, true);
 
             Group g = new Group(newChal);
+            g = (await Database.AddAsync(g)).Entity;
+            await Database.SaveChangesAsync();
+
             user.GroupMember = new GroupMember(true, false, g);
             await Database.SaveChangesAsync();
             g.SignalRId = g.Id.ToString();
@@ -116,7 +119,6 @@ namespace Backend.Hub
             var entry = new SessionLogEntry(SessionLogEntryType.UserCreated, user.Id.ToString(), DateTime.UtcNow, user);
 
             await Database.AddAsync(entry);
-            await Database.AddAsync(g);
             await Database.AddAsync(auth);
 
             await Database.SaveChangesAsync();

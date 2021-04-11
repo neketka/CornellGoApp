@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<modelRoot xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="3.0.3.2" Id="cba47279-0950-4257-bb2c-e4d5e72a52a4" lazyLoadingEnabled="false" entityContainerName="CornellGoDb" namespace="BackendModel" automaticMigrationsEnabled="false" showCascadeDeletes="false" databaseType="None" summary="Model of the CornellGO backend" exposeForeignKeys="false" propertyAccessModeDefault="Field" generateDbContextFactory="false" showInterfaceIndicators="false" xmlns="http://schemas.microsoft.com/dsltools/EFModel">
+<modelRoot xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="3.0.3.2" Id="cba47279-0950-4257-bb2c-e4d5e72a52a4" entityContainerName="CornellGoDb" namespace="BackendModel" automaticMigrationsEnabled="false" showCascadeDeletes="false" databaseType="None" summary="Model of the CornellGO backend" exposeForeignKeys="false" propertyAccessModeDefault="Field" generateDbContextFactory="false" showInterfaceIndicators="false" xmlns="http://schemas.microsoft.com/dsltools/EFModel">
   <enums>
     <modelRootHasEnums Id="e9867c18-cc1b-42fb-a5fa-adf59876066f">
       <modelEnum Id="9e47a61f-769c-4f11-99d3-f225fe68d34c" namespace="BackendModel" name="SessionLogEntryType" outputDirectory="" summary="Type of entry in session log">

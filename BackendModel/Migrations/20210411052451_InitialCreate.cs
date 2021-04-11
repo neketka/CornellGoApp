@@ -13,6 +13,23 @@ namespace BackendModel.Migrations
                 name: "dbo");
 
             migrationBuilder.CreateTable(
+                name: "Admins",
+                schema: "dbo",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    PasswordHash = table.Column<string>(type: "text", nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false),
+                    SignalRId = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Admins", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 schema: "dbo",
                 columns: table => new
@@ -74,13 +91,37 @@ namespace BackendModel.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SessionLogEntries",
+                schema: "dbo",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    EntryType = table.Column<int>(type: "integer", nullable: false),
+                    EntryData = table.Column<string>(type: "text", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    UserSessonLogEntriesId = table.Column<long>(type: "bigint", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SessionLogEntries", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SessionLogEntries_Users_UserSessonLogEntriesId",
+                        column: x => x.UserSessonLogEntriesId,
+                        principalSchema: "dbo",
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Suggestions",
                 schema: "dbo",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ImageJPG = table.Column<byte[]>(type: "bytea", nullable: false),
+                    ImageUrl = table.Column<byte[]>(type: "bytea", nullable: false),
                     LongLat = table.Column<Point>(type: "geometry", nullable: false),
                     Name = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
                     Desc = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
@@ -128,7 +169,6 @@ namespace BackendModel.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Version = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: false),
                     SignalRId = table.Column<string>(type: "text", nullable: true),
                     MaxMembers = table.Column<int>(type: "integer", nullable: false, defaultValue: 8),
                     ChallengeId = table.Column<long>(type: "bigint", nullable: false)
@@ -150,7 +190,10 @@ namespace BackendModel.Migrations
                     Points = table.Column<int>(type: "integer", nullable: false),
                     LongLat = table.Column<Point>(type: "geometry", nullable: false),
                     Radius = table.Column<double>(type: "double precision", nullable: false),
-                    ImageJPG = table.Column<byte[]>(type: "bytea", nullable: false),
+                    ImageUrl = table.Column<string>(type: "text", nullable: false),
+                    LongDescription = table.Column<string>(type: "text", nullable: false),
+                    CitationUrl = table.Column<string>(type: "text", nullable: false),
+                    LinkUrl = table.Column<string>(type: "text", nullable: false),
                     GroupPrevChallengesId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
@@ -277,6 +320,12 @@ namespace BackendModel.Migrations
                 column: "UserPrevChallengesId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SessionLogEntries_UserSessonLogEntriesId",
+                schema: "dbo",
+                table: "SessionLogEntries",
+                column: "UserSessonLogEntriesId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Suggestions_UserId",
                 schema: "dbo",
                 table: "Suggestions",
@@ -307,6 +356,10 @@ namespace BackendModel.Migrations
                 table: "Challenges");
 
             migrationBuilder.DropTable(
+                name: "Admins",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
                 name: "Authenticators",
                 schema: "dbo");
 
@@ -320,6 +373,10 @@ namespace BackendModel.Migrations
 
             migrationBuilder.DropTable(
                 name: "PrevChallenges",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
+                name: "SessionLogEntries",
                 schema: "dbo");
 
             migrationBuilder.DropTable(

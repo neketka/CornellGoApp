@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BackendModel.Migrations
 {
     [DbContext(typeof(CornellGoDb))]
-    [Migration("20210309045102_AddMetricsModel0")]
-    partial class AddMetricsModel0
+    [Migration("20210411052451_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -22,6 +22,33 @@ namespace BackendModel.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
                 .HasAnnotation("ProductVersion", "5.0.3")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+            modelBuilder.Entity("BackendModel.Admin", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("SignalRId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Admins");
+                });
 
             modelBuilder.Entity("BackendModel.Authenticator", b =>
                 {
@@ -59,6 +86,10 @@ namespace BackendModel.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<string>("CitationUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -68,6 +99,14 @@ namespace BackendModel.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("LinkUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("LongDescription")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -136,12 +175,6 @@ namespace BackendModel.Migrations
                     b.Property<string>("SignalRId")
                         .HasColumnType("text");
 
-                    b.Property<byte[]>("Version")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("bytea");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ChallengeId")
@@ -205,7 +238,7 @@ namespace BackendModel.Migrations
                     b.ToTable("PrevChallenges");
                 });
 
-            modelBuilder.Entity("BackendModel.SessonLogEntry", b =>
+            modelBuilder.Entity("BackendModel.SessionLogEntry", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -229,7 +262,7 @@ namespace BackendModel.Migrations
 
                     b.HasIndex("UserSessonLogEntriesId");
 
-                    b.ToTable("SessonLogEntries");
+                    b.ToTable("SessionLogEntries");
                 });
 
             modelBuilder.Entity("BackendModel.Suggestion", b =>
@@ -393,7 +426,7 @@ namespace BackendModel.Migrations
                     b.Navigation("Challenge");
                 });
 
-            modelBuilder.Entity("BackendModel.SessonLogEntry", b =>
+            modelBuilder.Entity("BackendModel.SessionLogEntry", b =>
                 {
                     b.HasOne("BackendModel.User", null)
                         .WithMany("SessonLogEntries")
