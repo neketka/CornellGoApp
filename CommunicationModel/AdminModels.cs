@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CommunicationModel
+namespace CommunicationModel    
 {
-    public record PlaceData(string Id, string ImageUrl, string Name, string Description, int Points, double Lat, double Long, double Radius, string citationURL, string linkURL, string longDescription);
+    public record PlaceData(string Id, string ImageUrl, string Name, string Description, int Points, double Lat, double Long, double Radius, string CitationUrl, string LinkUrl, string LongDescription);
     public enum PlaceDataModifiedState
     {
         Created = 0, Destroyed = 1, Modified = 2

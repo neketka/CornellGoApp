@@ -8,5 +8,6 @@ namespace CommunicationModel
     public interface IAdminClientCallback
     {
         Task PlaceModified(PlaceDataModifiedState state, PlaceData data);
+        Task AdminApprovalUpdate(string email, bool approved);
     }
 }

@@ -13,7 +13,7 @@ namespace Backend.Hub
     {
         public async Task<UserData> GetUserData()
         {
-            UserSession session = await Database.UserSessions.FromSignalRId(Context.UserIdentifier);
+            UserSession session = await Database.UserSessions.FromSignalRId(Context.ConnectionId);
             User user = session.User;
             int index = await Database.Users.AsAsyncEnumerable()
                 .Select((c, i) => new { User = c, Index = i })
@@ -34,7 +34,7 @@ namespace Backend.Hub
 
         public async IAsyncEnumerable<ChallengeHistoryEntryData> GetHistoryData()
         {
-            UserSession session = await Database.UserSessions.FromSignalRId(Context.UserIdentifier);
+            UserSession session = await Database.UserSessions.FromSignalRId(Context.ConnectionId);
             User user = session.User;
             IEnumerable<PrevChallenge> query = user.PrevChallenges;
             foreach (PrevChallenge prev in query)
@@ -46,16 +46,19 @@ namespace Backend.Hub
 
         public async Task<string> GetPrevChallengeName()
         {
-            UserSession session = await Database.UserSessions.FromSignalRId(Context.UserIdentifier);
+            UserSession session = await Database.UserSessions.FromSignalRId(Context.ConnectionId);
             User user = session.User;
             return user.PrevChallenges.LastOrDefault().ToString();
         }
       
         public async Task SendMetric(FrontendMetric metric, string data)
         {
+            UserSession session = await Database.UserSessions.FromSignalRId(Context.ConnectionId);
 
-            UserSession session = await Database.UserSessions.FromSignalRId(Context.UserIdentifier);
+            if (session == null) return;
+
             User user = session.User;
+
             IDictionary<FrontendMetric, SessionLogEntryType> entryDic = new Dictionary<FrontendMetric, SessionLogEntryType>();
             entryDic.Add(FrontendMetric.AppResumed, SessionLogEntryType.AppResumed);
             entryDic.Add(FrontendMetric.AppSuspended, SessionLogEntryType.AppSuspended);

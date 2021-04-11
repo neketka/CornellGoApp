@@ -25,8 +25,16 @@ namespace Backend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(o => o.AddPolicy("CorsPolicy", builder => {
+                builder
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials()
+                .WithOrigins("https://localhost:5001");
+            }));
             services.AddDbContext<BackendModel.CornellGoDb>(o => 
-                o.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), e => e.UseNetTopologySuite()));
+                o.UseLazyLoadingProxies().UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), 
+                e => e.UseNetTopologySuite()), ServiceLifetime.Scoped);
             services.AddSignalR();
             services.AddControllers();
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "Backend", Version = "v1" }));
@@ -48,7 +56,14 @@ namespace Backend
             app.UseRouting();
             app.UseHttpsRedirection();
             app.UseSpaStaticFiles();
-            app.UseMvc();
+            app.UseCors("CorsPolicy");
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHub<CornellGoHub>("/hub");
+                endpoints.MapHub<AdminHub>("/adminhub");
+            });
+
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = Path.Join(env.ContentRootPath, "Admin/client");
@@ -60,12 +75,6 @@ namespace Backend
             });
 
             app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapHub<CornellGoHub>("/hub");
-                endpoints.MapHub<AdminHub>("/adminhub");
-            });
         }
     }
 }

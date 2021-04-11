@@ -10,7 +10,7 @@ namespace CommunicationModel
         Task<bool> ModifyPlace(PlaceDataModifiedState state, PlaceData data);
         IAsyncEnumerable<PlaceData> GetPlaces();
         Task<string[]> GetUnapprovedAdmins();
-        Task<bool> ApproveAdmin(string email);
+        Task<bool> UpdateAdminStatus(string email, bool approve);
         Task<bool> RequestAdmin(string email, string password);
         Task<AdminLoginResult> Login(string email, string password);
     }

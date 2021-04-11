@@ -96,6 +96,8 @@ namespace BackendModel
       /// <inheritdoc />
       protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
       {
+         optionsBuilder.UseLazyLoadingProxies();
+
          CustomInit(optionsBuilder);
       }
 
@@ -211,10 +213,6 @@ namespace BackendModel
          modelBuilder.Entity<global::BackendModel.Group>()
                      .Property(t => t.Id)
                      .ValueGeneratedOnAdd()
-                     .IsRequired();
-         modelBuilder.Entity<global::BackendModel.Group>()
-                     .Property(t => t.Version)
-                     .IsRowVersion()
                      .IsRequired();
          modelBuilder.Entity<global::BackendModel.Group>()
                      .Property(t => t.MaxMembers)
