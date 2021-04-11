@@ -48,7 +48,7 @@ namespace Backend.Hub
         {
             UserSession session = await Database.UserSessions.FromSignalRId(Context.ConnectionId);
             User user = session.User;
-            return user.PrevChallenges.LastOrDefault().ToString();
+            return user.PrevChallenges.LastOrDefault()?.Challenge.Name ?? "";
         }
       
         public async Task SendMetric(FrontendMetric metric, string data)
@@ -67,12 +67,11 @@ namespace Backend.Hub
             entryDic.Add(FrontendMetric.OpenJoinGroupMenu, SessionLogEntryType.OpenJoinGroupMenu);
             entryDic.Add(FrontendMetric.OpenGroupMenu, SessionLogEntryType.OpenGroupMenu);
             entryDic.Add(FrontendMetric.OpenLearnMore, SessionLogEntryType.OpenLearnMore);
-            entryDic.Add(FrontendMetric.AppSuspended, SessionLogEntryType.AppSuspended);
             entryDic.Add(FrontendMetric.OpenHistory, SessionLogEntryType.OpenHistory);
             entryDic.Add(FrontendMetric.OpenLeaderboard, SessionLogEntryType.OpenLeaderboard);
             entryDic.Add(FrontendMetric.ClosedApp, SessionLogEntryType.ClosedApp);
 
-            await Database.SessionLogEntries.AddAsync(new SessionLogEntry(entryDic[metric], data, DateTime.UtcNow, user));
+            await Database.SessionLogEntries.AddAsync(new SessionLogEntry(entryDic[metric], string.IsNullOrWhiteSpace(data) ? "nothing" : data, DateTime.UtcNow, user));
             await Database.SaveChangesAsync();
 
         }

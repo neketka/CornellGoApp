@@ -67,6 +67,7 @@
                    TextDecorations="Underline"
                    Margin="0, 8, 0, 0"
                    FontSize="16"
+                   IsVisible="False"
                    />
         </StackLayout>
     </ContentPage.Content>

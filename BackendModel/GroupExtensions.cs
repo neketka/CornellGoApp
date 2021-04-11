@@ -38,13 +38,11 @@ namespace BackendModel
 
             var coord = new NetTopologySuite.Geometries.Point(longitude, latitude);
 
-            Challenge query = isNewUser 
-                ? await chals.Where(p => p.Radius * 0.1 > p.LongLat.Distance(coord))
-                             .OrderBy(c => c.LongLat.Distance(coord)).FirstOrDefaultAsync()
-                : await chals.Where(p => (p.Radius * 0.1 > p.LongLat.Distance(coord)) && group.PrevChallenges.All(p2 => p2.Id != p.Id))
-                             .OrderBy(c => c.LongLat.Distance(coord)).FirstOrDefaultAsync();
+            var query = chals.OrderBy(c => c.LongLat.Distance(coord) + Math.Max(c.Radius * 0.1 - c.LongLat.Distance(coord), 0) * 10000);
+            if (!isNewUser)
+                query = (IOrderedQueryable<Challenge>)query.Where(chal => !group.PrevChallenges.Contains(chal));
 
-            return query;
+            return await query.FirstOrDefaultAsync();
         }
 
         public static string GetFriendlyId(this Group group)

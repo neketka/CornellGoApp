@@ -65,6 +65,8 @@ export function ServerData(props: { children: ReactNode }) {
     approval: (email: string, approval: boolean) => {},
   });
 
+  const placesRef = useRef([] as ServerPlace[]);
+        
   useEffect(() => {
     methodRef.current.modified = (
       state: PlaceDataModifiedState,
@@ -160,12 +162,13 @@ export function ServerData(props: { children: ReactNode }) {
         password
       );
       if (result === ServerLoginResult.Success) {
+        placesRef.current = [];
         connectionRef.current?.stream("GetPlaces").subscribe({
           next: (place) => {
             console.log(place);
-            setPlaces([place, ...places]);
-          },
-          complete: () => {},
+            placesRef.current.push(place);
+            },
+          complete: () => setPlaces(placesRef.current.reverse()),
           error: (err) => {},
         });
 
