@@ -69,8 +69,6 @@ namespace Backend
                 endpoints.MapHub<AdminHub>("/adminhub");
             });
 
-            app.UseAuthorization();
-
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = Path.Join(env.ContentRootPath, "Admin/client");
