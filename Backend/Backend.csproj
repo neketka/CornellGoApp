@@ -6,14 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-<<<<<<< HEAD
-    <None Remove="Admin\client\src\components\Login.tsx" />
-=======
     <Compile Remove="Admin\client\**" />
     <Content Remove="Admin\client\**" />
     <EmbeddedResource Remove="Admin\client\**" />
     <None Remove="Admin\client\**" />
->>>>>>> MoreProduction
   </ItemGroup>
 
   <ItemGroup>
@@ -50,9 +46,6 @@
   </ItemGroup>
 
   <ItemGroup>
-<<<<<<< HEAD
-    <TypeScriptCompile Include="Admin\client\src\components\Login.tsx" />
-=======
     <Content Update="client\build\asset-manifest.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -95,7 +88,6 @@
     <None Update="client\build\static\js\runtime-main.2d0c9ef4.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
->>>>>>> MoreProduction
   </ItemGroup>
 
 </Project>
