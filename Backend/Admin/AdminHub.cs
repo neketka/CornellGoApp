@@ -14,10 +14,23 @@ namespace Backend.Admin
         private CornellGoDb Database { get; }
         public AdminHub(CornellGoDb context) => Database = context;
 
-        public IAsyncEnumerable<PlaceData> GetPlaces()
+        public async IAsyncEnumerable<PlaceData> GetPlaces()
         {
-            return Database.Challenges.AsAsyncEnumerable().Select(chal => new PlaceData(chal.Id.ToString(), chal.ImageUrl, chal.Name,
-                chal.Description, chal.Points, chal.LongLat.Y, chal.LongLat.X, chal.Radius, chal.CitationUrl, chal.LinkUrl, chal.LongDescription));
+            if (!await CheckAuthorization())
+            {
+                await foreach (var place in new List<PlaceData>().ToAsyncEnumerable())
+                    yield return place;
+            }
+            else
+            {
+                var places = Database.Challenges.AsAsyncEnumerable().Select(chal => new PlaceData(chal.Id.ToString(), chal.ImageUrl, chal.Name,
+                    chal.Description, chal.Points, chal.LongLat.Y, chal.LongLat.X, chal.Radius, chal.CitationUrl, chal.LinkUrl, chal.LongDescription));
+
+                await foreach (var place in places)
+                {
+                    yield return place;
+                }
+            }
         }
 
         public async Task<bool> ModifyPlace(PlaceDataModifiedState state, PlaceData data)
@@ -26,7 +39,7 @@ namespace Backend.Admin
                 return false;
 
             Challenge chal = state == PlaceDataModifiedState.Created 
-                ? new(data.Name, data.Description, data.Points, new(data.Long, data.Lat), data.Radius, data.ImageUrl, data.longDescription, data.citationURL, data.linkURL)
+                ? new(data.Name, data.Description, data.Points, new(data.Long, data.Lat), data.Radius, data.ImageUrl, data.LongDescription, data.CitationUrl, data.LinkUrl)
                 : await Database.Challenges.SingleAsync(c => c.Id.ToString() == data.Id);
 
             switch (state)
@@ -47,7 +60,7 @@ namespace Backend.Admin
             }
 
             await Database.SaveChangesAsync();
-            await Clients.All.PlaceModified(state, data);
+            await Clients.Group("Authorized").PlaceModified(state, data);
 
             return true;
         }
@@ -57,11 +70,15 @@ namespace Backend.Admin
             if (await Database.Admins.AnyAsync(e => e.Email == email))
                 return false;
 
-            BackendModel.Admin admin = new BackendModel.Admin(email, CornellGoHub.CreatePasswordHash(password),
-                AdminAccountStatus.Awaiting, "");
+            var hashed = CornellGoHub.CreatePasswordHash(password);
+
+            BackendModel.Admin admin = new BackendModel.Admin(email, hashed,
+                AdminAccountStatus.Awaiting, Context.ConnectionId);
 
             await Database.Admins.AddAsync(admin);
             await Database.SaveChangesAsync();
+
+            await Clients.Group("Authorized").AdminApprovalUpdate(email, false);
             return true;
         }
 
@@ -70,14 +87,16 @@ namespace Backend.Admin
             BackendModel.Admin a = await Database.Admins.FirstOrDefaultAsync(a => a.Email == email);
             if (a == null)
                 return AdminLoginResult.NoAccount;
-
+            
             if (!CornellGoHub.VerifyPasswordHash(password, a.PasswordHash))
                 return AdminLoginResult.WrongPassword;
+
+            await Groups.AddToGroupAsync(Context.ConnectionId, "Authorized");
 
             switch (a.Status)
             {
                 case AdminAccountStatus.Approved:
-                    a.SignalRId = Context.UserIdentifier;
+                    a.SignalRId = Context.ConnectionId;
                     await Database.SaveChangesAsync();
                     return AdminLoginResult.Success;
                 case AdminAccountStatus.Awaiting:
@@ -101,16 +120,19 @@ namespace Backend.Admin
                 .ToArrayAsync();
         }
 
-        public async Task<bool> ApproveAdmin(string email)
+        public async Task<bool> UpdateAdminStatus(string email, bool approve)
         {
             if (!await CheckAuthorization())
                 return false;
 
             BackendModel.Admin admin = Database.Admins.SingleOrDefault(a => a.Status == AdminAccountStatus.Awaiting && a.Email == email);
             if (admin == null)
-                return false;
-            admin.Status = AdminAccountStatus.Approved;
+                return true;
+
+            admin.Status = approve ? AdminAccountStatus.Approved : AdminAccountStatus.Rejected;
             await Database.SaveChangesAsync();
+
+            await Clients.Group("Authorized").AdminApprovalUpdate(email, true);
             return true;
         }
 

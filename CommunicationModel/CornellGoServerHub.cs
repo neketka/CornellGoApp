@@ -55,7 +55,7 @@ namespace CommunicationModel
             => await Connection.InvokeAsync<bool>("Logout");
 
         public async Task<bool> Register(string username, string password, string email, double latitude, double longitude)
-            => await Connection.InvokeAsync<bool>("Register", username, password, email);
+            => await Connection.InvokeAsync<bool>("Register", username, password, email, latitude, longitude);
 
         public async Task<bool> ChangeUsername(string username)
             => await Connection.InvokeAsync<bool>("ChangeUsername", username);

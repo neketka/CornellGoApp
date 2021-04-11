@@ -8,6 +8,7 @@
              x:Class="MobileApp.Views.LeaderPage"
              Title="Leaderboard"
              Shell.FlyoutBehavior="Disabled"
+             BackgroundColor="{StaticResource Secondary}"
              >
     <ContentPage.Resources>
         <ex:NumLengthConverter x:Key="numLen"/>

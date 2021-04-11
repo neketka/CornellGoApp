@@ -14,18 +14,19 @@ namespace Backend.Hub
     {
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            UserSession session = await Database.UserSessions.FromSignalRId(Context.UserIdentifier);
+            UserSession session = await Database.UserSessions.FromSignalRId(Context.ConnectionId);
+
             if (session != null)
             {
+                //Add to sessionlog
+                var entry = new SessionLogEntry(SessionLogEntryType.LostConnection, session.User + "Lost Connection", DateTime.UtcNow, session.User);
+                await Database.SessionLogEntries.AddAsync(entry);
+                await Database.SaveChangesAsync();
+
                 session.SignalRId = null;
                 await Database.SaveChangesAsync();
             }
             await base.OnDisconnectedAsync(exception);
-
-            //Add to sessionlog
-            var entry = new SessionLogEntry(SessionLogEntryType.LostConnection, session.User + "Lost Connection", DateTime.UtcNow, session.User);
-            await Database.SessionLogEntries.AddAsync(entry);
-            await Database.SaveChangesAsync();
         }
 
         public async Task<bool> AttemptRelog(string session)
@@ -33,8 +34,8 @@ namespace Backend.Hub
             UserSession usession = await Database.UserSessions.FromToken(session);
             if (usession != null)
             {
-                usession.SignalRId = Context.UserIdentifier;
-                await Groups.AddToGroupAsync(Context.UserIdentifier, usession.User.GroupMember.Group.Id.ToString());
+                usession.SignalRId = Context.ConnectionId;
+                await Groups.AddToGroupAsync(Context.ConnectionId, usession.User.GroupMember.Group.Id.ToString());
                 
                 //Add to sessionlog
                 var entry = new SessionLogEntry(SessionLogEntryType.Relog, usession.User.Id.ToString(), DateTime.UtcNow, usession.User);
@@ -56,9 +57,9 @@ namespace Backend.Hub
             User user = session.User;
             authenticator.User.UserSession = session;
 
-            session.SignalRId = Context.UserIdentifier;
+            session.SignalRId = Context.ConnectionId;
 
-            await Groups.AddToGroupAsync(Context.UserIdentifier, user.GroupMember.Group.Id.ToString());
+            await Groups.AddToGroupAsync(Context.ConnectionId, user.GroupMember.Group.Id.ToString());
             await Database.SaveChangesAsync();
 
             //Add to sessionlog
@@ -71,12 +72,12 @@ namespace Backend.Hub
 
         public async Task<bool> Logout()
         {
-            UserSession session = await Database.UserSessions.FromSignalRId(Context.UserIdentifier);
+            UserSession session = await Database.UserSessions.FromSignalRId(Context.ConnectionId);
             if (session != null)
                 return false;
 
             Database.Remove(session);
-            await Groups.RemoveFromGroupAsync(Context.UserIdentifier, session.User.GroupMember.Group.Id.ToString());
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, session.User.GroupMember.Group.Id.ToString());
 
             //Add to sessionlog
             var entry = new SessionLogEntry(SessionLogEntryType.Logout, session.User.Id.ToString(), DateTime.UtcNow, session.User);
@@ -88,7 +89,7 @@ namespace Backend.Hub
 
         public async Task<string> GetSessionToken()
         {
-            return (await Database.UserSessions.FromSignalRId(Context.UserIdentifier))?.ToToken();
+            return (await Database.UserSessions.FromSignalRId(Context.ConnectionId))?.ToToken();
         }
 
         public async Task<bool> Register(string username, string password, string email, double curLat, double curLong)
@@ -97,18 +98,26 @@ namespace Backend.Hub
                 return false;
 
             User user = new(0, username, email);
+            await Database.AddAsync(user);
+            await Database.SaveChangesAsync();
+
             Authenticator auth = new(email, CreatePasswordHash(password), DateTime.UtcNow, user);
 
-            await auth.User.NewGroup(Database.Challenges, curLat, curLong);
+            var newChal = await GroupExtensions.GetNewChallenge(null, Database.Challenges, curLong, curLat, true);
 
-            await Groups.AddToGroupAsync(Context.UserIdentifier, auth.User.GroupMember.Group.Id.ToString());
+            Group g = new Group(newChal);
+            user.GroupMember = new GroupMember(true, false, g);
+            await Database.SaveChangesAsync();
+            g.SignalRId = g.Id.ToString();
 
-            await Database.Authenticators.AddAsync(auth);
-            await Database.Groups.AddAsync(auth.User.GroupMember.Group);
+            await Groups.AddToGroupAsync(Context.ConnectionId, auth.User.GroupMember.Group.Id.ToString());
 
             //Add to sessionlog
             var entry = new SessionLogEntry(SessionLogEntryType.UserCreated, user.Id.ToString(), DateTime.UtcNow, user);
-            await Database.SessionLogEntries.AddAsync(entry);
+
+            await Database.AddAsync(entry);
+            await Database.AddAsync(g);
+            await Database.AddAsync(auth);
 
             await Database.SaveChangesAsync();
             return true;
@@ -116,12 +125,12 @@ namespace Backend.Hub
 
         public async Task<bool> ChangeUsername(string username)
         {
-            UserSession session = await Database.UserSessions.FromSignalRId(Context.UserIdentifier);
+            UserSession session = await Database.UserSessions.FromSignalRId(Context.ConnectionId);
             if (session == null)
                 return false;
 
             User user = session.User;
-            String oldUsername = user.Username;
+            string oldUsername = user.Username;
             user.Username = username;
 
             await Database.SaveChangesAsync();
@@ -136,7 +145,7 @@ namespace Backend.Hub
 
         public async Task<bool> ChangePassword(string password)
         {
-            UserSession session = await Database.UserSessions.FromSignalRId(Context.UserIdentifier);
+            UserSession session = await Database.UserSessions.FromSignalRId(Context.ConnectionId);
             if (session == null)
                 return false;
 
@@ -153,7 +162,7 @@ namespace Backend.Hub
 
         public async Task<bool> ChangeEmail(string email)
         {
-            UserSession session = await Database.UserSessions.FromSignalRId(Context.UserIdentifier);
+            UserSession session = await Database.UserSessions.FromSignalRId(Context.ConnectionId);
             if (session == null)
                 return false;
 
@@ -192,7 +201,7 @@ namespace Backend.Hub
             byte[] salt = new byte[16];
             Array.Copy(storedBytes, 0, salt, 0, 16);
 
-            Rfc2898DeriveBytes pbkdf2 = new(password, salt, 100000);
+            Rfc2898DeriveBytes pbkdf2 = new(password, salt, 65536);
             byte[] hash = pbkdf2.GetBytes(20);
 
             for (int i = 0; i < 20; ++i)

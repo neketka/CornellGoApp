@@ -95,7 +95,7 @@
                    HeightRequest="42"
                    CornerRadius="21"
                    HasShadow="True" 
-                   Margin="12,42,0,0" 
+                   Margin="12,54,0,0" 
                    VerticalOptions="Start"
                    Padding="0" 
                    HorizontalOptions="Start" 

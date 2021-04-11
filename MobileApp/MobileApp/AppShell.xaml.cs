@@ -26,7 +26,7 @@ namespace MobileApp
         {
             Container = new ViewModelContainer();
 
-            Container.RegisterService<IGameService, MockGameService>();
+            Container.RegisterService<IGameService, GameService>();
             Container.RegisterService<IDialogService, DialogService>();
 
             GameService = Container.GetService<IGameService>();
@@ -66,13 +66,13 @@ namespace MobileApp
 
         private async void Suggest_Clicked(object sender, EventArgs e)
         {
-            await OpenFeedbackForm();
+            await Browser.OpenAsync("https://docs.google.com/forms/d/e/1FAIpQLSeUQFU8LI2LnHHSg7I4r-i10BNYr4zDiwp_la0v0nBT-fP4GA/viewform?usp=sf_link", CustomTabsOptions);
             Current.FlyoutIsPresented = false;
         }
 
         private async void Feedback_Clicked(object sender, EventArgs e)
         {
-            await Browser.OpenAsync("https://docs.google.com/forms/d/e/1FAIpQLSfwl50y3ebjjsQrtoAxkXoYYoQntodpQhp9RFkYURv_vg94Ug/viewform", CustomTabsOptions);
+            await OpenFeedbackForm();
             Current.FlyoutIsPresented = false;
         }
 

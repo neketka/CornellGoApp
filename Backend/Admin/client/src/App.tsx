@@ -27,7 +27,8 @@ import {
 } from "@material-ui/icons";
 
 import Places from "./components/Places";
-import { BrowserRouter, Switch, Route, useHistory } from "react-router-dom";
+import { MemoryRouter, Switch, Route, useHistory } from "react-router-dom";
+import AdminApproval from "./components/AdminApproval";
 
 const drawerWidth = 240;
 
@@ -85,7 +86,7 @@ function NavigationDrawer({ drawerClass, drawerPaper }: NavigationDrawerProps) {
           <ListItemIcon>
             <VerifiedUser />
           </ListItemIcon>
-          <ListItemText primary="Admins" />
+          <ListItemText primary="Admin Approval" />
         </ListItem>
         <ListItem button onClick={() => history.push("/users")}>
           <ListItemIcon>
@@ -102,7 +103,7 @@ export default function App() {
   const classes = useStyles();
 
   return (
-    <BrowserRouter>
+    <MemoryRouter>
       <AppBar position="fixed" className={classes.appBar}>
         <CssBaseline />
         <Toolbar>
@@ -126,13 +127,13 @@ export default function App() {
             <Places />
           </Route>
           <Route path="/admins">
-            <div>Admins</div>
+            <AdminApproval />
           </Route>
           <Route path="/users">
             <div>Users</div>
           </Route>
         </Switch>
       </div>
-    </BrowserRouter>
+    </MemoryRouter>
   );
 }

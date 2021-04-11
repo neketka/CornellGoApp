@@ -33,7 +33,7 @@ namespace MobileApp.Services
 
         public GameService()
         {
-            Client = new CornellGoClient("https://10.0.2.2:44367/hub");
+            Client = new CornellGoClient("https://10.0.2.2:5001/hub");
         }
 
         public GameService(IGameClient client)

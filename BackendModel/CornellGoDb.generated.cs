@@ -213,10 +213,6 @@ namespace BackendModel
                      .ValueGeneratedOnAdd()
                      .IsRequired();
          modelBuilder.Entity<global::BackendModel.Group>()
-                     .Property(t => t.Version)
-                     .IsRowVersion()
-                     .IsRequired();
-         modelBuilder.Entity<global::BackendModel.Group>()
                      .Property(t => t.MaxMembers)
                      .IsRequired()
                      .HasDefaultValue(8);
