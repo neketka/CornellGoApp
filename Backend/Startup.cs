@@ -73,7 +73,7 @@ namespace Backend
 
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = Path.Join(env.ContentRootPath, "Admin/client");
+                spa.Options.SourcePath = Path.Join(env.ContentRootPath, "Admin/client/build");
 
                 /*if (env.IsDevelopment())
                 {
