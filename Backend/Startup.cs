@@ -30,8 +30,7 @@ namespace Backend
                 builder
                 .AllowAnyMethod()
                 .AllowAnyHeader()
-                .AllowCredentials()
-                .WithOrigins("https://localhost:5001");
+                .AllowCredentials();
             }));
 
             string conString = Environment.GetEnvironmentVariable("JDBC_DATABASE_URL") ?? 
@@ -42,9 +41,8 @@ namespace Backend
                 e => e.UseNetTopologySuite()), ServiceLifetime.Scoped);
             services.AddSignalR();
             services.AddControllers();
-            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "Backend", Version = "v1" }));
             services.AddMvc(option => option.EnableEndpointRouting = false);
-            services.AddSpaStaticFiles(configuration => configuration.RootPath = "Admin/client/build");
+            services.AddSpaStaticFiles(configuration => configuration.RootPath = "client/build");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,8 +51,6 @@ namespace Backend
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Backend v1"));
             }
 
             app.UseStaticFiles();
@@ -69,11 +65,9 @@ namespace Backend
                 endpoints.MapHub<AdminHub>("/adminhub");
             });
 
-            app.UseAuthorization();
-
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = Path.Join(env.ContentRootPath, "client");
+                //spa.Options.SourcePath = Path.Join(env.ContentRootPath, "client/build");
 
                 /*if (env.IsDevelopment())
                 {

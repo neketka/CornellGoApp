@@ -175,6 +175,7 @@ namespace BackendModel
                      .IsRequired();
          modelBuilder.Entity<global::BackendModel.Challenge>()
                      .Property(t => t.LongLat)
+                     .HasColumnType("geography")
                      .IsRequired();
          modelBuilder.Entity<global::BackendModel.Challenge>()
                      .Property(t => t.Radius)
