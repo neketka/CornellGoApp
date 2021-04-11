@@ -100,6 +100,7 @@
                         Margin="15, 0, 15, 0"
                         HeightRequest="40" 
                         Padding="0"
+                        IsEnabled="False"
                         />
                 <BoxView HeightRequest="1" 
                          HorizontalOptions="FillAndExpand" 
