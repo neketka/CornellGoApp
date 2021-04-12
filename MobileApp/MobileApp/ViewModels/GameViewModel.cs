@@ -170,13 +170,22 @@ namespace MobileApp.ViewModels
                 IsHost = data.IsHost, IsReady = data.IsDone, Username = data.Username, Score = data.Points
             };
 
-            await Device.InvokeOnMainThreadAsync(() => GroupMembers[index] = newMember);
+            await Device.InvokeOnMainThreadAsync(() => 
+            { 
+                GroupMembers[index] = newMember;
+                UpdateGroupDataFromList();
+            });
         }
 
         private async Task Client_GroupMemberLeft(string userId)
         {
             int index = GetGroupMemberIndex(userId);
-            await Device.InvokeOnMainThreadAsync(() => GroupMembers.RemoveAt(index));
+            await Device.InvokeOnMainThreadAsync(() =>
+            {
+                GroupMembers.RemoveAt(index);
+                UpdateGroupDataFromList();
+            });
+            UpdateGroupDataFromList();
         }
 
         private async Task Client_GroupDataUpdated(string friendlyId, CommunicationModel.GroupMemberData[] members)
