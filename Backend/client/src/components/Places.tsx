@@ -203,7 +203,7 @@ function EditorDialog({ id, close, isOpen }: PlaceDialogProps) {
           </Grid>
           <Grid container>
             <TextField
-              label="Distance considered far"
+              label="Awarding distance in meters"
               type="number"
               value={data.radius}
               onChange={(e) =>
