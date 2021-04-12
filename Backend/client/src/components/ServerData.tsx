@@ -101,7 +101,6 @@ export function ServerData(props: { children: ReactNode }) {
     };
     methodRef.current.logout = () => {
       setLoggedIn(false);
-
     };
   });
 

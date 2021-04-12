@@ -39,7 +39,8 @@ namespace BackendModel
             var coord = new NetTopologySuite.Geometries.Point(longitude, latitude);
             coord.SRID = chals.FirstOrDefault()?.LongLat.SRID ?? 4326;
 
-            var query = chals.OrderBy(c => c.LongLat.Distance(coord) + Math.Max(c.Radius * 0.1 - c.LongLat.Distance(coord), 0) * 1000);
+            var query = chals.OrderBy(c => c.LongLat.Distance(coord) + Math.Max(c.Radius * 0.05 - c.LongLat.Distance(coord), 0) * 1000);
+
             if (!isNewUser)
                 query = (IOrderedQueryable<Challenge>)query.Where(chal => !group.PrevChallenges.Contains(chal));
 

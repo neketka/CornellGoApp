@@ -27,6 +27,11 @@ namespace MobileApp.ViewModels
             gameService.Client.ConnectionClosed -= Client_ConnectionClosed;
         }
 
+        public override Task OnReturning(object parameter)
+        {
+            return Client_ConnectionClosed();
+        }
+
         private async Task Client_ConnectionClosed()
         {
             await navigationService.NavigateBackTo<LoadingViewModel>();

@@ -50,6 +50,7 @@ namespace MobileApp.ViewModels
             PasswordMatches = !string.IsNullOrWhiteSpace(Password) && Password == PasswordVerification;
             Validate();
         }
+
         public ChangePasswordViewModel(IGameService gameService, INavigationService navigationService)
         {
             ChangePasswordCommand = new Command(async () => 
