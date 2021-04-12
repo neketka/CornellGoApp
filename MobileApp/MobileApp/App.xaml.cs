@@ -30,6 +30,7 @@ namespace MobileApp
         protected override void OnResume()
         {
             ((AppShell)MainPage).Container.GetService<IGameService>().Client.SendMetric(CommunicationModel.FrontendMetric.AppResumed, "");
+            ((AppShell)MainPage).Container.NavigationService.NavigateToRoot();
         }
     }
 }

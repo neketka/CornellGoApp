@@ -55,7 +55,7 @@ namespace BackendModel
       /// <param name="email">Email associated with the authenticator.</param>
       /// <param name="password">User&apos;s password hash</param>
       /// <param name="timestamp">Creation timestamp</param>
-      /// <param name="user">User that this is authenticating</param>
+      /// <param name="user"></param>
       public Authenticator(string email, string password, DateTime timestamp, global::BackendModel.User user)
       {
          if (string.IsNullOrEmpty(email)) throw new ArgumentNullException(nameof(email));
@@ -68,6 +68,7 @@ namespace BackendModel
 
          if (user == null) throw new ArgumentNullException(nameof(user));
          this.User = user;
+         user.Authenticator = this;
 
          Init();
       }
@@ -78,7 +79,7 @@ namespace BackendModel
       /// <param name="email">Email associated with the authenticator.</param>
       /// <param name="password">User&apos;s password hash</param>
       /// <param name="timestamp">Creation timestamp</param>
-      /// <param name="user">User that this is authenticating</param>
+      /// <param name="user"></param>
       public static Authenticator Create(string email, string password, DateTime timestamp, global::BackendModel.User user)
       {
          return new Authenticator(email, password, timestamp, user);
@@ -128,10 +129,8 @@ namespace BackendModel
        *************************************************************************/
 
       /// <summary>
-      /// Required&lt;br/&gt;
-      /// User that this is authenticating
+      /// Required
       /// </summary>
-      [Description("User that this is authenticating")]
       public virtual global::BackendModel.User User { get; set; }
 
    }

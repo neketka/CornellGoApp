@@ -150,9 +150,8 @@ namespace BackendModel
                      .IsRequired();
          modelBuilder.Entity<global::BackendModel.Authenticator>()
                      .HasOne<global::BackendModel.User>(p => p.User)
-                     .WithOne()
-                     .HasForeignKey("Authenticator", "UserId")
-                     .OnDelete(DeleteBehavior.NoAction);
+                     .WithOne(p => p.Authenticator)
+                     .HasForeignKey("Authenticator", "UserId");
          modelBuilder.Entity<global::BackendModel.Authenticator>().Navigation(e => e.User).IsRequired();
 
          modelBuilder.Entity<global::BackendModel.Challenge>()
