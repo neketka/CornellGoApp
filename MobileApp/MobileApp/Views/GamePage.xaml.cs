@@ -50,7 +50,7 @@ namespace MobileApp.Views
 
         private void AdjustTemp(double value)
         {
-            TempBar.TranslateTo((Width - 12.0) * value + 12.0, 0);
+            TempBar.TranslateTo((Width - 8.0) * value + 8.0, 0);
         }
 
         private async void GamePage_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

@@ -35,6 +35,7 @@ namespace MobileApp.Services
         {
             //https://10.0.2.2:5001/hub
             //https://cornellgo.herokuapp.com/hub
+
             Client = new CornellGoClient("https://cornellgo.herokuapp.com/hub");
             CrossGeolocator.Current.PositionChanged += (s, e) => PollLocation(e.Position);
             CrossGeolocator.Current.DesiredAccuracy = 1;
