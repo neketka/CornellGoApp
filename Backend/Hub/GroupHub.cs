@@ -116,15 +116,17 @@ namespace Backend.Hub
 
         public async Task<bool> JoinGroup(string groupId)
         {
+            groupId = groupId.ToUpper();
+
             UserSession session = await Database.UserSessions.FromSignalRId(Context.ConnectionId);
             User user = session.User;
             Group grp = await Database.Groups.FromFriendlyId(groupId);
 
-            if (grp.MaxMembers == grp.GroupMembers.Count)
-                return false;
-
             //Make sure group isnt null
             if (grp == null)
+                return false;
+
+            if (grp.MaxMembers == grp.GroupMembers.Count || grp.GroupMembers.Count == 0)
                 return false;
 
             //Remove user from old group
@@ -134,7 +136,8 @@ namespace Backend.Hub
             grp.GroupMembers.Add(user.GroupMember);
             user.GroupMember.Group = grp;
             user.GroupMember.IsHost = false;
-            user.GroupMember.IsDone = false;
+
+            user.GroupMember.IsDone = user.PrevChallenges.Any(e => e.Challenge.Id == grp.Challenge.Id);
 
             //Add to sessionlog
             var entry = new SessionLogEntry(SessionLogEntryType.UserFromGroupJoined, user.Id + ";" + groupId, DateTime.UtcNow, user);
@@ -204,10 +207,13 @@ namespace Backend.Hub
 
             double dist = nPoint.ProjectTo(2855).Distance(fPoint.ProjectTo(2855));
             double scaled = dist / chal.Radius;
-            if(scaled < 0.1)
+            if(scaled < 0.05)
             {
                 user.GroupMember.IsDone = true;
                 await Clients.Caller.FinishChallenge();
+
+                await Clients.Group(user.GroupMember.Group.SignalRId).UpdateGroupMember(
+                    new (user.Id.ToString(), user.Username, user.GroupMember.IsHost, true, user.Score));
 
                 //Add to sessionlog
                 var entry = new SessionLogEntry(SessionLogEntryType.FoundPlace, user.GroupMember.Group.Id.ToString(), DateTime.UtcNow, user);
@@ -217,6 +223,8 @@ namespace Backend.Hub
                 {
                     foreach (GroupMember member in user.GroupMember.Group.GroupMembers)
                     {
+                        if (user.PrevChallenges.Any(e => e.Challenge.Id == chal.Id))
+                            member.User.Score += chal.Points;
                         member.User.GroupMember.IsDone = false;
                         member.User.PrevChallenges.Add(new PrevChallenge(DateTime.UtcNow, user.GroupMember.Group.Challenge, member.User));
                         await Clients.Group(user.GroupMember.Group.SignalRId).UpdateGroupMember(new GroupMemberData(

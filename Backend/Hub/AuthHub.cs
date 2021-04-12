@@ -19,7 +19,7 @@ namespace Backend.Hub
             if (session != null)
             {
                 //Add to sessionlog
-                var entry = new SessionLogEntry(SessionLogEntryType.LostConnection, session.User + "Lost Connection", DateTime.UtcNow, session.User);
+                var entry = new SessionLogEntry(SessionLogEntryType.LostConnection, session.User.Id.ToString(), DateTime.UtcNow, session.User);
                 await Database.SessionLogEntries.AddAsync(entry);
                 await Database.SaveChangesAsync();
 
@@ -151,13 +151,14 @@ namespace Backend.Hub
             if (session == null)
                 return false;
 
-            Authenticator auth = await Database.Authenticators.AsAsyncEnumerable().SingleOrDefaultAsync(a => a.User.Id == session.User.Id);
+            long sid = session.User.Id;
+            await Database.SaveChangesAsync();
+
+            Authenticator auth = session.User.Authenticator;
             if (auth == null)
                 return false;
 
             auth.Password = CreatePasswordHash(password);
-            User user = session.User;
-            auth.Password = password;
             await Database.SaveChangesAsync();
             return true;
         }
@@ -168,9 +169,12 @@ namespace Backend.Hub
             if (session == null)
                 return false;
 
-            Authenticator auth = await Database.Authenticators.AsAsyncEnumerable().SingleOrDefaultAsync(a => a.User.Id == session.User.Id);
-            /*if (auth == null || !VerifyPasswordHash(password, auth.Password))
-                return false;*/
+            long sid = session.User.Id;
+            await Database.SaveChangesAsync();
+
+            Authenticator auth = session.User.Authenticator;
+            if (auth == null)
+                return false;
 
             User user = session.User;
 

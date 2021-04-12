@@ -170,6 +170,8 @@ namespace BackendModel
       [Description("User tied to session")]
       public virtual global::BackendModel.UserSession UserSession { get; set; }
 
+      public virtual global::BackendModel.Authenticator Authenticator { get; set; }
+
    }
 }
 
