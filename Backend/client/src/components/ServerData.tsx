@@ -63,6 +63,7 @@ export function ServerData(props: { children: ReactNode }) {
   const methodRef = useRef({
     modified: (state: PlaceDataModifiedState, data: ServerPlace) => {},
     approval: (email: string, approval: boolean) => {},
+    logout: () => {}
   });
 
   const placesRef = useRef([] as ServerPlace[]);
@@ -98,6 +99,10 @@ export function ServerData(props: { children: ReactNode }) {
       else
         setUnapprovedAdmins([...unapprovedAdmins, email]);
     };
+    methodRef.current.logout = () => {
+      setLoggedIn(false);
+
+    };
   });
 
   useEffect(() => {
@@ -116,6 +121,8 @@ export function ServerData(props: { children: ReactNode }) {
       (email: string, approval: boolean) =>
         methodRef.current.approval(email, approval)
     );
+    connectionRef.current.onclose((e) => methodRef.current.logout());
+    connectionRef.current.onreconnected((e) => methodRef.current.logout());
     connectionRef.current.start().catch((err) => console.log(err));
   }, []);
 
