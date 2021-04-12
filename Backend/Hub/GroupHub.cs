@@ -199,15 +199,17 @@ namespace Backend.Hub
             UserSession session = await Database.UserSessions.FromSignalRId(Context.ConnectionId);
             User user = session.User;
             Challenge chal = user.GroupMember.Group.Challenge;
-            var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory();
 
-            var nPoint = geometryFactory.CreatePoint(new Coordinate(@long, lat));
             var fPoint = chal.LongLat;
-            nPoint.SRID = fPoint.SRID;
+            var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(fPoint.SRID);
+            var nPoint = geometryFactory.CreatePoint(new Coordinate(@long, lat));
 
-            double dist = nPoint.ProjectTo(2855).Distance(fPoint.ProjectTo(2855));
-            double scaled = dist / chal.Radius;
-            if(scaled < 0.05)
+            double dist = nPoint.ProjectTo(2830).Distance(fPoint.ProjectTo(2830));
+
+            double d = chal.Radius * 20.0;
+            double scaled = ((dist + d) * d - d * d)/(d * (dist + d));
+
+            if(dist < chal.Radius)
             {
                 user.GroupMember.IsDone = true;
                 await Clients.Caller.FinishChallenge();
@@ -247,7 +249,7 @@ namespace Backend.Hub
                 await Database.SaveChangesAsync();
             }
 
-            string progressString = ((int)Math.Ceiling(dist / 80.4)).ToString() + " min";
+            string progressString = ((int)Math.Ceiling(dist / 64.32)).ToString() + " min";
             double progressScale = 1.0 - Math.Max(Math.Min(scaled, 1.0), 0.0);
 
             return new ChallengeProgressData(progressString, progressScale);

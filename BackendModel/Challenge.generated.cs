@@ -58,7 +58,7 @@ namespace BackendModel
       /// <param name="description">Longer description of a challenge up to 100 chars</param>
       /// <param name="points">Point value of the challenge</param>
       /// <param name="longlat">Position of the challenge</param>
-      /// <param name="radius">Furthest radius at which the user is considered far</param>
+      /// <param name="radius">Radius at which the user is awarded the points</param>
       /// <param name="imageurl">Url to this image</param>
       /// <param name="longdescription">Learn more description of place</param>
       /// <param name="citationurl">Url for citation of the information in long description</param>
@@ -100,7 +100,7 @@ namespace BackendModel
       /// <param name="description">Longer description of a challenge up to 100 chars</param>
       /// <param name="points">Point value of the challenge</param>
       /// <param name="longlat">Position of the challenge</param>
-      /// <param name="radius">Furthest radius at which the user is considered far</param>
+      /// <param name="radius">Radius at which the user is awarded the points</param>
       /// <param name="imageurl">Url to this image</param>
       /// <param name="longdescription">Learn more description of place</param>
       /// <param name="citationurl">Url for citation of the information in long description</param>
@@ -163,10 +163,10 @@ namespace BackendModel
 
       /// <summary>
       /// Required
-      /// Furthest radius at which the user is considered far
+      /// Radius at which the user is awarded the points
       /// </summary>
       [Required]
-      [System.ComponentModel.Description("Furthest radius at which the user is considered far")]
+      [System.ComponentModel.Description("Radius at which the user is awarded the points")]
       public double Radius { get; set; }
 
       /// <summary>

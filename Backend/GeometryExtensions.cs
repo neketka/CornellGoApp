@@ -21,29 +21,32 @@ namespace Backend
 
                 // This coordinate system covers the area of our data.
                 // Different data requires a different coordinate system.
-                [2855] =
+                [2830] =
                         @"
-                    PROJCS[""NAD83(HARN) / Washington North"",
-                        GEOGCS[""NAD83(HARN)"",
-                            DATUM[""NAD83_High_Accuracy_Regional_Network"",
-                                SPHEROID[""GRS 1980"",6378137,298.257222101,
-                                    AUTHORITY[""EPSG"",""7019""]],
-                                AUTHORITY[""EPSG"",""6152""]],
-                            PRIMEM[""Greenwich"",0,
-                                AUTHORITY[""EPSG"",""8901""]],
-                            UNIT[""degree"",0.01745329251994328,
-                                AUTHORITY[""EPSG"",""9122""]],
-                            AUTHORITY[""EPSG"",""4152""]],
-                        PROJECTION[""Lambert_Conformal_Conic_2SP""],
-                        PARAMETER[""standard_parallel_1"",48.73333333333333],
-                        PARAMETER[""standard_parallel_2"",47.5],
-                        PARAMETER[""latitude_of_origin"",47],
-                        PARAMETER[""central_meridian"",-120.8333333333333],
-                        PARAMETER[""false_easting"",500000],
-                        PARAMETER[""false_northing"",0],
-                        UNIT[""metre"",1,
-                            AUTHORITY[""EPSG"",""9001""]],
-                        AUTHORITY[""EPSG"",""2855""]]
+                    PROJCS[""NAD83(HARN) / New York West"",
+    GEOGCS[""NAD83(HARN)"",
+        DATUM[""NAD83_High_Accuracy_Reference_Network"",
+            SPHEROID[""GRS 1980"",6378137,298.257222101,
+                AUTHORITY[""EPSG"",""7019""]],
+            TOWGS84[0,0,0,0,0,0,0],
+            AUTHORITY[""EPSG"",""6152""]],
+        PRIMEM[""Greenwich"",0,
+            AUTHORITY[""EPSG"",""8901""]],
+        UNIT[""degree"",0.0174532925199433,
+            AUTHORITY[""EPSG"",""9122""]],
+        AUTHORITY[""EPSG"",""4152""]],
+    PROJECTION[""Transverse_Mercator""],
+    PARAMETER[""latitude_of_origin"",40],
+    PARAMETER[""central_meridian"",-78.58333333333333],
+    PARAMETER[""scale_factor"",0.9999375],
+    PARAMETER[""false_easting"",350000],
+    PARAMETER[""false_northing"",0],
+    UNIT[""metre"",1,
+        AUTHORITY[""EPSG"",""9001""]],
+    AXIS[""X"",EAST],
+    AXIS[""Y"",NORTH],
+    AUTHORITY[""EPSG"",""2830""]]
+
                 "
                 });
 
