@@ -37,8 +37,9 @@ namespace BackendModel
             //Group Extension method to generate new random challenge (not in prev challenge), add current challenge if one exists to prev challenge list of group + all members
 
             var coord = new NetTopologySuite.Geometries.Point(longitude, latitude);
+            coord.SRID = chals.FirstOrDefault()?.LongLat.SRID ?? 4326;
 
-            var query = chals.OrderBy(c => c.LongLat.Distance(coord) + Math.Max(c.Radius * 0.1 - c.LongLat.Distance(coord), 0) * 10000);
+            var query = chals.OrderBy(c => c.LongLat.Distance(coord) + Math.Max(c.Radius * 0.1 - c.LongLat.Distance(coord), 0) * 1000);
             if (!isNewUser)
                 query = (IOrderedQueryable<Challenge>)query.Where(chal => !group.PrevChallenges.Contains(chal));
 
