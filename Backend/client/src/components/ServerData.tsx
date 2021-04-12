@@ -93,7 +93,10 @@ export function ServerData(props: { children: ReactNode }) {
     };
 
     methodRef.current.approval = (email: string, approved: boolean) => {
-      setUnapprovedAdmins(unapprovedAdmins.filter((admin) => admin !== email));
+      if (approved)
+        setUnapprovedAdmins(unapprovedAdmins.filter((admin) => admin !== email));
+      else
+        setUnapprovedAdmins([...unapprovedAdmins, email]);
     };
   });
 

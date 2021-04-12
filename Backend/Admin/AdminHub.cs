@@ -56,6 +56,10 @@ namespace Backend.Admin
                     chal.Points = data.Points;
                     chal.LongLat = new(data.Long, data.Lat);
                     chal.Radius = data.Radius;
+                    chal.CitationUrl = data.CitationUrl;
+                    chal.ImageUrl = data.ImageUrl;
+                    chal.LongDescription = data.LongDescription;
+                    chal.LinkUrl = data.LinkUrl;
                     break;
             }
 
