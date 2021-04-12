@@ -33,7 +33,7 @@ namespace MobileApp.Services
 
         public GameService()
         {
-            Client = new CornellGoClient("https://10.0.2.2:5001/hub");
+            Client = new CornellGoClient("https://cornellgo.herokuapp.com/hub");
             CrossGeolocator.Current.PositionChanged += (s, e) => PollLocation(e.Position);
             CrossGeolocator.Current.DesiredAccuracy = 1;
         }
