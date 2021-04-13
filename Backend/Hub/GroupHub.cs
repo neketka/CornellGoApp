@@ -219,18 +219,18 @@ namespace Backend.Hub
 
             if (dist < chal.Radius)
             {
+                user.GroupMember.IsDone = true;
+                await Clients.Caller.FinishChallenge();
+
+                await Clients.Group(user.GroupMember.Group.SignalRId).UpdateGroupMember(
+                    new(user.Id.ToString(), user.Username, user.GroupMember.IsHost, true, user.Score));
+
                 if (!user.GroupMember.IsDone)
                 {
                     //Add to sessionlog
                     var entry = new SessionLogEntry(SessionLogEntryType.FoundPlace, user.GroupMember.Group.Id.ToString(), DateTime.UtcNow, user);
                     await Database.SessionLogEntries.AddAsync(entry);
                 }
-
-                user.GroupMember.IsDone = true;
-                await Clients.Caller.FinishChallenge();
-
-                await Clients.Group(user.GroupMember.Group.SignalRId).UpdateGroupMember(
-                    new(user.Id.ToString(), user.Username, user.GroupMember.IsHost, true, user.Score));
 
                 await Database.SaveChangesAsync();
             }
