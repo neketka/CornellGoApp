@@ -128,14 +128,11 @@ namespace Backend.Hub
                 return false;
             }
 
-            if (grp.Id == user.GroupMember.Group.Id)
-                return false;
-
             //Make sure group isnt null
             if (grp == null)
                 return false;
 
-            if (grp.MaxMembers == grp.GroupMembers.Count || grp.GroupMembers.Count == 0)
+            if (grp.Id == user.GroupMember.Group.Id || grp.MaxMembers == grp.GroupMembers.Count || grp.GroupMembers.Count == 0)
                 return false;
 
             //Remove user from old group
