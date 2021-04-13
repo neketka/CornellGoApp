@@ -12,6 +12,7 @@ namespace Backend.Admin
     public class AdminHub : Hub<IAdminClientCallback>, IAdminHub
     {
         private CornellGoDb Database { get; }
+
         public AdminHub(CornellGoDb context) => Database = context;
 
         public async IAsyncEnumerable<PlaceData> GetPlaces()
@@ -33,33 +34,49 @@ namespace Backend.Admin
             }
         }
 
+        private static string NoneIfEmpty(string value)
+        {
+            return string.IsNullOrWhiteSpace(value) ? "none" : value;
+        }
+
         public async Task<bool> ModifyPlace(PlaceDataModifiedState state, PlaceData data)
         {
             if (!await CheckAuthorization())
                 return false;
 
-            Challenge chal = state == PlaceDataModifiedState.Created 
-                ? new(data.Name, data.Description, data.Points, new(data.Long, data.Lat), data.Radius, data.ImageUrl, data.LongDescription, data.CitationUrl, data.LinkUrl)
+            Challenge chal = state == PlaceDataModifiedState.Created
+                ? new(NoneIfEmpty(data.Name), NoneIfEmpty(data.Description), data.Points,
+                    new(data.Long, data.Lat), data.Radius, NoneIfEmpty(data.ImageUrl), NoneIfEmpty(data.LongDescription),
+                    NoneIfEmpty(data.CitationUrl), NoneIfEmpty(data.LinkUrl))
                 : await Database.Challenges.SingleAsync(c => c.Id.ToString() == data.Id);
 
             switch (state)
             {
                 case PlaceDataModifiedState.Created:
                     data = data with { Id = (await Database.Challenges.AddAsync(chal)).Entity.Id.ToString() };
+                    Console.WriteLine(data.Id);
                     break;
+
                 case PlaceDataModifiedState.Destroyed:
                     Database.Challenges.Remove(chal);
                     break;
+
                 case PlaceDataModifiedState.Modified:
-                    chal.Name = data.Name;
-                    chal.Description = data.Description;
+                    if (!string.IsNullOrWhiteSpace(data.Name))
+                        chal.Name = data.Name;
+                    if (!string.IsNullOrWhiteSpace(data.Description))
+                        chal.Description = data.Description;
+                    if (!string.IsNullOrWhiteSpace(data.CitationUrl))
+                        chal.CitationUrl = data.CitationUrl;
+                    if (!string.IsNullOrWhiteSpace(data.ImageUrl))
+                        chal.ImageUrl = data.ImageUrl;
+                    if (!string.IsNullOrWhiteSpace(data.LongDescription))
+                        chal.LongDescription = data.LongDescription;
+                    if (!string.IsNullOrWhiteSpace(data.LinkUrl))
+                        chal.LinkUrl = data.LinkUrl;
                     chal.Points = data.Points;
                     chal.LongLat = new(data.Long, data.Lat);
                     chal.Radius = data.Radius;
-                    chal.CitationUrl = data.CitationUrl;
-                    chal.ImageUrl = data.ImageUrl;
-                    chal.LongDescription = data.LongDescription;
-                    chal.LinkUrl = data.LinkUrl;
                     break;
             }
 
@@ -91,7 +108,7 @@ namespace Backend.Admin
             BackendModel.Admin a = await Database.Admins.FirstOrDefaultAsync(a => a.Email == email);
             if (a == null)
                 return AdminLoginResult.NoAccount;
-            
+
             if (!CornellGoHub.VerifyPasswordHash(password, a.PasswordHash))
                 return AdminLoginResult.WrongPassword;
 
@@ -103,8 +120,10 @@ namespace Backend.Admin
                     a.SignalRId = Context.ConnectionId;
                     await Database.SaveChangesAsync();
                     return AdminLoginResult.Success;
+
                 case AdminAccountStatus.Awaiting:
                     return AdminLoginResult.NoAdminApproval;
+
                 case AdminAccountStatus.Rejected:
                     return AdminLoginResult.AdminRejected;
             }

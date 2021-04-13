@@ -100,7 +100,7 @@ namespace MobileApp.ViewModels
 
         public RegistrationViewModel(IGameService gameService, INavigationService navigationService)
         {
-            RegisterCommand = new Command(async () => 
+            RegisterCommand = new Command(async () =>
             {
                 IsBusy = true;
                 RegisterCommand.ChangeCanExecute();
@@ -113,9 +113,9 @@ namespace MobileApp.ViewModels
 
                 try
                 {
-                    if (await gameService.Client.Register(Username, Password, Email, pos.Latitude, pos.Longitude))
+                    if (await gameService.Client.Register(Username, Password, Email.Trim(), pos.Latitude, pos.Longitude))
                     {
-                        if (await gameService.LoginWithSession(Username, Password))
+                        if (await gameService.LoginWithSession(Email.Trim(), Password))
                             await navigationService.NavigateTo<GameViewModel>();
                         else
                         {

@@ -9,7 +9,6 @@ namespace MobileApp
 {
     public partial class App : Application
     {
-
         public App()
         {
             InitializeComponent();
@@ -30,7 +29,6 @@ namespace MobileApp
         protected override void OnResume()
         {
             ((AppShell)MainPage).Container.GetService<IGameService>().Client.SendMetric(CommunicationModel.FrontendMetric.AppResumed, "");
-            ((AppShell)MainPage).Container.NavigationService.NavigateBackTo<LoadingViewModel>();
         }
     }
 }

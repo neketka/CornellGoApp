@@ -28,7 +28,7 @@ namespace MobileApp.ViewModels
 
                 try
                 {
-                    if (await gameService.LoginWithSession(Username, Password))
+                    if (await gameService.LoginWithSession(Username.Trim(), Password))
                         await navigationService.NavigateTo<GameViewModel>();
                     else
                         BadText = "Invalid username or password.";

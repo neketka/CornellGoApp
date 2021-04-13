@@ -9,14 +9,25 @@ namespace MobileApp.Services
     public interface IDialogService
     {
         Task<bool> ConfirmDisband(bool isJoining);
+
         Task<bool> ConfirmKick(string user);
+
         Task<bool> ConfirmLeave(bool isJoining);
+
         Task<string> ShowChangeUsername(string oldName, bool invalid);
+
         Task ShowConnectionError(string message);
+
         Task<string> ShowJoinGroup(bool invalid);
+
         Task<bool> ShowAskFeedback();
+
         Task ShowServerError();
+
+        Task ShowJoinFailed();
+
         Task ShowWIP();
+
         Task ShowLocationPerm();
     }
 
@@ -78,6 +89,11 @@ namespace MobileApp.Services
         public async Task ShowLocationPerm()
         {
             await Shell.Current.DisplayAlert("Error!", "Please allow the location permission for the application to work.", "OK");
+        }
+
+        public async Task ShowJoinFailed()
+        {
+            await Shell.Current.DisplayAlert("Error!", "This code is not valid. Group may be full.", "OK");
         }
     }
 }

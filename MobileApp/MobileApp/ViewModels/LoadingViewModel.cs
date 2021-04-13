@@ -1,8 +1,10 @@
 ﻿using MobileApp.Services;
+using Plugin.Geolocator;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace MobileApp.ViewModels
 {
@@ -19,28 +21,32 @@ namespace MobileApp.ViewModels
             this.dialogService = dialogService;
 
             gameService.Client.ConnectionClosed += Client_ConnectionClosed;
+            gameService.Client.Reconnecting += Client_Reconnecting;
+            gameService.Client.Reconnected += Client_Reconnected;
             Load();
         }
 
-        public override void OnDestroying()
+        private async Task Client_Reconnecting()
         {
-            gameService.Client.ConnectionClosed -= Client_ConnectionClosed;
+            await CrossGeolocator.Current.StopListeningAsync();
+            await navigationService.NavigateToRoot();
         }
 
-        public override Task OnReturning(object parameter)
+        private async Task Client_Reconnected()
         {
-            return Client_ConnectionClosed();
+            await Login();
         }
 
         private async Task Client_ConnectionClosed()
         {
-            await navigationService.NavigateBackTo<LoadingViewModel>();
+            await CrossGeolocator.Current.StopListeningAsync();
+            await navigationService.NavigateToRoot();
             await Load();
         }
 
         private async Task Load()
         {
-            while (true)
+            while (!gameService.Client.Connected)
             {
                 try
                 {
@@ -52,8 +58,15 @@ namespace MobileApp.ViewModels
                     await dialogService.ShowConnectionError(e.Message);
                 }
             }
+            await Login();
+        }
+
+        private async Task Login()
+        {
+            Console.WriteLine("Logging in");
             if (await gameService.AttemptRelog())
             {
+                Console.WriteLine("To landing");
                 await navigationService.NavigateTo<LandingViewModel>(animate: false);
                 await navigationService.NavigateTo<GameViewModel>();
             }

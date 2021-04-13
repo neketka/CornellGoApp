@@ -9,16 +9,29 @@ namespace CommunicationModel
     public class MockGameClient : IGameClient
     {
         public event FinishChallenge ChallengeFinished;
+
         public event UpdateChallenge ChallengeUpdated;
+
         public event Func<Task> ConnectionClosed;
+
         public event UpdateGroupData GroupDataUpdated;
+
         public event LeaveGroupMember GroupMemberLeft;
+
         public event UpdateGroupMember GroupMemberUpdated;
+
         public event UpdateScorePositions ScorePositionsUpdated;
+
         public event UpdateUserData UserDataUpdated;
+
+        public event Func<Task> Reconnecting;
+
+        public event Func<Task> Reconnected;
 
         private List<GroupMemberData> MockPlayers;
         private List<ChallengeHistoryEntryData> MockHistories;
+
+        public bool Connected => true;
 
         public MockGameClient()
         {
@@ -36,7 +49,7 @@ namespace CommunicationModel
 
             MockHistories = new()
             {
-                new("1", "https://media-cdn.tripadvisor.com/media/photo-m/1280/13/bd/12/dd/triphammer-falls-the.jpg", 
+                new("1", "https://media-cdn.tripadvisor.com/media/photo-m/1280/13/bd/12/dd/triphammer-falls-the.jpg",
                     "Triphammer Falls", "A place", 3, DateTime.UtcNow),
                 new("2", "https://upload.wikimedia.org/wikipedia/commons/7/74/Statue_of_Ezra_Cornell%2C_founder_of_Cornell_University.jpg",
                     "Ezra Cornell Statue", "A place", 5, DateTime.UtcNow)
@@ -70,7 +83,7 @@ namespace CommunicationModel
 
         public Task<ChallengeData> GetChallengeData()
         {
-            return Task.FromResult(new ChallengeData("", 
+            return Task.FromResult(new ChallengeData("",
                 "One of the most recognized landmarks of Cornell, this tower can be found and heard above a library.", 3,
                 "https://upload.wikimedia.org/wikipedia/commons/d/d2/Cornell-McGraw_Tower.jpg"));
         }

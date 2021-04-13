@@ -58,9 +58,7 @@ namespace MobileApp.ViewModels
                 if (newName == null)
                     return;
 
-                if (await gameService.Client.ChangeUsername(newName))
-                    Username = newName;
-                else
+                if (!await gameService.Client.ChangeUsername(newName))
                     await dialogService.ShowServerError();
             });
             ChangePasswordCommand = new Command(async () => await navigationService.NavigateTo<ChangePasswordViewModel>());

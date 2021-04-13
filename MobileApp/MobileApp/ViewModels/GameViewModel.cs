@@ -43,13 +43,16 @@ namespace MobileApp.ViewModels
         public ImageSource OldChallengeImage { get => oldChallengeImage; set => SetProperty(ref oldChallengeImage, value); }
         public string OldChallengeName { get => oldChallengeName; set => SetProperty(ref oldChallengeName, value); }
         public int OldChallengePoints { get => oldChallengePoints; set => SetProperty(ref oldChallengePoints, value); }
+
         public bool VictoryMode
         {
             get => victoryMode;
-            set => SetProperty(ref victoryMode, value, onChanged: () => { 
-                if (value) (OldChallengeImage, OldChallengePoints) = (ChallengeImage, Points); 
+            set => SetProperty(ref victoryMode, value, onChanged: () =>
+            {
+                if (value) (OldChallengeImage, OldChallengePoints) = (ChallengeImage, Points);
             });
         }
+
         public Command FindOutMoreCommand { get; }
         public Command NextChallengeCommand { get; }
         public Command DoVictoryCommand { get; }
@@ -84,16 +87,21 @@ namespace MobileApp.ViewModels
 
             JoinCommand = new Command(async () =>
             {
-                if (GroupMembers.Count == 1 || (IsHost ? await dialogService.ConfirmLeave(true) : await dialogService.ConfirmDisband(true)))
+                if (GroupMembers.Count == 1 || (IsHost ? await dialogService.ConfirmDisband(true) : await dialogService.ConfirmLeave(true)))
                 {
                     gameService.Client.SendMetric(CommunicationModel.FrontendMetric.OpenJoinGroupMenu, "");
                     string id = await dialogService.ShowJoinGroup(false);
                     if (id != null)
-                        await gameService.Client.JoinGroup(id);
+                    {
+                        if (!await gameService.Client.JoinGroup(id))
+                        {
+                            await dialogService.ShowJoinFailed();
+                        }
+                    }
                 }
             });
             FindOutMoreCommand = new Command(async () => { await dialogService.ShowWIP(); });
-            NextChallengeCommand = new Command(() => VictoryMode = false );
+            NextChallengeCommand = new Command(() => VictoryMode = false);
 
             DoVictoryCommand = new Command(() =>
             {
@@ -166,12 +174,16 @@ namespace MobileApp.ViewModels
         private async Task Client_GroupMemberUpdated(CommunicationModel.GroupMemberData data)
         {
             int index = GetGroupMemberIndex(data.UserId);
-            var newMember = GroupMembers[index] with {
-                IsHost = data.IsHost, IsReady = data.IsDone, Username = data.Username, Score = data.Points
+            var newMember = GroupMembers[index] with
+            {
+                IsHost = data.IsHost,
+                IsReady = data.IsDone,
+                Username = data.Username,
+                Score = data.Points
             };
 
-            await Device.InvokeOnMainThreadAsync(() => 
-            { 
+            await Device.InvokeOnMainThreadAsync(() =>
+            {
                 GroupMembers[index] = newMember;
                 UpdateGroupDataFromList();
             });
