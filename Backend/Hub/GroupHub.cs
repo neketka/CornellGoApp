@@ -57,7 +57,7 @@ namespace Backend.Hub
                 gp.SyncPlacesWithUsers();
 
                 await Database.SaveChangesAsync();
-                gp.SignalRId = user.GroupMember.Group.Id.ToString();
+                gp.SignalRId = gp.Id.ToString();
 
                 await Groups.RemoveFromGroupAsync(gmem.User.UserSession.SignalRId, grp.SignalRId);
                 await Groups.AddToGroupAsync(gmem.User.UserSession.SignalRId, gp.SignalRId);
