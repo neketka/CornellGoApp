@@ -264,7 +264,7 @@ namespace Backend.Hub
                 await Clients.Group(user.GroupMember.Group.SignalRId).UpdateChallenge(cData);
             }
 
-            string progressString = ((int)Math.Ceiling(dist / 64.32)).ToString() + " min";
+            string progressString = dist + " meters";//((int)Math.Ceiling(dist / 64.32)).ToString() + " min";
             double progressScale = 1.0 - Math.Max(Math.Min(scaled, 1.0), 0.0);
 
             return new ChallengeProgressData(progressString, progressScale);
