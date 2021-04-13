@@ -31,6 +31,7 @@ namespace MobileApp.ViewModels
         private IGameService gameService;
         private IDialogService dialogService;
         private INavigationService navigationService;
+
         public LeaderViewModel(IGameService gameService, IDialogService dialogService, INavigationService navigationService)
         {
             this.gameService = gameService;
@@ -57,7 +58,7 @@ namespace MobileApp.ViewModels
         {
             if (YourRank > oldIndex)
                 await LoadUserData();
-            
+
             await Device.InvokeOnMainThreadAsync(() =>
             {
                 int minModifyIndex = Math.Min(oldIndex, newIndex);
@@ -86,8 +87,8 @@ namespace MobileApp.ViewModels
         {
             try
             {
-                await LoadUserData();
                 await LoadLeaderData(20);
+                await LoadUserData();
             }
             catch
             {

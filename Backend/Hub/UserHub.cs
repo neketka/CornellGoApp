@@ -16,6 +16,7 @@ namespace Backend.Hub
             UserSession session = await Database.UserSessions.FromSignalRId(Context.ConnectionId);
             User user = session.User;
             int index = await Database.Users.AsAsyncEnumerable()
+                .OrderByDescending(u => u.Score)
                 .Select((c, i) => new { User = c, Index = i })
                 .Where(x => x.User.Id == user.Id)
                 .Select(x => x.Index).SingleAsync();
@@ -50,7 +51,7 @@ namespace Backend.Hub
             User user = session.User;
             return user.PrevChallenges.LastOrDefault()?.Challenge.Name ?? "";
         }
-      
+
         public async Task SendMetric(FrontendMetric metric, string data)
         {
             UserSession session = await Database.UserSessions.FromSignalRId(Context.ConnectionId);
@@ -73,7 +74,6 @@ namespace Backend.Hub
 
             await Database.SessionLogEntries.AddAsync(new SessionLogEntry(entryDic[metric], string.IsNullOrWhiteSpace(data) ? "nothing" : data, DateTime.UtcNow, user));
             await Database.SaveChangesAsync();
-
         }
 
         public async Task<LearnMoreData> GetLearnMoreData(string placeId)
