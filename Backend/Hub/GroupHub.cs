@@ -237,9 +237,11 @@ namespace Backend.Hub
                 foreach (GroupMember member in user.GroupMember.Group.GroupMembers)
                 {
                     if (!user.PrevChallenges.Any(e => e.Challenge.Id == chal.Id))
+                    {
                         member.User.Score += chal.Points;
+                        member.User.PrevChallenges.Add(new PrevChallenge(DateTime.UtcNow, user.GroupMember.Group.Challenge, member.User));
+                    }
                     member.User.GroupMember.IsDone = false;
-                    member.User.PrevChallenges.Add(new PrevChallenge(DateTime.UtcNow, user.GroupMember.Group.Challenge, member.User));
                     await Clients.Group(user.GroupMember.Group.SignalRId).UpdateGroupMember(new GroupMemberData(
                         member.User.Id.ToString(), member.User.Username, member.IsHost, member.IsDone, member.User.Score
                     ));
