@@ -177,12 +177,13 @@ namespace MobileApp.Services
             {
                 Console.WriteLine("Navigating to root");
 
-                ((BaseViewModel)LastPage.BindingContext).OnDestroying();
+                ((BaseViewModel)LastPage?.BindingContext)?.OnDestroying();
                 while (vmStack.Count > 1)
                     vmStack.Pop().OnDestroying();
                 await Shell.Current.Navigation.PopToRootAsync(animate);
 
-                await vmStack.Pop().OnReturning(parameter);
+                if (vmStack.Count > 0)
+                    await vmStack.Pop().OnReturning(parameter);
             }
         }
     }

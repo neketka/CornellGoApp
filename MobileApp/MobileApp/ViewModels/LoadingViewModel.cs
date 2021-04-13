@@ -28,34 +28,48 @@ namespace MobileApp.ViewModels
 
         private async Task Client_Reconnecting()
         {
+            Console.WriteLine("reconnecting");
             await CrossGeolocator.Current.StopListeningAsync();
-            await navigationService.NavigateToRoot();
+            await Device.InvokeOnMainThreadAsync(async () =>
+            {
+                await navigationService.NavigateToRoot();
+            });
         }
 
         private async Task Client_Reconnected()
         {
+            Console.WriteLine("reconnected");
             await Login();
         }
 
         private async Task Client_ConnectionClosed()
         {
+            Console.WriteLine("lost connection");
             await CrossGeolocator.Current.StopListeningAsync();
-            await navigationService.NavigateToRoot();
+            await Device.InvokeOnMainThreadAsync(async () =>
+            {
+                await navigationService.NavigateToRoot();
+            });
             await Load();
         }
 
         private async Task Load()
         {
+            Console.WriteLine("Connecting");
             while (!gameService.Client.Connected)
             {
                 try
                 {
+                    Console.WriteLine("Establishing connection");
                     await gameService.Client.Connect();
-                    break;
+                    Console.WriteLine("Connection established");
                 }
                 catch (Exception e)
                 {
-                    await dialogService.ShowConnectionError(e.Message);
+                    await Device.InvokeOnMainThreadAsync(async () =>
+                    {
+                        await dialogService.ShowConnectionError(e.Message);
+                    });
                 }
             }
             await Login();
@@ -67,10 +81,19 @@ namespace MobileApp.ViewModels
             if (await gameService.AttemptRelog())
             {
                 Console.WriteLine("To landing");
-                await navigationService.NavigateTo<LandingViewModel>(animate: false);
-                await navigationService.NavigateTo<GameViewModel>();
+                await Device.InvokeOnMainThreadAsync(async () =>
+                {
+                    await navigationService.NavigateTo<LandingViewModel>(animate: false);
+                    await navigationService.NavigateTo<GameViewModel>();
+                });
             }
-            else await navigationService.NavigateTo<LandingViewModel>();
+            else
+            {
+                await Device.InvokeOnMainThreadAsync(async () =>
+                {
+                    await navigationService.NavigateTo<LandingViewModel>();
+                });
+            }
         }
     }
 }
