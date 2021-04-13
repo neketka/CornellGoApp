@@ -43,7 +43,7 @@ namespace Backend.Hub
                         await Groups.AddToGroupAsync(gmem.User.UserSession.SignalRId, gp.SignalRId);
                     }
 
-                    await Clients.Group(user.GroupMember.Group.Id.ToString()).UpdateGroupData(gp.GetFriendlyId(), new GroupMemberData[] {
+                    await Clients.Group(gp.SignalRId).UpdateGroupData(gp.GetFriendlyId(), new GroupMemberData[] {
                         new GroupMemberData(member.User.Id.ToString(), member.User.Username, true, member.IsDone, member.User.Score)
                     });
                 }
