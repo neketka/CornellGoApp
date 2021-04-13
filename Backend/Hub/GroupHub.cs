@@ -214,7 +214,7 @@ namespace Backend.Hub
 
             double dist = nPoint.ProjectTo(2830).Distance(fPoint.ProjectTo(2830));
 
-            double d = chal.Radius * 20.0;
+            double d = chal.Radius * 10.0;
             double scaled = ((dist + d) * d - d * d) / (d * (dist + d));
 
             if (dist < chal.Radius)
@@ -264,7 +264,7 @@ namespace Backend.Hub
                 await Clients.Group(user.GroupMember.Group.SignalRId).UpdateChallenge(cData);
             }
 
-            string progressString = dist + " meters";//((int)Math.Ceiling(dist / 64.32)).ToString() + " min";
+            string progressString = ((int)Math.Ceiling(dist / 64.32)).ToString() + " min";
             double progressScale = 1.0 - Math.Max(Math.Min(scaled, 1.0), 0.0);
 
             return new ChallengeProgressData(progressString, progressScale);
