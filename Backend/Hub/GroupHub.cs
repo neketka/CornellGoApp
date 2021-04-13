@@ -29,6 +29,7 @@ namespace Backend.Hub
                 foreach (GroupMember member in grp.GroupMembers)
                 {
                     Group gp = new Group(grp.Challenge);
+                    gp = (await Database.AddAsync(gp)).Entity;
                     gp.GroupMembers.Add(member);
                     member.Group = gp;
                     member.IsHost = true;
@@ -51,6 +52,8 @@ namespace Backend.Hub
             else
             {
                 Group gp = new Group(grp.Challenge);
+                gp = (await Database.AddAsync(gp)).Entity;
+
                 gp.GroupMembers.Add(gmem);
                 gmem.Group = gp;
                 gmem.IsHost = true;

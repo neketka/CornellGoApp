@@ -9,7 +9,7 @@ namespace BackendModel
 {
     public static class GroupExtensions
     {
-        private const string mapString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ012345";
+        private const string mapString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234578";
         private static readonly Dictionary<char, byte> mapToNums;
 
         static GroupExtensions()
