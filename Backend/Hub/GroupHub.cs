@@ -40,8 +40,7 @@ namespace Backend.Hub
 
                     if (member.User?.UserSession?.SignalRId != null)
                     {
-                        await Groups.RemoveFromGroupAsync(member.User.UserSession.SignalRId, grp.SignalRId);
-                        await Groups.AddToGroupAsync(gmem.User.UserSession.SignalRId, gp.SignalRId);
+                        await Groups.AddToGroupAsync(member.User.UserSession.SignalRId, gp.SignalRId);
                     }
 
                     await Clients.Group(gp.SignalRId).UpdateGroupData(gp.GetFriendlyId(), new GroupMemberData[] {
