@@ -27,7 +27,7 @@ namespace Backend.Hub
         {
             if (count > 100) count = 100;
             return Database.Users.AsAsyncEnumerable()
-                .OrderBy(User => User.Score)
+                .OrderByDescending(User => User.Score)
                 .Skip(index).Take(count)
                 .Select((u, i) => new LeaderboardData(u.Id.ToString(), u.Username, i + index, u.Score));
         }
