@@ -16,11 +16,15 @@ namespace MobileApp.Services
         string UserId { get; }
 
         event Action LoggedIn;
+
         event Action<ChallengeProgressData> ProgressUpdated;
 
         Task<bool> LoginWithSession(string username, string password);
+
         Task<bool> LogoutWithSession();
+
         Task<bool> AttemptRelog();
+
         Task PollLocation();
     }
 
@@ -28,7 +32,9 @@ namespace MobileApp.Services
     {
         public IGameClient Client { get; }
         public string UserId { get; private set; }
+
         public event Action LoggedIn = delegate { };
+
         public event Action<ChallengeProgressData> ProgressUpdated = delegate { };
 
         public GameService()

@@ -12,13 +12,26 @@ namespace CommunicationModel
     public partial class CornellGoClient : IGameClient
     {
         public event UpdateGroupData GroupDataUpdated;
+
         public event UpdateGroupMember GroupMemberUpdated;
+
         public event LeaveGroupMember GroupMemberLeft;
+
         public event UpdateUserData UserDataUpdated;
+
         public event UpdateChallenge ChallengeUpdated;
+
         public event FinishChallenge ChallengeFinished;
+
         public event UpdateScorePositions ScorePositionsUpdated;
+
         public event Func<Task> ConnectionClosed;
+
+        public event Func<Task> Reconnecting;
+
+        public event Func<Task> Reconnected;
+
+        public bool Connected => Connection.State != HubConnectionState.Disconnected;
 
         private HubConnection Connection { get; }
         private ClientCalls Client { get; }
@@ -26,7 +39,7 @@ namespace CommunicationModel
         public CornellGoClient(string url)
         {
             Connection = new HubConnectionBuilder()
-                .WithAutomaticReconnect(new[] { TimeSpan.FromSeconds(10) })
+                .WithAutomaticReconnect(new[] { TimeSpan.FromSeconds(3) })
                 .WithUrl(url, opts =>
                 {
                     opts.HttpMessageHandlerFactory = (message) =>
@@ -40,6 +53,8 @@ namespace CommunicationModel
 
             Client = new ClientCalls(this);
             Connection.Closed += async e => await ConnectionClosed();
+            Connection.Reconnected += async e => await Reconnected();
+            Connection.Reconnecting += async e => await Reconnecting();
         }
 
         public async Task Connect()
@@ -50,6 +65,7 @@ namespace CommunicationModel
         private class ClientCalls : IClientCallback
         {
             private CornellGoClient Client { get; }
+
             public ClientCalls(CornellGoClient client)
             {
                 Client = client;

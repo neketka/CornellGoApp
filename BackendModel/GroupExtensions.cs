@@ -21,7 +21,6 @@ namespace BackendModel
 
         public static void SyncPlacesWithUsers(this Group group)
         {
-            HashSet<PrevChallenge> places = new HashSet<PrevChallenge>();
             group.PrevChallenges.Clear();
             foreach (GroupMember gp in group.GroupMembers)
             {
@@ -50,7 +49,7 @@ namespace BackendModel
         public static string GetFriendlyId(this Group group)
         {
             long id = group.Id;
-            string friendlyId = new (new[]
+            string friendlyId = new(new[]
             {
                 mapString[(byte)(id & 31L)], mapString[(byte)((id >> 5) & 31L)], mapString[(byte)((id >> 10) & 31L)],
                 mapString[(byte)((id >> 15) & 31L)], mapString[(byte)((id >> 20) & 31L)], mapString[(byte)((id >> 25) & 31L)],

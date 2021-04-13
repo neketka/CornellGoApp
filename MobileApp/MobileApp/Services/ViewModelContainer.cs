@@ -15,6 +15,7 @@ namespace MobileApp.Services
         private Dictionary<string, (Type Page, Type ViewModel)> pageViewModelMapping;
         private Dictionary<Type, object> serviceMapping;
         public INavigationService NavigationService { get; }
+
         public ViewModelContainer()
         {
             pageViewModelMapping = new();
@@ -34,7 +35,7 @@ namespace MobileApp.Services
                     pageViewModelMapping[mapping] = (type, vmPair.Item2);
                 }
             }
-            NavigationService = new NavigationServiceImpl(ConstructViewModel, ConstructPage, 
+            NavigationService = new NavigationServiceImpl(ConstructViewModel, ConstructPage,
                 pageViewModelMapping.Values.Select(pvm => pvm.ViewModel).ToArray());
 
             serviceMapping[typeof(INavigationService)] = NavigationService;
@@ -134,6 +135,10 @@ namespace MobileApp.Services
                 string vmName = typeof(TViewModel).Name;
                 Console.WriteLine("Navigating to " + vmName);
 
+                if (Shell.Current.Navigation.NavigationStack.FirstOrDefault()?.
+                    BindingContext.GetType().IsAssignableFrom(typeof(TViewModel)) ?? false)
+                    return;
+
                 Page p = cachedPages[typeof(TViewModel)];
                 var vm = consViewModel(typeof(TViewModel));
                 p.BindingContext = vm;
@@ -148,6 +153,10 @@ namespace MobileApp.Services
             {
                 string vmName = typeof(TViewModel).Name;
                 Console.WriteLine("Navigating back to " + vmName);
+
+                if (Shell.Current.Navigation.NavigationStack.FirstOrDefault()?.
+                    BindingContext.GetType().IsAssignableFrom(typeof(TViewModel)) ?? false)
+                    return;
 
                 string backRoute = "..";
                 while (vmStack.Peek() is not TViewModel)
@@ -172,6 +181,7 @@ namespace MobileApp.Services
                 while (vmStack.Count > 1)
                     vmStack.Pop().OnDestroying();
                 await Shell.Current.Navigation.PopToRootAsync(animate);
+
                 await vmStack.Pop().OnReturning(parameter);
             }
         }
@@ -180,10 +190,15 @@ namespace MobileApp.Services
     public interface INavigationService
     {
         BaseViewModel PreviousViewModel { get; }
+
         Task InitializeFirst<TViewModel>();
+
         Task NavigateTo<TViewModel>(object parameter = null, bool animate = true) where TViewModel : BaseViewModel;
+
         Task NavigateBackTo<TViewModel>(object parameter = null, bool animate = true) where TViewModel : BaseViewModel;
+
         Task NavigateBack(object parameter = null, bool animate = true);
+
         Task NavigateToRoot(object parameter = null, bool animate = true);
     }
 }

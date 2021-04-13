@@ -13,6 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="client\build\static\js\main.0a1dd2cf.chunk.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.5" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.5" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0" />
@@ -32,6 +36,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="Npgsql" Version="5.0.4" />
+    <PackageReference Include="Profanity.Detector" Version="0.1.8" />
     <PackageReference Include="ProjNet" Version="2.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.2" />
   </ItemGroup>
@@ -39,6 +44,10 @@
   <ItemGroup>
     <ProjectReference Include="..\BackendModel\BackendModel.csproj" />
     <ProjectReference Include="..\CommunicationModel\CommunicationModel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="client\build\static\js\main.0a1dd2cf.chunk.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -83,6 +92,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="client\build\static\js\main.003ae6af.chunk.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="client\build\static\js\main.0a1dd2cf.chunk.js.map">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="client\build\static\js\main.533ef859.chunk.js">

@@ -36,7 +36,7 @@ namespace Backend.Hub
             {
                 usession.SignalRId = Context.ConnectionId;
                 await Groups.AddToGroupAsync(Context.ConnectionId, usession.User.GroupMember.Group.Id.ToString());
-                
+
                 //Add to sessionlog
                 var entry = new SessionLogEntry(SessionLogEntryType.Relog, usession.User.Id.ToString(), DateTime.UtcNow, usession.User);
                 await Database.SessionLogEntries.AddAsync(entry);
@@ -97,6 +97,8 @@ namespace Backend.Hub
             if (await Database.Authenticators.AsAsyncEnumerable().AnyAsync(e => e.Email == email))
                 return false;
 
+            username = Censor(username);
+
             User user = new(0, username, email);
             user = (await Database.AddAsync(user)).Entity;
 
@@ -127,6 +129,8 @@ namespace Backend.Hub
             UserSession session = await Database.UserSessions.FromSignalRId(Context.ConnectionId);
             if (session == null)
                 return false;
+
+            username = Censor(username);
 
             User user = session.User;
             string oldUsername = user.Username;
@@ -179,7 +183,6 @@ namespace Backend.Hub
             user.Email = email;
             await Database.SaveChangesAsync();
             return true;
-
         }
 
         // With insight from: http://csharptest.net/470/another-example-of-how-to-store-a-salted-password-hash/
@@ -200,7 +203,7 @@ namespace Backend.Hub
 
         public static bool VerifyPasswordHash(string password, string passwordHash)
         {
-            byte[] storedBytes = Convert.FromBase64String(passwordHash); 
+            byte[] storedBytes = Convert.FromBase64String(passwordHash);
             byte[] salt = new byte[16];
             Array.Copy(storedBytes, 0, salt, 0, 16);
 
@@ -213,8 +216,15 @@ namespace Backend.Hub
                     return false;
             }
             return true;
+        }
 
-
+        private static string Censor(string value)
+        {
+            var filter = new ProfanityFilter.ProfanityFilter();
+            string censored = filter.CensorString(value).Replace('*', '_');
+            if (filter.ContainsProfanity(string.Concat(censored.Where(c => c != '_'))))
+                return new string('_', value.Length);
+            return censored;
         }
     }
 }
