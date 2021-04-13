@@ -35,7 +35,7 @@ namespace Backend.Hub
                     gp.SyncPlacesWithUsers();
 
                     await Database.SaveChangesAsync();
-                    gp.SignalRId = user.GroupMember.Group.Id.ToString();
+                    gp.SignalRId = gp.Id.ToString();
 
                     if (member.User?.UserSession?.SignalRId != null)
                     {
