@@ -43,10 +43,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="client\build\static\js\main.0a1dd2cf.chunk.js" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
 
