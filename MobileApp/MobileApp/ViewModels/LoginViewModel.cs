@@ -28,13 +28,15 @@ namespace MobileApp.ViewModels
 
                 try
                 {
-                    if (await gameService.LoginWithSession(Username.Trim(), Password))
+                    if (await gameService.LoginWithSession("", ""))
                         await navigationService.NavigateTo<GameViewModel>();
                     else
                         BadText = "Invalid username or password.";
                 }
                 catch (Exception e)
                 {
+                    Console.WriteLine(e);
+
                     BadText = $"An error occured while contacting the server ({e.GetType()}).";
                 }
                 finally
