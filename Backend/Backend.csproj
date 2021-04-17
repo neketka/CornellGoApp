@@ -56,8 +56,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="client\build\**">
+    <None Update="client\build\**">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </None>
   </ItemGroup>
 </Project>
