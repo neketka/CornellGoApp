@@ -14,6 +14,7 @@ namespace MobileApp.Services
     {
         IGameClient Client { get; }
         string UserId { get; }
+        bool IsLoggedIn { get; }
 
         event Action LoggedIn;
 
@@ -32,6 +33,7 @@ namespace MobileApp.Services
     {
         public IGameClient Client { get; }
         public string UserId { get; private set; }
+        public bool IsLoggedIn { get; private set; } = false;
 
         public event Action LoggedIn = delegate { };
 
@@ -68,6 +70,7 @@ namespace MobileApp.Services
                     return false;
                 }
             }
+            IsLoggedIn = loggedIn;
             return loggedIn;
         }
 
@@ -79,6 +82,8 @@ namespace MobileApp.Services
                 await CrossGeolocator.Current.StopListeningAsync();
                 SecureStorage.Remove("session");
             }
+            if (loggedOut)
+                IsLoggedIn = false;
             return loggedOut;
         }
 

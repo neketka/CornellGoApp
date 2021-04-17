@@ -12,7 +12,8 @@ namespace MobileApp
     public partial class AppShell : Xamarin.Forms.Shell
     {
         private IGameService GameService { get; }
-        public static BrowserLaunchOptions CustomTabsOptions { get; } = new BrowserLaunchOptions
+
+        public static BrowserLaunchOptions CustomTabsOptions { get; } = new()
         {
             LaunchMode = BrowserLaunchMode.SystemPreferred,
             TitleMode = BrowserTitleMode.Show,
@@ -60,7 +61,7 @@ namespace MobileApp
         {
             string iosLink = "https://docs.google.com/forms/d/e/1FAIpQLSfwl50y3ebjjsQrtoAxkXoYYoQntodpQhp9RFkYURv_vg94Ug/viewform?usp=sf_link";
             string andLink = "https://docs.google.com/forms/d/e/1FAIpQLSfbEp9ytE9JtKy-hM2YF-X7nPIaKEuUTuA3eyuE9IbQJZI1dg/viewform?usp=sf_link";
-            
+
             await Browser.OpenAsync(Device.RuntimePlatform == Device.Android ? andLink : iosLink, CustomTabsOptions);
         }
 

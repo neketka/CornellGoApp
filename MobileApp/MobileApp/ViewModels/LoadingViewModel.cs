@@ -30,10 +30,7 @@ namespace MobileApp.ViewModels
         {
             Console.WriteLine("reconnecting");
             await CrossGeolocator.Current.StopListeningAsync();
-            await Device.InvokeOnMainThreadAsync(async () =>
-            {
-                await navigationService.NavigateToRoot();
-            });
+            await Device.InvokeOnMainThreadAsync(async () => await navigationService.NavigateToRoot(false));
         }
 
         private async Task Client_Reconnected()
@@ -46,11 +43,18 @@ namespace MobileApp.ViewModels
         {
             Console.WriteLine("lost connection");
             await CrossGeolocator.Current.StopListeningAsync();
-            Device.BeginInvokeOnMainThread(async () =>
+            Device.BeginInvokeOnMainThread(async () => await navigationService.NavigateToRoot());
+        }
+
+        public override async Task OnReturning(object parameter)
+        {
+            Console.WriteLine("Returning");
+            if ((parameter as bool?) != false)
             {
-                await navigationService.NavigateToRoot();
-            });
-            await Load();
+                Console.WriteLine("Loading on return");
+                await Load();
+                gameService.Client.SendMetric(CommunicationModel.FrontendMetric.AppResumed, "");
+            }
         }
 
         private async Task Load()
@@ -62,7 +66,6 @@ namespace MobileApp.ViewModels
                 {
                     Console.WriteLine("Establishing connection");
                     await gameService.Client.Connect();
-                    Console.WriteLine("Connection established");
                 }
                 catch (Exception e)
                 {

@@ -73,7 +73,7 @@ namespace MobileApp.Services
             private Stack<BaseViewModel> vmStack;
             private Dictionary<Type, Page> cachedPages;
             private Type[] vmTypes;
-            private string rootVm;
+            private BaseViewModel rootVm;
             private bool suppressExtraPop = false;
 
             private Page LastPage => Shell.Current.Navigation.NavigationStack[Shell.Current.Navigation.NavigationStack.Count - 1];
@@ -97,7 +97,6 @@ namespace MobileApp.Services
 
             public async Task InitializeFirst<TViewModel>()
             {
-                rootVm = typeof(TViewModel).Name;
                 Shell.Current.Navigated += Current_Navigated;
 
                 foreach (Type vmType in vmTypes)
@@ -117,6 +116,7 @@ namespace MobileApp.Services
 
                 var vm = consViewModel(typeof(TViewModel));
                 await vm.OnEntering(null);
+                rootVm = vm;
 
                 LastPage.BindingContext = vm;
             }
@@ -143,7 +143,7 @@ namespace MobileApp.Services
                 var vm = consViewModel(typeof(TViewModel));
                 p.BindingContext = vm;
 
-                vmStack.Push(vmStack.Count == 0 ? null : LastPage.BindingContext as BaseViewModel);
+                vmStack.Push(vmStack.Count == 0 ? rootVm : LastPage.BindingContext as BaseViewModel);
 
                 await Shell.Current.Navigation.PushAsync(p, animate);
                 await vm.OnEntering(null);
@@ -183,7 +183,7 @@ namespace MobileApp.Services
                 await Shell.Current.Navigation.PopToRootAsync(animate);
 
                 if (vmStack.Count > 0)
-                    await vmStack.Pop().OnReturning(parameter);
+                    await vmStack.Peek().OnReturning(parameter);
             }
         }
     }

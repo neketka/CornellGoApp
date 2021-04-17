@@ -28,7 +28,16 @@ namespace MobileApp
 
         protected override void OnResume()
         {
-            ((AppShell)MainPage).Container.GetService<IGameService>().Client.SendMetric(CommunicationModel.FrontendMetric.AppResumed, "");
+            ViewModelContainer container = ((AppShell)MainPage).Container;
+            IGameService gameService = container.GetService<IGameService>();
+            if (!gameService.Client.Connected)
+                container.NavigationService.NavigateToRoot();
+            else if (gameService.IsLoggedIn)
+            {
+                container.NavigationService.NavigateTo<LandingViewModel>(animate: false);
+                container.NavigationService.NavigateTo<GameViewModel>();
+            }
+            else container.NavigationService.NavigateTo<LandingViewModel>();
         }
     }
 }
