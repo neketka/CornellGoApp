@@ -46,7 +46,7 @@ namespace MobileApp.ViewModels
         {
             Console.WriteLine("lost connection");
             await CrossGeolocator.Current.StopListeningAsync();
-            await Device.InvokeOnMainThreadAsync(async () =>
+            Device.BeginInvokeOnMainThread(async () =>
             {
                 await navigationService.NavigateToRoot();
             });

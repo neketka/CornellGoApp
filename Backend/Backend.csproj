@@ -13,10 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="client\build\static\js\main.0a1dd2cf.chunk.js" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.5" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.5" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0" />
@@ -92,6 +88,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="client\build\static\js\main.003ae6af.chunk.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="client\build\static\js\main.0a1dd2cf.chunk.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="client\build\static\js\main.0a1dd2cf.chunk.js.map">

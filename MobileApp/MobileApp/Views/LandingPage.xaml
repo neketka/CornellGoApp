@@ -6,41 +6,40 @@
              x:Class="MobileApp.Views.LandingPage"
              BackgroundColor="{StaticResource Secondary}"
              Shell.FlyoutBehavior="Disabled"
-             Shell.NavBarIsVisible="False"
-             >
+             Shell.NavBarIsVisible="False">
     <ContentPage.Content>
         <StackLayout Padding="40, 32, 40, 64">
             <Image Source="{ex:ImageResource MobileApp.Assets.Images.logo.png}"
-                   Aspect="AspectFill" 
-                   HorizontalOptions="Center" 
+                   Aspect="AspectFill"
+                   HorizontalOptions="Center"
                    HeightRequest="192"
-                   WidthRequest="192" 
-                   Margin="0, 0, 0, -24"
-                   />
+                   WidthRequest="192"
+                   Margin="0, 0, 0, -24" />
             <Label Text="CornellGO!"
                    HorizontalOptions="Center"
-                   TextColor="{StaticResource SecondaryText}" 
-                   FontSize="44"
-                   />
-            <Label Text="Interactive scavenger hunt"
-                   HorizontalOptions="Center" 
                    TextColor="{StaticResource SecondaryText}"
-                   TextTransform="Uppercase" 
-                   FontSize="12"
-                   />
+                   FontSize="44" />
+            <Label Text="Interactive scavenger hunt"
+                   HorizontalOptions="Center"
+                   TextColor="{StaticResource SecondaryText}"
+                   TextTransform="Uppercase"
+                   FontSize="12" />
+            <Label Text="CornellGO! servers need location permissions to determine your distance to landmarks"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center"
+                   TextColor="{StaticResource PrimaryAccent}"
+                   VerticalOptions="EndAndExpand"
+                   Margin="0, 0, 0, 32"
+                   FontSize="15" />
             <Grid ColumnSpacing="8"
                   RowDefinitions="40"
-                  ColumnDefinitions="*, *"
-                  VerticalOptions="EndAndExpand"
-                  >
-                <Button Text="Sign in" 
+                  ColumnDefinitions="*, *">
+                <Button Text="Sign in"
                         Command="{Binding SigninCommand}"
-                        Grid.Column="0"
-                        />
-                <Button Text="Sign up" 
-                        Command="{Binding SignupCommand}" 
-                        Grid.Column="1"
-                        />
+                        Grid.Column="0" />
+                <Button Text="Sign up"
+                        Command="{Binding SignupCommand}"
+                        Grid.Column="1" />
             </Grid>
         </StackLayout>
     </ContentPage.Content>
