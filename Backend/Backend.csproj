@@ -75,42 +75,11 @@
     <None Update="client\build\robots.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="client\build\static\css\main.afd7172b.chunk.css">
+    <None Update="client\build\static\css\*.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="client\build\static\js\2.6447f738.chunk.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="client\build\static\js\2.6447f738.chunk.js.LICENSE.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="client\build\static\js\3.f3ccc828.chunk.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="client\build\static\js\main.003ae6af.chunk.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="client\build\static\js\main.0a1dd2cf.chunk.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="client\build\static\js\main.0a1dd2cf.chunk.js.map">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="client\build\static\js\main.533ef859.chunk.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="client\build\static\js\main.a45949bc.chunk.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="client\build\static\js\main.a86c851c.chunk.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="client\build\static\js\main.bf5852b8.chunk.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="client\build\static\js\runtime-main.2d0c9ef4.js">
+    <None Update="client\build\static\js\*.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
 </Project>
