@@ -28,6 +28,7 @@ namespace MobileApp.ViewModels
         private bool emailAddressValid = false;
         private bool emailAddressMatches = false;
         private bool formValid = false;
+        private bool privacyPolicyAgree = false;
 
         public bool UsernameLengthValid { get => usernameLengthValid; set => SetProperty(ref usernameLengthValid, value); }
         public bool UsernameFormatValid { get => usernameFormatValid; set => SetProperty(ref usernameFormatValid, value); }
@@ -36,6 +37,7 @@ namespace MobileApp.ViewModels
         public bool EmailAddressValid { get => emailAddressValid; set => SetProperty(ref emailAddressValid, value); }
         public bool EmailAddressMatches { get => emailAddressMatches; set => SetProperty(ref emailAddressMatches, value); }
         public bool FormValid { get => formValid; set => SetProperty(ref formValid, value); }
+        public bool PrivacyPolicyAgree { get => privacyPolicyAgree; set => SetProperty(ref privacyPolicyAgree, value, onChanged: Validate); }
 
         public string Username { get => username; set => SetProperty(ref username, value, onChanged: ValidateUsername); }
         public string Password { get => password; set => SetProperty(ref password, value, onChanged: ValidatePassword); }
@@ -48,7 +50,7 @@ namespace MobileApp.ViewModels
         private void Validate()
         {
             FormValid = UsernameLengthValid && UsernameFormatValid && PasswordLengthValid &&
-                PasswordMatches && EmailAddressValid && EmailAddressMatches;
+                PasswordMatches && EmailAddressValid && EmailAddressMatches && PrivacyPolicyAgree;
             RegisterCommand.ChangeCanExecute();
         }
 

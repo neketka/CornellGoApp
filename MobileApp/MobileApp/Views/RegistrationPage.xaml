@@ -8,199 +8,198 @@
              x:Class="MobileApp.Views.RegistrationPage"
              BackgroundColor="{StaticResource Secondary}"
              Shell.FlyoutBehavior="Disabled"
-             Title="Create an account"
-             >
+             Title="Create an account">
     <Shell.BackButtonBehavior>
-        <BackButtonBehavior Command="{Binding BusyBackCommand}"/>
+        <BackButtonBehavior Command="{Binding BusyBackCommand}" />
     </Shell.BackButtonBehavior>
     <ContentPage.Resources>
         <ResourceDictionary>
-            <ex:StringLengthNotZeroConverter x:Key="strNotEmpty"/>
+            <ex:StringLengthNotZeroConverter x:Key="strNotEmpty" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Padding="20, 30, 20, 0">
                 <Label Margin="3, 2, 0, 0"
-                       Text="Username" 
-                       TextColor="{StaticResource SecondaryText}"
-                        />
+                       Text="Username"
+                       TextColor="{StaticResource SecondaryText}" />
                 <Entry Text="{Binding Username, Mode=TwoWay}"
                        WidthRequest="2000"
                        Placeholder="1-16 characters (e.g. name_123)"
-					   PlaceholderColor="{StaticResource PrimaryAccent}" 
-                       TextColor="{StaticResource SecondaryText}"
-                       />
-				<Label Text="Must be 1-16 characters long"
-                       HeightRequest="16" 
-                       FontSize="12" 
+					   PlaceholderColor="{StaticResource PrimaryAccent}"
+                       TextColor="{StaticResource SecondaryText}" />
+                <Label Text="Must be 1-16 characters long"
+                       HeightRequest="16"
+                       FontSize="12"
                        TextColor="Red"
                        Margin="12, 0, 0, 0"
                        FontAttributes="Bold"
-                       IsVisible="False"
-                       >
+                       IsVisible="False">
                     <Label.Triggers>
                         <MultiTrigger TargetType="Label">
                             <MultiTrigger.Conditions>
-                                <BindingCondition Binding="{Binding UsernameLengthValid}" Value="False"/>
-                                <BindingCondition Binding="{Binding Username, Converter={StaticResource strNotEmpty}}" Value="True"/>
+                                <BindingCondition Binding="{Binding UsernameLengthValid}" Value="False" />
+                                <BindingCondition Binding="{Binding Username, Converter={StaticResource strNotEmpty}}" Value="True" />
                             </MultiTrigger.Conditions>
-                            <Setter Property="IsVisible" Value="True"/>
+                            <Setter Property="IsVisible" Value="True" />
                         </MultiTrigger>
                     </Label.Triggers>
-				</Label>
+                </Label>
                 <Label Text="Must be only letters, numbers, and underscores"
                        HeightRequest="16"
-                       FontSize="12" 
-                       TextColor="Red" 
-                       Margin="12, 0, 0, 0" 
+                       FontSize="12"
+                       TextColor="Red"
+                       Margin="12, 0, 0, 0"
                        FontAttributes="Bold"
-                       IsVisible="False"
-                       >
+                       IsVisible="False">
                     <Label.Triggers>
                         <MultiTrigger TargetType="Label">
                             <MultiTrigger.Conditions>
-                                <BindingCondition Binding="{Binding UsernameFormatValid}" Value="False"/>
-                                <BindingCondition Binding="{Binding Username, Converter={StaticResource strNotEmpty}}" Value="True"/>
+                                <BindingCondition Binding="{Binding UsernameFormatValid}" Value="False" />
+                                <BindingCondition Binding="{Binding Username, Converter={StaticResource strNotEmpty}}" Value="True" />
                             </MultiTrigger.Conditions>
-                            <Setter Property="IsVisible" Value="True"/>
+                            <Setter Property="IsVisible" Value="True" />
                         </MultiTrigger>
                     </Label.Triggers>
                 </Label>
                 <Label Margin="3, 24, 0, 0"
-                       Text="Password" 
-                       TextColor="{StaticResource SecondaryText}"
-                       />
+                       Text="Password"
+                       TextColor="{StaticResource SecondaryText}" />
                 <Entry Text="{Binding Password, Mode=TwoWay}"
-                       WidthRequest="2000" 
+                       WidthRequest="2000"
                        Placeholder="8-128 characters"
                        IsPassword="True"
-					   PlaceholderColor="{StaticResource PrimaryAccent}" 
-                       TextColor="{StaticResource SecondaryText}"
-                       />
-                <Label Text="Must be 8-128 characters long" 
+					   PlaceholderColor="{StaticResource PrimaryAccent}"
+                       TextColor="{StaticResource SecondaryText}" />
+                <Label Text="Must be 8-128 characters long"
                        HeightRequest="16"
                        FontSize="12"
                        TextColor="Red"
                        Margin="12, 0, 0, 0"
                        FontAttributes="Bold"
-                       IsVisible="False"
-                       >
+                       IsVisible="False">
                     <Label.Triggers>
                         <MultiTrigger TargetType="Label">
                             <MultiTrigger.Conditions>
-                                <BindingCondition Binding="{Binding PasswordLengthValid}" Value="False"/>
-                                <BindingCondition Binding="{Binding Password, Converter={StaticResource strNotEmpty}}" Value="True"/>
+                                <BindingCondition Binding="{Binding PasswordLengthValid}" Value="False" />
+                                <BindingCondition Binding="{Binding Password, Converter={StaticResource strNotEmpty}}" Value="True" />
                             </MultiTrigger.Conditions>
-                            <Setter Property="IsVisible" Value="True"/>
+                            <Setter Property="IsVisible" Value="True" />
                         </MultiTrigger>
                     </Label.Triggers>
                 </Label>
                 <Label Margin="3, 2, 0, 0"
-                       Text="Confirm password" 
-                       TextColor="{StaticResource SecondaryText}"
-                       />
+                       Text="Confirm password"
+                       TextColor="{StaticResource SecondaryText}" />
                 <Entry Text="{Binding PasswordVerification, Mode=TwoWay}"
-                       WidthRequest="2000" 
-                       Placeholder="" 
+                       WidthRequest="2000"
+                       Placeholder=""
                        IsPassword="True"
 					   PlaceholderColor="{StaticResource PrimaryAccent}"
-                       TextColor="{StaticResource SecondaryText}"
-                       />
-                <Label Text="Must match password field" 
-                       HeightRequest="16" 
+                       TextColor="{StaticResource SecondaryText}" />
+                <Label Text="Must match password field"
+                       HeightRequest="16"
                        FontSize="12"
                        TextColor="Red"
-                       Margin="12, 0, 0, 0" 
+                       Margin="12, 0, 0, 0"
                        FontAttributes="Bold"
-                       IsVisible="False"
-                       >
+                       IsVisible="False">
                     <Label.Triggers>
                         <MultiTrigger TargetType="Label">
                             <MultiTrigger.Conditions>
-                                <BindingCondition Binding="{Binding PasswordMatches}" Value="False"/>
-                                <BindingCondition Binding="{Binding PasswordVerification, Converter={StaticResource strNotEmpty}}" Value="True"/>
+                                <BindingCondition Binding="{Binding PasswordMatches}" Value="False" />
+                                <BindingCondition Binding="{Binding PasswordVerification, Converter={StaticResource strNotEmpty}}" Value="True" />
                             </MultiTrigger.Conditions>
-                            <Setter Property="IsVisible" Value="True"/>
+                            <Setter Property="IsVisible" Value="True" />
                         </MultiTrigger>
                     </Label.Triggers>
                 </Label>
                 <Label Margin="3, 24, 0, 0"
-                       Text="Email" 
-                       TextColor="{StaticResource SecondaryText}"
-                       />
+                       Text="Email"
+                       TextColor="{StaticResource SecondaryText}" />
                 <Entry Text="{Binding Email, Mode=TwoWay}"
-                       WidthRequest="2000" 
+                       WidthRequest="2000"
                        Placeholder="e.g. ab123@example.com"
 					   PlaceholderColor="{StaticResource PrimaryAccent}"
-                       TextColor="{StaticResource SecondaryText}"
-                       />
-                <Label Text="Must be a valid email address" 
-                       HeightRequest="16" 
-                       FontSize="12" 
-                       TextColor="Red" 
-                       Margin="12, 0, 0, 0" 
+                       TextColor="{StaticResource SecondaryText}" />
+                <Label Text="Must be a valid email address"
+                       HeightRequest="16"
+                       FontSize="12"
+                       TextColor="Red"
+                       Margin="12, 0, 0, 0"
                        FontAttributes="Bold"
-                       IsVisible="False"
-                       >
-					<Label.Triggers>
+                       IsVisible="False">
+                    <Label.Triggers>
                         <MultiTrigger TargetType="Label">
                             <MultiTrigger.Conditions>
-                                <BindingCondition Binding="{Binding EmailAddressValid}" Value="False"/>
-                                <BindingCondition Binding="{Binding Email, Converter={StaticResource strNotEmpty}}" Value="True"/>
+                                <BindingCondition Binding="{Binding EmailAddressValid}" Value="False" />
+                                <BindingCondition Binding="{Binding Email, Converter={StaticResource strNotEmpty}}" Value="True" />
                             </MultiTrigger.Conditions>
-                            <Setter Property="IsVisible" Value="True"/>
+                            <Setter Property="IsVisible" Value="True" />
                         </MultiTrigger>
                     </Label.Triggers>
                 </Label>
                 <Label Margin="3, 2, 0, 0"
-                       Text="Confirm email" 
-                       TextColor="{StaticResource SecondaryText}"
-                       />
+                       Text="Confirm email"
+                       TextColor="{StaticResource SecondaryText}" />
                 <Entry Text="{Binding EmailVerification, Mode=TwoWay}"
-                       WidthRequest="2000" 
+                       WidthRequest="2000"
                        Placeholder=""
 					   PlaceholderColor="{StaticResource PrimaryAccent}"
-                       TextColor="{StaticResource SecondaryText}"
-                       />
-				<Label Text="Must match email field" 
+                       TextColor="{StaticResource SecondaryText}" />
+                <Label Text="Must match email field"
                        HeightRequest="16"
-                       FontSize="12" 
+                       FontSize="12"
                        TextColor="Red"
-                       Margin="12, 0, 0, 0" 
+                       Margin="12, 0, 0, 0"
                        FontAttributes="Bold"
-                       IsVisible="False"
-                       >
-					<Label.Triggers>
+                       IsVisible="False">
+                    <Label.Triggers>
                         <MultiTrigger TargetType="Label">
                             <MultiTrigger.Conditions>
-                                <BindingCondition Binding="{Binding EmailAddressMatches}" Value="False"/>
-                                <BindingCondition Binding="{Binding EmailVerification, Converter={StaticResource strNotEmpty}}" Value="True"/>
+                                <BindingCondition Binding="{Binding EmailAddressMatches}" Value="False" />
+                                <BindingCondition Binding="{Binding EmailVerification, Converter={StaticResource strNotEmpty}}" Value="True" />
                             </MultiTrigger.Conditions>
-                            <Setter Property="IsVisible" Value="True"/>
+                            <Setter Property="IsVisible" Value="True" />
                         </MultiTrigger>
-					</Label.Triggers>
-				</Label>
+                    </Label.Triggers>
+                </Label>
+                <StackLayout Orientation="Horizontal" Margin="0, 8, 0, 4" Padding="0, 0, 0, 0" HorizontalOptions="Start">
+                    <CheckBox IsChecked="{Binding PrivacyPolicyAgree}"
+                              VerticalOptions="Center" />
+                    <Label Text="I agree to the"
+                       HorizontalOptions="Center"
+                       TextColor="{StaticResource PrimaryAccent}"
+                       VerticalOptions="Center"
+                       FontSize="15" />
+                    <Label Text="Privacy Policy"
+                           HorizontalOptions="Center"
+                           TextDecorations="Underline"
+                           TextColor="DarkCyan"
+                           VerticalOptions="Center"
+                           FontSize="15">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </StackLayout>
                 <Grid>
                     <Label Text="{Binding BadText}"
-                           FontSize="16" 
+                           FontSize="16"
                            TextColor="Red"
                            Margin="0"
                            HorizontalOptions="Center"
-                           HeightRequest="32"
-                           />
-                    <ActivityIndicator Color="{StaticResource SecondaryText}" 
-                                       IsRunning="{Binding IsBusy}" 
-                                       HeightRequest="32"
-                                       />
+                           HeightRequest="32" />
+                    <ActivityIndicator Color="{StaticResource SecondaryText}"
+                                       IsRunning="{Binding IsBusy}"
+                                       HeightRequest="32" />
                 </Grid>
-                <Button Text="Create account" 
+                <Button Text="Create account"
                         VerticalOptions="Center"
                         HeightRequest="40"
-                        Margin="0, 0, 0, 0"
-                        Padding="0" 
-                        Command="{Binding RegisterCommand}"
-                        />
+                        Margin="0, 0, 0, 12"
+                        Padding="0"
+                        Command="{Binding RegisterCommand}" />
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

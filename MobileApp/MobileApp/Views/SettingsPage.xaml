@@ -7,107 +7,103 @@
              xmlns:fa="clr-namespace:MobileApp.Constants"
              x:Class="MobileApp.Views.SettingsPage"
              Shell.FlyoutBehavior="Disabled"
-             Title="Settings"
-             >
+             BackgroundColor="{StaticResource Secondary}"
+             Title="Settings">
     <ContentPage.Content>
         <ScrollView>
             <StackLayout BackgroundColor="{StaticResource Secondary}" Padding="15, 0, 15, 30">
                 <Label Text="Account details"
-                       TextTransform="Uppercase" 
-                       TextColor="{StaticResource SecondaryText}" 
-                       FontSize="18" 
-                       FontAttributes="Bold"
-                       Margin="0, 20, 0, 20"
-                       />
-                <StackLayout Orientation="Horizontal" Margin="0, 0, 0, 15">
-                    <local:AvatarView HeightRequest="84"
-                                      WidthRequest="84" 
-                                      Image="{Binding Avatar}"
-                                      HorizontalOptions="Start" 
-                                      Margin="15, 0, 0, 0"
-                                      >
-                        <local:AvatarView.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ChangeAvatarCommand}"/>
-                        </local:AvatarView.GestureRecognizers>
-                    </local:AvatarView>
-                    <StackLayout HorizontalOptions="FillAndExpand"
-                                 VerticalOptions="Center" 
-                                 Margin="12, 0, 15, 0"
-                                 >
-                        <Label Margin="4, 0, 0, 0" 
-                               Text="Username" 
-                               VerticalOptions="Center"
-                               TextColor="{StaticResource SecondaryText}"
-                               />
-                        <Grid HorizontalOptions="FillAndExpand">
-                            <Grid.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding ChangeUsernameCommand}"/>
-                            </Grid.GestureRecognizers>
-                            <Entry Text="{Binding Username}" 
-                                   TextColor="{StaticResource SecondaryText}"
-                                   IsReadOnly="True"
-                                   IsEnabled="False"
-                                   />
-                        </Grid>
-                    </StackLayout>
-                </StackLayout>
-                <Button Text="Change Email Address" 
-                        Command="{Binding ChangeEmailCommand}" 
-                        Margin="15, 0, 15, 0"
-                        HeightRequest="40" 
-                        Padding="0"
-                        />
-                <BoxView HeightRequest="1" 
-                         HorizontalOptions="FillAndExpand" 
-                         Color="{StaticResource PrimaryAccent}" 
-                         CornerRadius="0" 
-                         Margin="0, 15, 0, 0"
-                         />
-                <Label Text="Password and Authentication" 
-                       TextTransform="Uppercase" 
-                       TextColor="{StaticResource SecondaryText}" 
-                       FontSize="18"
-                       FontAttributes="Bold"
-                       Margin="0, 20, 0, 20"
-                       />
-                <Button Text="Change Password" 
-                        Command="{Binding ChangePasswordCommand}"
-                        Margin="15, 0, 15, 0" 
-                        HeightRequest="40"
-                        Padding="0"
-                        />
-                <Button Text="Log Out" 
-                        Command="{Binding LogoutCommand}"
-                        Margin="15, 0, 15, 0"
-                        HeightRequest="40"
-                        Padding="0"
-                        />
-                <BoxView HeightRequest="1" 
-                         HorizontalOptions="FillAndExpand"
-                         Color="{StaticResource PrimaryAccent}" 
-                         CornerRadius="0"
-                         Margin="0, 15, 0, 0"
-                         />
-                <Label Text="Account Actions" 
                        TextTransform="Uppercase"
                        TextColor="{StaticResource SecondaryText}"
                        FontSize="18"
                        FontAttributes="Bold"
-                       Margin="0, 20, 0, 20"
-                       />
+                       Margin="0, 20, 0, 20" />
+                <StackLayout Orientation="Horizontal" Margin="0, 0, 0, 15">
+                    <local:AvatarView HeightRequest="84"
+                                      WidthRequest="84"
+                                      Image="{Binding Avatar}"
+                                      HorizontalOptions="Start"
+                                      Margin="15, 0, 0, 0">
+                        <local:AvatarView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ChangeAvatarCommand}" />
+                        </local:AvatarView.GestureRecognizers>
+                    </local:AvatarView>
+                    <StackLayout HorizontalOptions="FillAndExpand"
+                                 VerticalOptions="Center"
+                                 Margin="12, 0, 15, 0">
+                        <Label Margin="4, 0, 0, 0"
+                               Text="Username"
+                               VerticalOptions="Center"
+                               TextColor="{StaticResource SecondaryText}" />
+                        <Grid HorizontalOptions="FillAndExpand">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ChangeUsernameCommand}" />
+                            </Grid.GestureRecognizers>
+                            <Entry Text="{Binding Username}"
+                                   TextColor="{StaticResource SecondaryText}"
+                                   IsReadOnly="True"
+                                   IsEnabled="False" />
+                        </Grid>
+                    </StackLayout>
+                </StackLayout>
+                <Button Text="Change Email Address"
+                        Command="{Binding ChangeEmailCommand}"
+                        Margin="15, 0, 15, 0"
+                        HeightRequest="40"
+                        Padding="0" />
+                <BoxView HeightRequest="1"
+                         HorizontalOptions="FillAndExpand"
+                         Color="{StaticResource PrimaryAccent}"
+                         CornerRadius="0"
+                         Margin="0, 15, 0, 0" />
+                <Label Text="Password and Authentication"
+                       TextTransform="Uppercase"
+                       TextColor="{StaticResource SecondaryText}"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       Margin="0, 20, 0, 20" />
+                <Button Text="Change Password"
+                        Command="{Binding ChangePasswordCommand}"
+                        Margin="15, 0, 15, 0"
+                        HeightRequest="40"
+                        Padding="0" />
+                <Button Text="Log Out"
+                        Command="{Binding LogoutCommand}"
+                        Margin="15, 0, 15, 0"
+                        HeightRequest="40"
+                        Padding="0" />
+                <BoxView HeightRequest="1"
+                         HorizontalOptions="FillAndExpand"
+                         Color="{StaticResource PrimaryAccent}"
+                         CornerRadius="0"
+                         Margin="0, 15, 0, 0" />
+                <Label Text="Account Actions"
+                       TextTransform="Uppercase"
+                       TextColor="{StaticResource SecondaryText}"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       Margin="0, 20, 0, 20" />
                 <Button Text="Close Account"
                         Command="{Binding CloseAccountCommand}"
                         Margin="15, 0, 15, 0"
-                        HeightRequest="40" 
+                        HeightRequest="40"
                         Padding="0"
-                        IsEnabled="False"
-                        />
-                <BoxView HeightRequest="1" 
-                         HorizontalOptions="FillAndExpand" 
+                        IsEnabled="False" />
+                <BoxView HeightRequest="1"
+                         HorizontalOptions="FillAndExpand"
                          Color="{StaticResource PrimaryAccent}"
                          CornerRadius="0"
-                         Margin="0, 15, 0, 0"
-                         />
+                         Margin="0, 15, 0, 0" />
+
+                <Label Text="Privacy Policy"
+                           TextColor="DarkCyan"
+                           VerticalOptions="Center"
+                           Margin="8"
+                           FontSize="16">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                    </Label.GestureRecognizers>
+                </Label>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
