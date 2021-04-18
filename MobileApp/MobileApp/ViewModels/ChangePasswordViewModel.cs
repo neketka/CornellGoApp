@@ -16,8 +16,8 @@ namespace MobileApp.ViewModels
         private bool passwordMatches = false;
         private bool formValid = false;
 
-        private string password;
-        private string passwordVerification;
+        private string password = "";
+        private string passwordVerification = "";
         private const string passwordSymbols = " !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
         private string badText = "";
 
@@ -53,7 +53,7 @@ namespace MobileApp.ViewModels
 
         public ChangePasswordViewModel(IGameService gameService, INavigationService navigationService)
         {
-            ChangePasswordCommand = new Command(async () => 
+            ChangePasswordCommand = new Command(async () =>
             {
                 if (await gameService.Client.ChangePassword(Password))
                     await navigationService.NavigateBack();

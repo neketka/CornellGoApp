@@ -2,6 +2,7 @@
 using MobileApp.ViewModels;
 using MobileApp.Views;
 using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -26,18 +27,23 @@ namespace MobileApp
             ((AppShell)MainPage).Container.GetService<IGameService>().Client.SendMetric(CommunicationModel.FrontendMetric.AppSuspended, "");
         }
 
-        protected override void OnResume()
+        protected override async void OnResume()
         {
+            Console.WriteLine("Resuming");
+            await Task.Delay(1000);
             ViewModelContainer container = ((AppShell)MainPage).Container;
             IGameService gameService = container.GetService<IGameService>();
             if (!gameService.Client.Connected)
-                container.NavigationService.NavigateToRoot();
-            else if (gameService.IsLoggedIn)
+                await container.NavigationService.NavigateToRoot();
+            else if (container.NavigationService.CurrentViewModel is not LandingViewModel and not GameViewModel)
             {
-                container.NavigationService.NavigateTo<LandingViewModel>(animate: false);
-                container.NavigationService.NavigateTo<GameViewModel>();
+                if (gameService.IsLoggedIn)
+                {
+                    await container.NavigationService.NavigateTo<LandingViewModel>(animate: false);
+                    await container.NavigationService.NavigateTo<GameViewModel>();
+                }
+                else await container.NavigationService.NavigateTo<LandingViewModel>();
             }
-            else container.NavigationService.NavigateTo<LandingViewModel>();
         }
     }
 }

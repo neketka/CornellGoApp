@@ -60,7 +60,7 @@ namespace MobileApp.Services
             if (loggedIn)
             {
                 UserId = (await Client.GetUserData()).UserId;
-                //await SecureStorage.SetAsync("session", await Client.GetSessionToken());
+                await SecureStorage.SetAsync("session", await Client.GetSessionToken());
                 LoggedIn();
 
                 if (!await CrossGeolocator.Current.StartListeningAsync(TimeSpan.FromSeconds(2), 1))

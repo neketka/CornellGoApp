@@ -8,9 +8,9 @@ namespace MobileApp.ViewModels
 {
     public class ChangeEmailViewModel : BaseViewModel
     {
-        private string email;
-        private string emailVerification;
-        private string badText;
+        private string email = "";
+        private string emailVerification = "";
+        private string badText = "";
 
         private bool emailAddressValid = false;
         private bool emailAddressMatches = false;
@@ -60,7 +60,7 @@ namespace MobileApp.ViewModels
 
         public ChangeEmailViewModel(IGameService gameService, INavigationService navigationService)
         {
-            ChangeEmailCommand = new Command(async () => 
+            ChangeEmailCommand = new Command(async () =>
             {
                 if (await gameService.Client.ChangeEmail(Email))
                     await navigationService.NavigateBack();

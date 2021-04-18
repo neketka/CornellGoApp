@@ -51,6 +51,7 @@ namespace MobileApp.ViewModels
             Console.WriteLine("Returning");
             if ((parameter as bool?) != false)
             {
+                await Task.Delay(2000);
                 Console.WriteLine("Loading on return");
                 await Load();
                 gameService.Client.SendMetric(CommunicationModel.FrontendMetric.AppResumed, "");

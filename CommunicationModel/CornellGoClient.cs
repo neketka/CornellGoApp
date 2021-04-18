@@ -39,7 +39,6 @@ namespace CommunicationModel
         public CornellGoClient(string url)
         {
             Connection = new HubConnectionBuilder()
-                .WithAutomaticReconnect(new[] { TimeSpan.FromSeconds(3) })
                 .WithUrl(url, opts =>
                 {
                     opts.HttpMessageHandlerFactory = (message) =>

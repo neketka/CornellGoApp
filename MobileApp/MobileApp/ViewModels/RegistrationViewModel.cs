@@ -14,12 +14,12 @@ namespace MobileApp.ViewModels
     {
         private const string passwordSymbols = " !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
 
-        private string username;
-        private string password;
-        private string passwordVerification;
-        private string email;
-        private string emailVerification;
-        private string badText;
+        private string username = "";
+        private string password = "";
+        private string passwordVerification = "";
+        private string email = "";
+        private string emailVerification = "";
+        private string badText = "";
 
         private bool usernameLengthValid = false;
         private bool usernameFormatValid = false;

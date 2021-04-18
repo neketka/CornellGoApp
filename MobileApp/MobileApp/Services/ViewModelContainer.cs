@@ -80,6 +80,8 @@ namespace MobileApp.Services
 
             public BaseViewModel PreviousViewModel => vmStack.Count == 0 ? null : vmStack.Peek();
 
+            public BaseViewModel CurrentViewModel => (LastPage?.BindingContext as BaseViewModel);
+
             public NavigationServiceImpl(Func<Type, BaseViewModel> cvm, Func<Type, Page> cpage, Type[] vmTypes)
             {
                 consViewModel = cvm;
@@ -135,17 +137,16 @@ namespace MobileApp.Services
                 string vmName = typeof(TViewModel).Name;
                 Console.WriteLine("Navigating to " + vmName);
 
-                if (Shell.Current.Navigation.NavigationStack.FirstOrDefault()?.
-                    BindingContext.GetType().IsAssignableFrom(typeof(TViewModel)) ?? false)
-                    return;
-
                 Page p = cachedPages[typeof(TViewModel)];
+
+                if (Shell.Current.Navigation.NavigationStack.Contains(p))
+                    return;
+                p.Parent = null;
                 var vm = consViewModel(typeof(TViewModel));
                 p.BindingContext = vm;
 
-                vmStack.Push(vmStack.Count == 0 ? rootVm : LastPage.BindingContext as BaseViewModel);
-
                 await Shell.Current.Navigation.PushAsync(p, animate);
+                vmStack.Push(vmStack.Count == 0 ? rootVm : LastPage.BindingContext as BaseViewModel);
                 await vm.OnEntering(null);
             }
 
@@ -183,13 +184,16 @@ namespace MobileApp.Services
                 await Shell.Current.Navigation.PopToRootAsync(animate);
 
                 if (vmStack.Count > 0)
-                    await vmStack.Peek().OnReturning(parameter);
+                    vmStack.Pop();
+
+                await rootVm.OnReturning(parameter);
             }
         }
     }
 
     public interface INavigationService
     {
+        BaseViewModel CurrentViewModel { get; }
         BaseViewModel PreviousViewModel { get; }
 
         Task InitializeFirst<TViewModel>();

@@ -27,7 +27,7 @@ namespace MobileApp
         {
             Container = new ViewModelContainer();
 
-            Container.RegisterService<IGameService, MockGameService>();
+            Container.RegisterService<IGameService, GameService>();
             Container.RegisterService<IDialogService, DialogService>();
 
             GameService = Container.GetService<IGameService>();

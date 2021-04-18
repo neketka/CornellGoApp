@@ -11,6 +11,7 @@ using Backend.Admin;
 using System.IO;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using System;
+using Microsoft.AspNetCore.Http;
 
 namespace Backend
 {
@@ -26,18 +27,19 @@ namespace Backend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(o => o.AddPolicy("CorsPolicy", builder => {
+            services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
+            {
                 builder
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials();
             }));
 
-            string conString = Environment.GetEnvironmentVariable("JDBC_DATABASE_URL") ?? 
+            string conString = Environment.GetEnvironmentVariable("JDBC_DATABASE_URL") ??
                 Configuration.GetConnectionString("DefaultConnection");
 
-            services.AddDbContext<BackendModel.CornellGoDb>(o => 
-                o.UseLazyLoadingProxies().UseNpgsql(conString, 
+            services.AddDbContext<BackendModel.CornellGoDb>(o =>
+                o.UseLazyLoadingProxies().UseNpgsql(conString,
                 e => e.UseNetTopologySuite()), ServiceLifetime.Scoped);
             services.AddSignalR();
             services.AddControllers();
@@ -63,6 +65,10 @@ namespace Backend
             {
                 endpoints.MapHub<CornellGoHub>("/hub");
                 endpoints.MapHub<AdminHub>("/adminhub");
+                endpoints.MapGet("/privacypolicy", async context =>
+                {
+                    await context.Response.WriteAsync(await File.ReadAllTextAsync("PrivacyPolicy/privacypolicy.html"));
+                });
             });
 
             app.UseSpa(spa =>

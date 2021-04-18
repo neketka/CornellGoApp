@@ -9,9 +9,9 @@ namespace MobileApp.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
-        private string username;
-        private string password;
-        private string badText;
+        private string username = "";
+        private string password = "";
+        private string badText = "";
 
         public string Username { get => username; set => SetProperty(ref username, value); }
         public string Password { get => password; set => SetProperty(ref password, value); }
@@ -28,7 +28,7 @@ namespace MobileApp.ViewModels
 
                 try
                 {
-                    if (await gameService.LoginWithSession("", ""))
+                    if (await gameService.LoginWithSession(Username.Trim(), Password))
                         await navigationService.NavigateTo<GameViewModel>();
                     else
                         BadText = "Invalid username or password.";
