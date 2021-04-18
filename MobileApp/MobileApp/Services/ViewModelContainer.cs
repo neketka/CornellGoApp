@@ -145,8 +145,8 @@ namespace MobileApp.Services
                 var vm = consViewModel(typeof(TViewModel));
                 p.BindingContext = vm;
 
-                await Shell.Current.Navigation.PushAsync(p, animate);
                 vmStack.Push(vmStack.Count == 0 ? rootVm : LastPage.BindingContext as BaseViewModel);
+                await Shell.Current.Navigation.PushAsync(p, animate);
                 await vm.OnEntering(null);
             }
 
@@ -155,12 +155,8 @@ namespace MobileApp.Services
                 string vmName = typeof(TViewModel).Name;
                 Console.WriteLine("Navigating back to " + vmName);
 
-                if (Shell.Current.Navigation.NavigationStack.FirstOrDefault()?.
-                    BindingContext.GetType().IsAssignableFrom(typeof(TViewModel)) ?? false)
-                    return;
-
                 string backRoute = "..";
-                while (vmStack.Peek() is not TViewModel)
+                while (!vmStack.Peek().GetType().IsAssignableFrom(typeof(TViewModel)))
                 {
                     var vm = vmStack.Pop();
                     Shell.Current.Navigation.RemovePage(cachedPages[vm.GetType()]);
