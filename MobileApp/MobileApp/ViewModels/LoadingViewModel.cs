@@ -60,7 +60,7 @@ namespace MobileApp.ViewModels
 
         private async Task Load()
         {
-            while (!CrossGeolocator.IsSupported)
+            while (!CrossGeolocator.IsSupported || !CrossGeolocator.Current.IsGeolocationAvailable)
             {
                 await dialogService.ShowLocationPerm();
             }
