@@ -62,7 +62,9 @@ namespace MobileApp.ViewModels
         {
             while (!CrossGeolocator.IsSupported || !CrossGeolocator.Current.IsGeolocationAvailable)
             {
-                await dialogService.ShowLocationPerm();
+                await Xamarin.Essentials.Permissions.RequestAsync<Xamarin.Essentials.Permissions.LocationWhenInUse>();
+                if (!CrossGeolocator.Current.IsGeolocationAvailable)
+                    await dialogService.ShowLocationPerm();
             }
             Console.WriteLine("Connecting");
             while (!gameService.Client.Connected)
