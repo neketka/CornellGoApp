@@ -88,7 +88,7 @@ namespace MobileApp.Services
 
         public async Task ShowLocationPerm()
         {
-            await Shell.Current.DisplayAlert("Error!", "Please allow the location permission for the application to work.", "OK");
+            await Shell.Current.DisplayAlert("Error!", "This application requires a device with access to a GPS.", "OK");
         }
 
         public async Task ShowJoinFailed()

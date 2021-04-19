@@ -60,6 +60,10 @@ namespace MobileApp.ViewModels
 
         private async Task Load()
         {
+            while (!CrossGeolocator.IsSupported)
+            {
+                await dialogService.ShowLocationPerm();
+            }
             Console.WriteLine("Connecting");
             while (!gameService.Client.Connected)
             {
