@@ -14,13 +14,6 @@
     <array>
       <string>UIInterfaceOrientationPortrait</string>
     </array>
-    <key>
-      UIRequiredDeviceCapabilities
-    </key>
-    <array>
-      <string>gps</string>
-      <string>location-services</string>
-    </array>
     <key>MinimumOSVersion</key>
     <string>8.0</string>
     <key>CFBundleDisplayName</key>

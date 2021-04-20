@@ -61,8 +61,8 @@ namespace BackendModel
         public static async ValueTask<Group> FromFriendlyId(this DbSet<Group> groups, string friendlyId)
         {
             long id =
-                mapToNums[friendlyId[0]] | mapToNums[friendlyId[1]] << 5 | mapToNums[friendlyId[1]] << 10 |
-                mapToNums[friendlyId[2]] << 15 | mapToNums[friendlyId[3]] << 20 | mapToNums[friendlyId[4]] << 25;
+                mapToNums[friendlyId[0]] | mapToNums[friendlyId[1]] << 5 | mapToNums[friendlyId[2]] << 10 |
+                mapToNums[friendlyId[3]] << 15 | mapToNums[friendlyId[4]] << 20 | mapToNums[friendlyId[5]] << 25;
 
             return await groups.SingleOrDefaultAsync(g => g.Id == id);
         }
