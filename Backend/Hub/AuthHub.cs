@@ -35,7 +35,7 @@ namespace Backend.Hub
             if (usession != null)
             {
                 usession.SignalRId = Context.ConnectionId;
-                await Groups.AddToGroupAsync(Context.ConnectionId, usession.User.GroupMember.Group.Id.ToString());
+                await Groups.AddToGroupAsync(Context.ConnectionId, usession.User.GroupMember.Group.SignalRId);
 
                 //Add to sessionlog
                 var entry = new SessionLogEntry(SessionLogEntryType.Relog, usession.User.Id.ToString(), DateTime.UtcNow, usession.User);
@@ -59,7 +59,7 @@ namespace Backend.Hub
 
             session.SignalRId = Context.ConnectionId;
 
-            await Groups.AddToGroupAsync(Context.ConnectionId, user.GroupMember.Group.Id.ToString());
+            await Groups.AddToGroupAsync(Context.ConnectionId, user.GroupMember.Group.SignalRId);
             await Database.SaveChangesAsync();
 
             //Add to sessionlog
@@ -94,7 +94,7 @@ namespace Backend.Hub
 
         public async Task<bool> Register(string username, string password, string email, double curLat, double curLong)
         {
-            if (await Database.Authenticators.AsAsyncEnumerable().AnyAsync(e => e.Email == email))
+            if (await Database.Authenticators.AsAsyncEnumerable().AnyAsync(e => e.Email.Equals(email, StringComparison.CurrentCultureIgnoreCase)))
                 return false;
 
             username = Censor(username);
