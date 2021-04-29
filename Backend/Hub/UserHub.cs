@@ -26,10 +26,9 @@ namespace Backend.Hub
 
         public IAsyncEnumerable<LeaderboardData> GetTopPlayers(int index, int count)
         {
-            if (count > 100) count = 100;
             return Database.Users.AsAsyncEnumerable()
                 .OrderByDescending(User => User.Score)
-                .Skip(index).Take(count)
+                .Skip(index)
                 .Select((u, i) => new LeaderboardData(u.Id.ToString(), u.Username, i + index, u.Score));
         }
 
